@@ -1,33 +1,53 @@
-'use strict';
-
-/*
-* @ngdoc function
-* @name grtd webapp.controller:MainCtrl
-* @description
-* # MainCtrl
-* Controller of the CamuApp
-*/
-
-// Main Controller
-
 (function() {
-  "use strict";
 
 
 }).call(this),
+  function() {
 
+
+
+  }.call(this),
   function() {
     "use strict";
 
-    angular.module("app.page.ctrls", []).controller("invoiceCtrl", ["$scope", "$window", function($scope) {
+  }.call(this),
+  function() {
 
-      return $scope.printInvoice = function() {
-        var originalContents, popupWin, printContents;
-        return printContents = document.getElementById("invoice").innerHTML, originalContents = document.body.innerHTML, popupWin = window.open(), popupWin.document.open(), popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="styles/main.css" /></head><body onload="window.print()">' + printContents + "</html>"), popupWin.document.close()
+
+
+
+  }.call(this),
+  function() {
+
+
+
+  }.call(this),
+  function() {
+
+
+  }.call(this),
+  function() {
+
+
+  }.call(this),
+  function() {
+
+  }.call(this),
+  function() {
+
+    "use strict";
+    //Slider Menu
+    angular.module("app.task", []).factory("taskStorage", function() {
+      var DEMO_TASKS, STORAGE_ID;
+      return STORAGE_ID = "tasks", DEMO_TASKS = '[ {"title": "Finish homework", "completed": true}, {"title": "Make a call", "completed": true}, {"title": "Build a snowman!", "completed": false}, {"title": "Tango! Tango! Tango!", "completed": false}, {"title": "Play games with friends", "completed": false}, {"title": "Shopping", "completed": false}, {"title": "One more dance", "completed": false}, {"title": "Try Google glass", "completed": false} ]', {
+        get: function() {
+          return JSON.parse(localStorage.getItem(STORAGE_ID) || DEMO_TASKS)
+        },
+        put: function(tasks) {
+          return localStorage.setItem(STORAGE_ID, JSON.stringify(tasks))
+        }
       }
-
-    }])
-
+    })
   }.call(this),
   function() {
     angular.module("app.directives", []).directive("imgHolder", [function() {
@@ -212,70 +232,21 @@
     }])
   }.call(this),
   function() {
-
     "use strict";
-
     angular.module("app.controllers", []).controller("AppCtrl", ["$scope", "$location", function($scope, $location) {
-
       return $scope.isSpecificPage = function() {
         var path;
-        return path = $location.path(), _.contains(["/404", "/pages/500", "/pages/login", "/pages/signin"], path)
-
-      }, $scope.main = { // default vars
+        return path = $location.path(), _.contains(["/404", "/pages/500", "/pages/login", "/pages/signin", "/pages/signin1", "/pages/signin2", "/pages/signup", "/pages/signup1", "/pages/signup2", "/pages/forgot", "/pages/lock-screen"], path)
+      }, $scope.main = {
         brand: "e-Chat",
         name: "Agente 1"
       }
-
-    }])
-    .controller("NavCtrl", ["$scope", "taskStorage", "filterFilter", function($scope, taskStorage, filterFilter) {
-
+    }]).controller("NavCtrl", ["$scope", "taskStorage", "filterFilter", function($scope, taskStorage, filterFilter) {
       var tasks;
       return tasks = $scope.tasks = taskStorage.get(), $scope.taskRemainingCount = filterFilter(tasks, {
         completed: !1
       }).length, $scope.$on("taskRemaining:changed", function(event, count) {
         return $scope.taskRemainingCount = count
       })
-
-    }])
-    .controller("DashboardCtrl", ["$scope", function() {
-
-    }])
-    .controller("FooCtrl", ["$scope", function() {
-
-    	alert("soy foo controller");
-
-    }])
-    .controller("LoginCtrl", ["$scope", function() {
-
-		    $scope.access = { op: "Login", User: "", Password: "" };
-
-        $scope.login = function(){
-
-          $http({
-            method : 'POST',
-            url : 'api/rest.php',
-            data : $.param($scope.access),
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-          })
-          .success(function(data){
-
-            $scope.fer = data;
-
-            if(data != 'Error'){
-              $location.path('dashboard');
-              console.info("Entro");
-            }else{
-              $scope.fer = data;
-              console.error("No entro");
-              //location.path('dashboard');
-            }
-
-          })
-          .error(function(data){
-            console.info("Login >>> error");
-          })
-
-        };
-
-    }])
+    }]).controller("DashboardCtrl", ["$scope", function() {}])
   }.call(this);
