@@ -1813,7 +1813,8 @@
           })
         }
       }
-    }]).controller("LangCtrl", ["$scope", "localize", function($scope, localize) {
+    }]).controller("LangCtrl", ["$scope", "localize", function($scope, localize) {//Borrar
+
       return $scope.lang = "English", $scope.setLang = function(lang) {
         switch (lang) {
           case "English":
@@ -1872,6 +1873,7 @@
             return "flags-korea"
         }
       }
+
     }])
   }.call(this),
   function() {
@@ -1881,8 +1883,8 @@
         var path;
         return path = $location.path(), _.contains(["/404", "/pages/500", "/pages/login", "/pages/signin", "/pages/signin1", "/pages/signin2", "/pages/signup", "/pages/signup1", "/pages/signup2", "/pages/forgot", "/pages/lock-screen"], path)
       }, $scope.main = {
-        brand: "Square",
-        name: "Lisa Doe"
+        brand: "e-Chat",
+        name: "Agente 1"
       }
     }]).controller("NavCtrl", ["$scope", "taskStorage", "filterFilter", function($scope, taskStorage, filterFilter) {
       var tasks;
@@ -1896,7 +1898,7 @@
     }]).controller("FooCtrl", ["$scope", function() {
 
     	alert("soy foo controller");
-    
+
     }]).controller("LoginCtrl", ["$scope", function() {
 
 		$scope.access = { op: "Login", User: "", Password: "" };
@@ -1930,7 +1932,3 @@
 
     }])
   }.call(this);
-
-
-
-
