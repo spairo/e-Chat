@@ -10,7 +10,7 @@
 
 'use strict';
 
-  angular.module("app", ["ngRoute", "ui.router", "ngAnimate", "ui.bootstrap", "easypiechart", "mgo-angular-wizard", "textAngular", "ui.tree", "ngMap", "ngTagsInput", "app.ui.ctrls", "app.ui.directives", "app.ui.services", "app.controllers", "app.directives", "app.form.validation", "app.ui.form.ctrls", "app.ui.form.directives", "app.tables", "app.map", "app.task", "app.localization", "app.chart.ctrls", "app.chart.directives", "app.page.ctrls"]).config(["$routeProvider", function($routeProvider) {
+  angular.module("app", ["ngRoute", "ui.router", "ngAnimate", "ui.bootstrap", "easypiechart", "mgo-angular-wizard", "textAngular", "ui.tree", "ngMap", "ngTagsInput", "app.controllers", "app.directives", "app.tables", "app.map", "app.task", "app.localization", "app.page.ctrls"]).config(["$routeProvider", function($routeProvider) {
 
       return $routeProvider.when("/", {
         redirectTo: "/dashboard"
