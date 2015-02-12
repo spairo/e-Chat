@@ -37,7 +37,7 @@ app.factory("localize", function($http, $rootScope, $window) {
       return localize.url = value, localize.initLocalizedResources()
     },
     buildUrl: function() {
-      return localize.language || (localize.language = ($window.navigator.userLanguage || $window.navigator.language).toLowerCase(), localize.language = localize.language.split("-")[0]), "i18n/resources-locale_" + localize.language + ".js"
+      //return localize.language || (localize.language = ($window.navigator.userLanguage || $window.navigator.language).toLowerCase(), localize.language = localize.language.split("-")[0]), "i18n/resources-locale_" + localize.language + ".js"
     },
     initLocalizedResources: function() {
       var url;

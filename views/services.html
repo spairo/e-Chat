@@ -1,13 +1,40 @@
-<div class="page" ng-ng-controller="ServicesCtrl">
+<div class="page" ng-controller="ServicesCtrl">
   <section class="panel panel-default">
     <div class="panel-heading">
       <strong>
         <span class="glyphicon glyphicon-th"></span> Servicios</strong>
     </div>
     <div class="panel-body">
-      <p>Content goes here</p>
-
-
+      <div class="btn-group btn-group-lg pull-right" role="group" aria-label="...">
+        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Servicio</button>
+      </div>
+      <table class="table">
+        <caption>{{getAllServiceDef}}</caption>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Servicio</th>
+            <th>Simultaneos</th>
+            <th>Bienvenida</th>
+            <th>Frecuencia</th>
+            <th>Timeout</th>
+            <th>Multigestion</th>
+            <th>Clave</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="servicedef in getAllServiceDef" class="repeat-animation">
+            <td>{{servicedef.clienteAtentoId}}</td>
+            <td>{{servicedef.servicio}}</td>
+            <td>{{servicedef.activo}}</td>
+            <td>{{servicedef.activo}}</td>
+            <td>{{servicedef.activo}}</td>
+            <td>{{servicedef.activo}}</td>
+            <td>{{servicedef.activo}}</td>
+            <td>{{servicedef.activo}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </div>
