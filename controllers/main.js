@@ -1,38 +1,11 @@
+
+
+
+
 (function() {
 
 
 }).call(this),
-  function() {
-
-
-
-  }.call(this),
-  function() {
-    "use strict";
-
-  }.call(this),
-  function() {
-
-
-
-
-  }.call(this),
-  function() {
-
-
-
-  }.call(this),
-  function() {
-
-
-  }.call(this),
-  function() {
-
-
-  }.call(this),
-  function() {
-
-  }.call(this),
   function() {
 
     "use strict";
@@ -50,16 +23,9 @@
     })
   }.call(this),
   function() {
-    angular.module("app.directives", []).directive("imgHolder", [function() {
-      return {
-        restrict: "A",
-        link: function(scope, ele) {
-          return Holder.run({
-            images: ele[0]
-          })
-        }
-      }
-    }]).directive("customBackground", function() {
+    angular.module("app.directives", [])
+    //custom bg
+    .directive("customBackground", function() {
       return {
         restrict: "A",
         controller: ["$scope", "$element", "$location", function($scope, $element, $location) {
@@ -86,22 +52,7 @@
           })
         }]
       }
-    }).directive("uiColorSwitch", [function() {
-      return {
-        restrict: "A",
-        link: function(scope, ele) {
-          return ele.find(".color-option").on("click", function(event) {
-            var $this, hrefUrl, style;
-            if ($this = $(this), hrefUrl = void 0, style = $this.data("style"), "loulou" === style) hrefUrl = "styles/main.css", $('link[href^="styles/main"]').attr("href", hrefUrl);
-            else {
-              if (!style) return !1;
-              style = "-" + style, hrefUrl = "styles/main" + style + ".css", $('link[href^="styles/main"]').attr("href", hrefUrl)
-            }
-            return event.preventDefault()
-          })
-        }
-      }
-    }]).directive("toggleMinNav", ["$rootScope", function($rootScope) {
+    }).directive("toggleMinNav", ["$rootScope", function($rootScope) {
       return {
         restrict: "A",
         link: function(scope, ele) {
