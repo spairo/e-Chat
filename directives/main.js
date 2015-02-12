@@ -8,18 +8,6 @@
 * Directives of the app
 */
 
-app.factory("taskStorage", function() {
-  var DEMO_TASKS, STORAGE_ID;
-  return STORAGE_ID = "tasks", DEMO_TASKS = '[ {"title": "Finish homework", "completed": true}, {"title": "Make a call", "completed": true}, {"title": "Build a snowman!", "completed": false}, {"title": "Tango! Tango! Tango!", "completed": false}, {"title": "Play games with friends", "completed": false}, {"title": "Shopping", "completed": false}, {"title": "One more dance", "completed": false}, {"title": "Try Google glass", "completed": false} ]', {
-    get: function() {
-      return JSON.parse(localStorage.getItem(STORAGE_ID) || DEMO_TASKS)
-    },
-    put: function(tasks) {
-      return localStorage.setItem(STORAGE_ID, JSON.stringify(tasks))
-    }
-  }
-});
-
 app.directive("i18n", function(localize) {
   var i18nDirective;
   return i18nDirective = {

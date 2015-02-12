@@ -1,4 +1,4 @@
-<div class="page-signin">
+<div ng-controller="LoginCtrl" class="page-signin">
 
   <div class="signin-header">
     <div class="container text-center">
@@ -12,42 +12,30 @@
     <div class="container">
       <div class="form-container">
         <!--
-                <section class="row signin-social text-center">
-                    <a href="javascript:;" class="btn-icon btn-icon-sm bg-twitter"><i class="fa fa-twitter"></i></a>
-                    <div class="space"></div>
-                    <a href="javascript:;" class="btn-icon btn-icon-sm bg-facebook"><i class="fa fa-facebook"></i></a>
-                    <div class="space"></div>
-                    <a href="javascript:;" class="btn-icon btn-icon-sm bg-google-plus"><i class="fa fa-google-plus"></i></a>
-                </section>
-
-                <span class="line-thru">OR</span>
-                -->
-        <form class="form-horizontal">
-          <fieldset>
-            <div class="form-group">
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-envelope"></span>
-                </span>
-                <input type="email" class="form-control" placeholder="Email">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-lock"></span>
-                </span>
-                <input type="password" class="form-control" placeholder="password">
-              </div>
-            </div>
-            <div class="form-group">
-            </div>
-            <div class="form-group">
-              <a href="#/" class="btn btn-primary btn-lg btn-block">Log in</a>
-            </div>
-          </fieldset>
+        <section class="row signin-social text-center">
+          <a href="javascript:;" class="btn-icon btn-icon-sm bg-twitter"><i class="fa fa-twitter"></i></a>
+          <div class="space"></div>
+          <a href="javascript:;" class="btn-icon btn-icon-sm bg-facebook"><i class="fa fa-facebook"></i></a>
+          <div class="space"></div>
+          <a href="javascript:;" class="btn-icon btn-icon-sm bg-google-plus"><i class="fa fa-google-plus"></i></a>
+        </section>
+        <span class="line-thru">OR</span>
+        -->
+        <form name="userForm" class="form-horizontal" novalidate>
+          {{fer}}
+          <div class="form-group" ng-class="{ 'has-error' : userForm.User.$invalid && userForm.User.$dirty && !userForm.User.$pristine, 'has-summer': userForm.User.$valid }">
+            <input type="text" name="User" class="form-control input-lg" ng-model="access.User" placeholder="Usuario" required>
+            <p ng-show="userForm.User.$invalid && !userForm.User.$pristine" class="help-block">Your user is required.</p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
+            <input type="password" name="Password" class="form-control input-lg" ng-model="access.Password" placeholder="Contraseña" required>
+            <p ng-show="userForm.Password.$invalid && !userForm.Password.$pristine" class="help-block">Your password is required.</p>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block" ng-disabled="userForm.$invalid" ng-click="login()"><span class="glyphicon glyphicon-log-in"></span> Ingresar</button>
+            <pre class="help-block">{{access}}</pre>
+          </div>
         </form>
-
         <section>
           <p class="text-center">
             <img src="assets/img/logoSummer.png" alt="Summer Atento" />
