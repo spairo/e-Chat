@@ -17,6 +17,9 @@ app.config(["$routeProvider", function($routeProvider) {
       return $routeProvider.when("/", {
         redirectTo: "/dashboard"
       })
+      .when("/signin", {
+        templateUrl: "views/signin.html"
+      })
       .when("/dashboard", {
         templateUrl: "views/dashboard.html"
       })

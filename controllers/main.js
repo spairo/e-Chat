@@ -12,9 +12,22 @@
 
 app.controller("AppCtrl", function($scope, $location){
 
-  return $scope.isSpecificPage = function() {
+  /*******/
+
+  $scope.$on('$locationChangeStart', function(event) {
+
+    var answer = confirm("Are you sure you want to leave this page?");
+
+    if (!answer) {
+      event.preventDefault();
+    }
+  });
+
+  /*******/
+
+  return $scope.isSpecificPage = function(){
     var path;
-    return path = $location.path(), _.contains(["/404", "/pages/500", "/pages/signin"], path)
+    return path = $location.path(), _.contains(["/404", "/pages/500", "/signin", "/pages/signin"], path)
   }, $scope.main = {
     brand: "e-Chat Dash",
     name: "Master"
@@ -37,7 +50,7 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
 // Login Controller
 
-app.controller('LoginCtrl', function($scope, $http) {
+app.controller('LoginCtrl', function($scope, $http, $location) {
 
   $scope.access = { op: "Login", User: "", Password: "" };
 
@@ -49,9 +62,12 @@ app.controller('LoginCtrl', function($scope, $http) {
       $scope.fer = data;
 
       if(data != 'Error'){
+
         $location.path('dashboard');
         console.info("Entro");
+
       }else{
+
         $scope.fer = data;
         console.error("No entro");
         //location.path('dashboard');

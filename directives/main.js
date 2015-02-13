@@ -75,6 +75,7 @@ app.directive("customBackground", function() {
           case "/404":
           case "/pages/500":
           case "/pages/signin":
+          case "/signin":
           return $element.addClass("body-special");
           case "/pages/lock-screen":
           return $element.addClass("body-special body-lock");

@@ -1,0 +1,31 @@
+<div ng-controller="LoginCtrl" class="page-signin">
+
+  <div class="main-body">
+    <div class="container">
+      <div class="form-container">
+
+          <form name="userForm" class="form-horizontal" novalidate>
+            {{fer}}
+            <div class="form-group" ng-class="{ 'has-error' : userForm.User.$invalid && userForm.User.$dirty && !userForm.User.$pristine, 'has-summer': userForm.User.$valid }">
+              <input type="text" name="User" class="form-control input-lg" ng-model="access.User" placeholder="Usuario" required>
+              <p ng-show="userForm.User.$invalid && !userForm.User.$pristine" class="help-block">Your user is required.</p>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
+              <input type="password" name="Password" class="form-control input-lg" ng-model="access.Password" placeholder="Contraseña" required>
+              <p ng-show="userForm.Password.$invalid && !userForm.Password.$pristine" class="help-block">Your password is required.</p>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" ng-disabled="userForm.$invalid" ng-click="login()"><span class="glyphicon glyphicon-log-in"></span> Ingresar</button>
+              <pre class="help-block">{{access}}</pre>
+            </div>
+          </form>
+          <section>
+            <p class="text-center">
+              <img src="assets/img/logoSummer.png" alt="Summer Atento" />
+            </p>
+          </section>
+      </div>
+    </div>
+  </div>
+
+</div>
