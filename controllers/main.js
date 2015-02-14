@@ -14,14 +14,14 @@ app.controller("AppCtrl", function($scope, $location){
 
   /*******/
 
-  $scope.$on('$locationChangeStart', function(event) {
+  /*$scope.$on('$locationChangeStart', function(event) {
 
     var answer = confirm("Are you sure you want to leave this page?");
 
     if (!answer) {
       event.preventDefault();
     }
-  });
+  });*/
 
   /*******/
 
