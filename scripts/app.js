@@ -15,7 +15,7 @@ var app = angular.module("app", ["ngRoute", "ngAnimate", "ui.bootstrap"])
 app.config(["$routeProvider", function($routeProvider) {
 
       return $routeProvider.when("/", {
-        redirectTo: "/dashboard"
+        redirectTo: "/signin"
       })
       .when("/signin", {
         templateUrl: "views/signin.html"
@@ -36,7 +36,7 @@ app.config(["$routeProvider", function($routeProvider) {
         templateUrl: 'views/users.html'
       })
       .otherwise({
-        redirectTo: "/pages/signin"
+        redirectTo: "/signin"
       })
 
 }]);
