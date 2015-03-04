@@ -10,7 +10,7 @@
 * Main module of the application.
 */
 
-var app = angular.module("app", ["ngRoute", "ngAnimate", "ui.bootstrap"])
+var app = angular.module("app", ["ngRoute", "ngAnimate", "ui.bootstrap", "ngCookies"])
 
 app.config(["$routeProvider", function($routeProvider) {
 
@@ -22,9 +22,6 @@ app.config(["$routeProvider", function($routeProvider) {
       })
       .when("/dashboard", {
         templateUrl: "views/dashboard.html"
-      })
-      .when("/pages/signin", {
-        templateUrl: "views/pages/signin.html"
       })
       .when("/pages/blank", {
         templateUrl: "views/pages/blank.html"

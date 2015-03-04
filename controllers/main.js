@@ -2,7 +2,7 @@
 
 /*
 * @ngdoc function
-* @name grtd webapp.controller:MainCtrl
+* @name CamuApp.controller:MainCtrl
 * @description
 * # MainCtrl
 * Controller of the CamuApp
@@ -10,7 +10,10 @@
 
 // App Controller
 
-app.controller("AppCtrl", function($scope, $location){
+app.controller("AppCtrl", function($scope, $location, auth){
+
+  //get auth
+  $scope.status = auth;
 
   /*******/
 
@@ -27,10 +30,9 @@ app.controller("AppCtrl", function($scope, $location){
 
   return $scope.isSpecificPage = function(){
     var path;
-    return path = $location.path(), _.contains(["/404", "/pages/500", "/signin", "/pages/signin"], path)
+    return path = $location.path(), _.contains(["/404", "/pages/500", "/signin"], path)
   }, $scope.main = {
-    brand: "e-Chat Dash",
-    name: "Master"
+    brand: "e-Chat Dash"
   }
 
 });
@@ -50,32 +52,36 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
 // Login Controller
 
-app.controller('LoginCtrl', function($scope, $http, $location) {
+app.controller('LoginCtrl', function($scope, $http, $location, $cookies, auth){
 
-  $scope.access = { op: "Login", User: "", Password: "" };
+  $scope.access = { op: "SeguridadLogin", User: "", Password: "" };
 
   $scope.login = function(){
 
     $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.access), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
     .success(function(data){
 
-      $scope.fer = data;
+      if(data == 'Error'){
 
-      if(data != 'Error'){
-
-        $location.path('dashboard');
-        console.info("Entro");
+        $scope.result = data;
+        console.warn("Login Failed");
 
       }else{
 
-        $scope.fer = data;
-        console.error("No entro");
-        //location.path('dashboard');
+        console.info("Login Done");
+
+        //cookies everywhere
+        $scope.LoginFactory = auth;
+        $scope.LoginFactory.user = $cookies.usuariocookie = data[0].usuario;
+        $scope.LoginFactory.profile = $cookies.perfilcookie = data[0].perfil;
+        $scope.LoginFactory.profileID = $cookies.perfilesIdcookie = data[0].perfilesId;
+
+        $location.path('dashboard');
       }
 
     })
     .error(function(data){
-      console.info("Login >>> error");
+      console.error("Login >>> error");
     })
   };
 
@@ -105,6 +111,23 @@ app.controller('ServicesCtrl', function($scope, $http){
 
 // Users Controller
 
-app.controller("UsersCtrl", function($scope, $location){
+app.controller("UsersCtrl", function($scope, $http, $location){
+
+  $scope.getUsersList = { op: "ListaUsuario" };
+
+  $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.getUsersList), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
+  .success(function(data){
+
+    //$scope.loading = false;
+    console.info(data);
+
+    $scope.foo = data;
+
+    console.info('All Users Loaded');
+
+  })
+  .error(function(data){
+    console.error("All Users >>> Oops");
+  })
 
 });

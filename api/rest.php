@@ -5,19 +5,19 @@
 session_start();
 header('Content-type: application/json');
 
-$ws = new SoapClient('http://172.18.130.203/wsCamu/Service1.asmx?WSDL');
+$ws = new SoapClient('http://172.18.130.203/wsCamu/Camu_Service.asmx?WSDL');
 
 $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
 
   switch($opcion){
 
-    case 'Login':
+    case 'SeguridadLogin':
     $a = array(
       'User' => $_POST['User'],
       'Password' => $_POST['Password']
     );
-    $res = $ws->Login($a);
-    echo $res->LoginResult;
+    $res = $ws->SeguridadLogin($a);
+    echo $res->SeguridadLoginResult;
     break;
 
     case 'getServicesDef':
@@ -26,6 +26,14 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     );
     $res = $ws->getServicesDef($a);
     echo $res->getServicesDefResult;
+    break;
+
+    case 'ListaUsuario':
+    /*$a = array(
+      'serviceId' => $_POST['serviceId']
+    );*/
+    $res = $ws->ListaUsuario($a);
+    echo $res->ListaUsuarioResult;
     break;
 
     default: echo 'Opps!';

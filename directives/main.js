@@ -2,10 +2,10 @@
 
 /*
 * @ngdoc function
-* @name app webapp.Directives:Main
+* @name Camuapp.Directives:Main
 * @description
 * # Main
-* Directives of the app
+* Directives of the Camuapp
 */
 
 app.directive("i18n", function(localize) {
@@ -39,7 +39,6 @@ app.directive("customBackground", function() {
           return $element.addClass("body-home");
           case "/404":
           case "/pages/500":
-          case "/pages/signin":
           case "/signin":
           return $element.addClass("body-special");
           case "/pages/lock-screen":

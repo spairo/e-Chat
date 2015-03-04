@@ -2,11 +2,16 @@
 
 /*
 * @ngdoc function
-* @name app webapp.Factories:Main
+* @name Camuapp.Factories:Main
 * @description
 * # Main
-* Factories of the app
+* Factories Camuapp
 */
+
+
+app.factory('auth',function(){
+  return { user:"", profile:"", profileID:"" };
+});
 
 app.factory("taskStorage", function() {
   var DEMO_TASKS, STORAGE_ID;
@@ -24,20 +29,13 @@ app.factory("localize", function($http, $rootScope, $window) {
 
   var localize;
   return localize = {
-    language: "",
     url: void 0,
     resourceFileLoaded: !1,
     successCallback: function(data) {
       return localize.dictionary = data, localize.resourceFileLoaded = !0, $rootScope.$broadcast("localizeResourcesUpdated")
     },
-    setLanguage: function(value) {
-      return localize.language = value.toLowerCase().split("-")[0], localize.initLocalizedResources()
-    },
     setUrl: function(value) {
       return localize.url = value, localize.initLocalizedResources()
-    },
-    buildUrl: function() {
-      
     },
     initLocalizedResources: function() {
       var url;

@@ -4,8 +4,9 @@
       <strong><span class="glyphicon glyphicon-th"></span> Usuarios</strong>
     </div>
     <div class="panel-body">
+        <pre>{{foo}}</pre>
         <div class="btn-group btn-group-lg pull-right" role="group" aria-label="...">
-          <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></div></button>
+          <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></span></button>
         </div>
         <table class="table">
           <thead>
@@ -15,21 +16,22 @@
               <th>Sexo</th>
               <th>Usuario</th>
               <th>Administrador</th>
+              <th>Doll</th>
+              <th>Iosum</th>
+              <th>lorem</th>
             </tr>
           </thead>
           <tbody>
-            <!--
-            <tr ng-repeat="servicedef in getAllServiceDef" class="repeat-animation">
-              <td>{{servicedef.clienteAtentoId}}</td>
-              <td>{{servicedef.servicio}}</td>
-              <td>{{servicedef.activo}}</td>
-              <td>{{servicedef.activo}}</td>
-              <td>{{servicedef.activo}}</td>
-              <td>{{servicedef.activo}}</td>
-              <td>{{servicedef.activo}}</td>
-              <td>{{servicedef.activo}}</td>
+            <tr ng-repeat="users in getAllUSers" class="repeat-animation">
+              <td>{{users.usuariosId}}</td>
+              <td>{{users.perfilesId}}</td>
+              <td>{{users.nombres}}</td>
+              <td>{{users.apellidos}}</td>
+              <td>{{users.perfil}}</td>
+              <td>{{users.descripcion}}</td>
+              <td>{{users.skill}}</td>
+              <td>{{users.skillsId}}</td>
             </tr>
-            -->
           </tbody>
         </table>
     </div>
