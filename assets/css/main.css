@@ -4154,9 +4154,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
   color: inherit
 }
 .alert-success {
-  background-color: #EEFFF6;
-  border-color: #d5ffe1;
-  color: #4C9C77
+  background-color: #279796;
+  border-color: #279796;
+  color: #fff
 }
 .alert-success hr {
   border-top-color: #bbffd0
@@ -9735,9 +9735,9 @@ button.toast-close-button {
 }
 .spinner{
 	text-align: center;
-	margin-top: 50px;
+	margin-top: 200px;
   position:relative;
-  left: -20px;
+  left: -120px;
   display: block;
 }
 .form-signin{

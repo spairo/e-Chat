@@ -8,7 +8,6 @@
 * Factories Camuapp
 */
 
-
 app.factory('auth',function(){
   return { user:"", profile:"", profileID:"" };
 });

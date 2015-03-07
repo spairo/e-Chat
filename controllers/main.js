@@ -15,24 +15,11 @@ app.controller("AppCtrl", function($scope, $location, auth){
   //get auth
   $scope.status = auth;
 
-  /*******/
-
-  /*$scope.$on('$locationChangeStart', function(event) {
-
-    var answer = confirm("Are you sure you want to leave this page?");
-
-    if (!answer) {
-      event.preventDefault();
-    }
-  });*/
-
-  /*******/
-
   return $scope.isSpecificPage = function(){
     var path;
     return path = $location.path(), _.contains(["/404", "/pages/500", "/signin"], path)
   }, $scope.main = {
-    brand: "e-Chat Dash"
+    brand: "Camu Dash"
   }
 
 });
@@ -52,7 +39,7 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
 // Login Controller
 
-app.controller('LoginCtrl', function($scope, $http, $location, $cookies, auth){
+app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth){
 
   $scope.access = { op: "SeguridadLogin", User: "", Password: "" };
 
@@ -64,6 +51,7 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, auth){
       if(data == 'Error'){
 
         $scope.result = data;
+        ngToast.create('Error, Intenta otra vez');
         console.warn("Login Failed");
 
       }else{
@@ -89,45 +77,152 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, auth){
 
 // Dashboard Controller
 
-app.controller('DashboardCtrl', function($scope){});
+app.controller('DashboardCtrl', function($scope, ngToast){
+  ngToast.create('Bienvenido a Camu');
+});
 
 // Services Controller
 
 app.controller('ServicesCtrl', function($scope, $http){
 
-    $scope.getSerDef = { op: "getServicesDef", serviceId: "MLSegurosUniversal" };
-
-    $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.getSerDef), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
-    .success(function(data){
-      $scope.loading = false;
-      $scope.getAllServiceDef = data;
-      console.info('All Services Ok');
-    })
-    .error(function(data){
-      console.error("All Services >>> Oops");
-    })
+    console.log("soy services");
 
 });
 
 // Users Controller
 
-app.controller("UsersCtrl", function($scope, $http, $location){
+app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
 
-  $scope.getUsersList = { op: "ListaUsuario" };
-
-  $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.getUsersList), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
+  $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.getUsersList = { op: "ListaUsuario", servicioId: "0", skillId: "0", perfilId: "0" }), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
   .success(function(data){
-
-    //$scope.loading = false;
-    console.info(data);
-
-    $scope.foo = data;
-
-    console.info('All Users Loaded');
-
+    $scope.getUsers = data;
   })
   .error(function(data){
     console.error("All Users >>> Oops");
   })
+
+  // Create/Modal/Settings Users
+
+  $scope.roloptions = [
+    { name: 'SuperAdmin2', value: '1' },
+    { name: 'Administrador', value: '2' },
+    { name: 'TAM LN', value: '3' },
+    { name: 'Gerente', value: '4' },
+    { name: 'Supervisor', value: '5' },
+    { name: 'BackOffice', value: '6' },
+    { name: 'Agente', value: '7' }
+  ];
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.addU = { op: "Mantenimiento_Usuarios", Id: "0", Nombre: "", Apellidos: "", Usuario: "", Password: "", PerfilId: "", Sexo: "", Activo: "", UserIdModif: myid };
+
+  $scope.CreateUser = function(){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate.html',
+      controller: 'UsersCtrl'
+    });
+
+  };
+
+  // Add User
+
+  $scope.AddUsers = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.addU),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var user_checked = angular.isNumber(data[0].Column1);
+
+      if(user_checked == true){
+
+        $modalStack.dismissAll();
+        ngToast.create('El Usuario fue creado con exito');
+        console.info("Add User >>> Ok");
+
+      }else{
+        ngToast.create('EL usuario no ha sido creado');
+        return;
+      }
+
+    })
+    .error(function(data){
+      ngToast.create('Opps! Algo salio mal, intenta otra vez');
+      console.error("Add User >>> Oops");
+    })
+
+  };
+
+  // Edit User
+
+  $scope.openedit = function (usuariosId) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalEdit.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        fifi: function () {
+          return $scope.fifi = usuariosId;
+        }
+      }
+    });
+
+  };
+
+  $scope.EditUser = function(usuariosId){
+
+      //alert(usuariosId);
+      //console.log("fuaaaa", usuariosId);
+
+
+      /*
+      $scope.subF = 0;
+      var subcasesface = u1;
+
+      $http({
+        method: 'POST',
+        url: 'api/rest.php',
+        data: $.param($scope.findInfoT = { op: 'getHistorialCasoFb', caseID: subcasesface }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data, status){
+        $scope.subF = 1;
+        $scope.subcaseF = data;
+        console.info("Get Sub Cases Facebook >>>", status);
+      })
+      .error(function(data, status){
+        console.error("Get Sub Cases Facebook >>>", status, "Oops!");
+      })
+      */
+  };
+
+  $scope.EraseUser = function() {
+    //ModalMessage.open(null,'No puedes Eliminar Usuarios','Importante',$modal,$scope);
+    ngToast.create('No puedes Eliminar Usuarios');
+  };
+
+  $scope.cancel = function () {
+    $modalStack.dismiss('cancel');
+  };
+
+});
+
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, fifi) {
+
+  $scope.fifi = fifi;
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
 
 });

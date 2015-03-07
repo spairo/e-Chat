@@ -4,36 +4,160 @@
       <strong><span class="glyphicon glyphicon-th"></span> Usuarios</strong>
     </div>
     <div class="panel-body">
-        <pre>{{foo}}</pre>
-        <div class="btn-group btn-group-lg pull-right" role="group" aria-label="...">
-          <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></span></button>
+        <div class="btn-group btn-group-lg pull-right" role="group">
+          <button type="button" class="btn btn-default" ng-click="CreateUser()"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></span></button>
         </div>
+        <br />
         <table class="table">
           <thead>
             <tr>
               <th>#</th>
+              <th>#Perfil</th>
               <th>Nombre</th>
               <th>Sexo</th>
-              <th>Usuario</th>
-              <th>Administrador</th>
-              <th>Doll</th>
-              <th>Iosum</th>
-              <th>lorem</th>
+              <th>Perfil</th>
+              <th>Descripcion</th>
+              <th>Skill</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="users in getAllUSers" class="repeat-animation">
-              <td>{{users.usuariosId}}</td>
-              <td>{{users.perfilesId}}</td>
-              <td>{{users.nombres}}</td>
-              <td>{{users.apellidos}}</td>
-              <td>{{users.perfil}}</td>
-              <td>{{users.descripcion}}</td>
-              <td>{{users.skill}}</td>
-              <td>{{users.skillsId}}</td>
+            <tr ng-repeat="usersList in getUsers" class="repeat-animation">
+              <td>{{usersList.usuariosId}}</td>
+              <td>{{usersList.perfilesId}}</td>
+              <td>{{usersList.nombres}}  {{usersList.apellidos}}</td>
+              <td>{{usersList.sexo}}</td>
+              <td>{{usersList.perfil}}</td>
+              <td>{{usersList.descripcion}}</td>
+              <td>{{usersList.skill}}</td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Edit">
+                  <button type="button" class="btn btn-default" ng-click="openedit(usersList.usuariosId)"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
     </div>
   </section>
+  <script type="text/ng-template" id="ModalCreate.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Usuario</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="Nombre">Nombre</label>
+            <input type="text" class="form-control" ng-model="addU.Nombre" placeholder="Nombre" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Apellidos">Apellidos</label>
+            <input type="text" class="form-control" ng-model="addU.Apellidos" placeholder="Apellidos" required>
+          </div>
+
+          <div class="form-group">
+            <label class="radio-inline">
+              <input type="radio" ng-model="addU.Sexo" value="M">Masculino
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addU.Sexo" value="F">Femenino
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="user">Usuario</label>
+            <input type="text" class="form-control" ng-model="addU.Usuario" placeholder="Usuario" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" ng-model="addU.Password" placeholder="Password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Rol">Rol</label>
+            <select class="form-control" ng-model="addU.PerfilId" required>
+              <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addU.Activo" value="1" checked> Activo
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addU.Activo" value="0"> Inactivo
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary" ng-click="AddUsers()">Crear</button>
+        </form>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Editar Usuario</h3>
+      </div>
+      <div class="modal-body">
+          <b>this Value {{fifi}} is the pass </b>
+          <hr>
+          <form>
+            <div class="form-group">
+              <label for="Nombre">Nombre</label>
+              <input type="text" class="form-control" ng-model="addU.Nombre" placeholder="Nombre" required>
+            </div>
+
+            <div class="form-group">
+              <label for="Apellidos">Apellidos</label>
+              <input type="text" class="form-control" ng-model="addU.Apellidos" placeholder="Apellidos" required>
+            </div>
+
+            <div class="form-group">
+              <label class="radio-inline">
+                <input type="radio" ng-model="addU.Sexo" value="M">Masculino
+              </label>
+              <label class="radio-inline">
+                <input type="radio" ng-model="addU.Sexo" value="F">Femenino
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="user">Usuario</label>
+              <input type="text" class="form-control" ng-model="addU.Usuario" placeholder="Usuario" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" ng-model="addU.Password" placeholder="Password" required>
+            </div>
+
+            <div class="form-group">
+              <label for="Rol">Rol</label>
+              <select class="form-control" ng-model="addU.PerfilId" required>
+                <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="addU.Activo" value="1" checked> Activo
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="addU.Activo" value="0"> Inactivo
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-primary" ng-click="EditUser()">Editar</button>
+          </form>
+      </div>
+  </script>
 </div>
