@@ -4187,9 +4187,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
   color: #9f8639
 }
 .alert-danger {
-  background-color: #FFF1ED;
-  border-color: #ffd6d4;
-  color: #CA674C
+  background-color: #E87352;
+  border-color: #E87352;
+  color: #fff
 }
 .alert-danger hr {
   border-top-color: #ffbeba

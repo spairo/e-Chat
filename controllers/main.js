@@ -50,8 +50,10 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
 
       if(data == 'Error'){
 
-        $scope.result = data;
-        ngToast.create('Error, Intenta otra vez');
+        var msg = ngToast.create({
+          content: 'Usuario o Password no valido',
+          className:	'danger'
+        });
         console.warn("Login Failed");
 
       }else{
@@ -65,10 +67,15 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
         $scope.LoginFactory.profileID = $cookies.perfilesIdcookie = data[0].perfilesId;
 
         $location.path('dashboard');
+        console.log(data);
       }
 
     })
     .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
       console.error("Login >>> error");
     })
   };
@@ -77,15 +84,37 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
 
 // Dashboard Controller
 
-app.controller('DashboardCtrl', function($scope, ngToast){
-  ngToast.create('Bienvenido a Camu');
+app.controller('DashboardCtrl', function($scope, ngToast, auth){
+
+  var myname = $scope.status = auth.user;
+  ngToast.create('Bienvenido a Camu ' + myname);
+
+  //ngToast.dismiss();
+
 });
 
 // Services Controller
 
-app.controller('ServicesCtrl', function($scope, $http){
+app.controller('ServicesCtrl', function($scope, $http, ngToast){
 
-    console.log("soy services");
+  $http({
+    method : 'POST',
+    url : 'api/rest.php',
+    data : $.param($scope.qwerty = { op: "ListaServicios", servicioId: "0", skillId: "0", perfilId: "0" }),
+    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+
+    $scope.getServices = data;
+    console.log(data);
+
+  })
+  .error(function(data){
+    var msg = ngToast.create({
+      content: 'Opps!, Algo salio mal intenta otra vez',
+      className:	'danger'
+    });
+  })
 
 });
 
@@ -93,11 +122,20 @@ app.controller('ServicesCtrl', function($scope, $http){
 
 app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
 
-  $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.getUsersList = { op: "ListaUsuario", servicioId: "0", skillId: "0", perfilId: "0" }), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
+  $http({
+    method : 'POST',
+    url : 'api/rest.php',
+    data : $.param($scope.getUsersList = { op: "ListaUsuario", servicioId: "0", skillId: "0", perfilId: "0" }),
+    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
   .success(function(data){
     $scope.getUsers = data;
   })
   .error(function(data){
+    var msg = ngToast.create({
+      content: 'Opps!, Algo salio mal intenta otra vez',
+      className:	'danger'
+    });
     console.error("All Users >>> Oops");
   })
 
@@ -147,13 +185,19 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
         console.info("Add User >>> Ok");
 
       }else{
-        ngToast.create('EL usuario no ha sido creado');
+        var msg = ngToast.create({
+          content: 'Error, EL usuario no fue creado',
+          className:	'danger'
+        });
         return;
       }
 
     })
     .error(function(data){
-      ngToast.create('Opps! Algo salio mal, intenta otra vez');
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
       console.error("Add User >>> Oops");
     })
 
@@ -203,8 +247,12 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
   };
 
   $scope.EraseUser = function() {
-    //ModalMessage.open(null,'No puedes Eliminar Usuarios','Importante',$modal,$scope);
-    ngToast.create('No puedes Eliminar Usuarios');
+
+    var msg = ngToast.create({
+      content: 'No puedes Eliminar Usuarios',
+      className:	'danger'
+    });
+
   };
 
   $scope.cancel = function () {

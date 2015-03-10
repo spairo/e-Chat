@@ -20,12 +20,14 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     echo $res->SeguridadLoginResult;
     break;
 
-    case 'getServicesDef':
+    case 'ListaServicios':
     $a = array(
-      'serviceId' => $_POST['serviceId']
+      'servicioId' => $_POST['servicioId'],
+      'skillId' => $_POST['skillId'],
+      'perfilId' => $_POST['perfilId']
     );
-    $res = $ws->getServicesDef($a);
-    echo $res->getServicesDefResult;
+    $res = $ws->ListaServicios($a);
+    echo $res->ListaServiciosResult;
     break;
 
     case 'ListaUsuario':

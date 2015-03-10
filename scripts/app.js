@@ -10,7 +10,7 @@
 * Main module of the application.
 */
 
-var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast"])
+var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "angular-loading-bar", "ngMaterial"])
 
 app.config(["$routeProvider", function($routeProvider) {
 
@@ -42,6 +42,6 @@ app.config(['ngToastProvider', function(ngToast) {
     ngToast.configure({
       verticalPosition: 'top',
       horizontalPosition: 'right',
-      maxNumber: 5
+      maxNumber: 6
     });
 }]);
