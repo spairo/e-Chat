@@ -12,7 +12,6 @@
 
 app.controller("AppCtrl", function($scope, $location, auth){
 
-  //get auth
   $scope.status = auth;
 
   return $scope.isSpecificPage = function(){
@@ -21,6 +20,12 @@ app.controller("AppCtrl", function($scope, $location, auth){
   }, $scope.main = {
     brand: "Camu Dash"
   }
+
+  $scope.bye = function(){
+
+    alert("bye");
+
+  };
 
 });
 
@@ -41,7 +46,7 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
 app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth){
 
-  $scope.access = { op: "SeguridadLogin", User: "", Password: "" };
+  $scope.access = { op: "seguridadLogin", User: "", Password: "" };
 
   $scope.login = function(){
 
@@ -97,10 +102,12 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
 app.controller('ServicesCtrl', function($scope, $http, ngToast){
 
+  $scope.getListaServicios = { op: "listaServicios" };
+
   $http({
     method : 'POST',
     url : 'api/rest.php',
-    data : $.param($scope.qwerty = { op: "ListaServicios", servicioId: "0", skillId: "0", perfilId: "0" }),
+    data : $.param($scope.getListaServicios),
     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
   })
   .success(function(data){
@@ -125,7 +132,7 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
   $http({
     method : 'POST',
     url : 'api/rest.php',
-    data : $.param($scope.getUsersList = { op: "ListaUsuario", servicioId: "0", skillId: "0", perfilId: "0" }),
+    data : $.param($scope.getUsersList = { op: "listaUsuario", servicioId: "0", skillId: "0", perfilId: "0" }),
     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
   })
   .success(function(data){
@@ -139,19 +146,72 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
     console.error("All Users >>> Oops");
   })
 
-  // Create/Modal/Settings Users
-
-  $scope.roloptions = [
-    { name: 'SuperAdmin2', value: '1' },
-    { name: 'Administrador', value: '2' },
-    { name: 'TAM LN', value: '3' },
-    { name: 'Gerente', value: '4' },
-    { name: 'Supervisor', value: '5' },
-    { name: 'BackOffice', value: '6' },
-    { name: 'Agente', value: '7' }
-  ];
+  // Create/Modal/Settings/Roles Users
 
   var myid = $scope.status = auth.profileID;
+
+  if(myid == 1){
+    $scope.roloptions = [
+      { name: 'SuperAdmin2', value: '1' },
+      { name: 'Administrador', value: '2' },
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }else if(myid == 2){
+    $scope.roloptions = [
+      { name: 'Administrador', value: '2' },
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 3){
+    $scope.roloptions = [
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 4){
+    $scope.roloptions = [
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 5){
+    $scope.roloptions = [
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 6){
+    $scope.roloptions = [
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 7){
+    $scope.roloptions = [
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else{
+    var msg = ngToast.create({
+      content: 'Alerta , No puedes crear Usuarios',
+      className:	'warning'
+    });
+  }
+
 
   $scope.addU = { op: "Mantenimiento_Usuarios", Id: "0", Nombre: "", Apellidos: "", Usuario: "", Password: "", PerfilId: "", Sexo: "", Activo: "", UserIdModif: myid };
 
@@ -272,5 +332,75 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, fifi) {
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+
+});
+
+//Centers Controller
+
+app.controller('CentersCtrl', function($scope, $http, ngToast){
+
+  $scope.getListCanales = { op: "listaCanales" };
+
+  $http({
+    method : 'POST',
+    url : 'api/rest.php',
+    data : $.param($scope.getListCanales),
+    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+
+    $scope.getChannels = data;
+    console.log(data);
+
+  })
+  .error(function(data){
+    var msg = ngToast.create({
+      content: 'Opps!, Algo salio mal intenta otra vez',
+      className:	'danger'
+    });
+  })
+
+});
+
+//Channels Controller
+
+app.controller('ChannelsCtrl', function($scope, $http, ngToast){
+
+  /*
+    var url = "WebService.asmx/HelloWorld";
+    var foo = "http://172.18.130.203/wsCamu/Camu_Service.asmx/listaUsuario";
+
+      $http.get(foo)
+      .success(function (data) {
+
+          var myjson = JSON.parse(data);
+          $scope.getChannels = JSON.parse(myjson);
+
+      })
+
+
+  */
+
+  $scope.getListCanales = { op: "listaServicios" };
+
+  $http({
+    method : 'POST',
+    url : 'api/rest.php',
+    data : $.param($scope.getListCanales),
+    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+
+    $scope.getChannels = data;
+    console.log(data);
+
+  })
+  .error(function(data){
+    var msg = ngToast.create({
+      content: 'Opps!, Algo salio mal intenta otra vez',
+      className:	'danger'
+    });
+  })
+
 
 });
