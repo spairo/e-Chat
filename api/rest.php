@@ -32,26 +32,16 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
       }
     break;
 
-    /*
     case 'listaCanales':
       $a = array(
-        'Cliente' => $_POST['Cliente'],
+        'Canal' => $_POST['Canal'],
         'Activo' => $_POST['Activo']
       );
-      $res = $ws->listaCanales($a);
-      echo $res->listaCanalesResult;
-    break;
-    */
-
-    case 'listaCanales':
-      $a = array();
       try{
-
         $res = $ws->listaCanales($a);
         echo $res->listaCanalesResult;
-
       }catch(Exception $e){
-        echo 'Error: ',  $e->getMessage(), "\n";
+        echo 'El Error: ',  $e->getMessage(), "\n";
       }
     break;
 

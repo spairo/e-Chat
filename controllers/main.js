@@ -102,7 +102,7 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
 app.controller('ServicesCtrl', function($scope, $http, ngToast){
 
-  $scope.getListaServicios = { op: "listaServicios" };
+  $scope.getListaServicios = { op: "2" };
 
   $http({
     method : 'POST',
@@ -339,7 +339,7 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, fifi) {
 
 app.controller('CentersCtrl', function($scope, $http, ngToast){
 
-  $scope.getListCanales = { op: "listaCanales" };
+  $scope.getListCanales = { op: "listaCentros" };
 
   $http({
     method : 'POST',
@@ -365,28 +365,13 @@ app.controller('CentersCtrl', function($scope, $http, ngToast){
 //Channels Controller
 
 app.controller('ChannelsCtrl', function($scope, $http, ngToast){
-
-  /*
-    var url = "WebService.asmx/HelloWorld";
-    var foo = "http://172.18.130.203/wsCamu/Camu_Service.asmx/listaUsuario";
-
-      $http.get(foo)
-      .success(function (data) {
-
-          var myjson = JSON.parse(data);
-          $scope.getChannels = JSON.parse(myjson);
-
-      })
-
-
-  */
-
-  $scope.getListCanales = { op: "listaServicios" };
+  
+  $scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" };
 
   $http({
     method : 'POST',
     url : 'api/rest.php',
-    data : $.param($scope.getListCanales),
+    data : $.param($scope.getListChannels),
     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
   })
   .success(function(data){

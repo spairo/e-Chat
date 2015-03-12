@@ -5,7 +5,29 @@
         <span class="glyphicon glyphicon-th"></span> Canales</strong>
     </div>
     <div class="panel-body">
-      <p>{{getChannels}}</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Canal</th>
+            <th>Activo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="getChannel in getChannels" class="repeat-animation">
+            <td>{{getChannel.canalesId}}</td>
+            <td>{{getChannel.canal}}</td>
+            <td>{{getChannel.activo}}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Edit">
+                <button type="button" class="btn btn-default" ng-click="openedit(getChannel.canalesId)"><span class="glyphicon glyphicon-edit"></span></button>
+                <button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </div>
