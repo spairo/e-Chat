@@ -10,7 +10,8 @@
 * Main module of the application.
 */
 
-var app = angular.module("app", ["ngRoute", "ngAnimate", "ui.bootstrap", "ngCookies"])
+//var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "ngProgress"])
+var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "angular-loading-bar"])
 
 app.config(["$routeProvider", function($routeProvider) {
 
@@ -32,8 +33,21 @@ app.config(["$routeProvider", function($routeProvider) {
       .when('/catalogs/users',{
         templateUrl: 'views/users.html'
       })
+
+      .when('/catalogs/clients',{
+        templateUrl: 'views/clients.html'
+      })
+
       .otherwise({
         redirectTo: "/signin"
       })
 
+}]);
+
+app.config(['ngToastProvider', function(ngToast) {
+    ngToast.configure({
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+      maxNumber: 5
+    });
 }]);

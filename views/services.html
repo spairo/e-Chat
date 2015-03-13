@@ -6,35 +6,60 @@
     </div>
     <div class="panel-body">
       <div class="btn-group btn-group-lg pull-right" role="group" aria-label="...">
-        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Servicio</button>
+        <button type="button" class="btn btn-default" ng-click="CreateService()"><span class="glyphicon glyphicon-plus">Servicio</span> <span class="glyphicon glyphicon-user"></span></button>
       </div>
       <table class="table">
-        <caption>{{getAllServiceDef}}</caption>
+        <!--<caption>{{listaServiciosResult}}</caption>-->
         <thead>
           <tr>
             <th>#</th>
             <th>Servicio</th>
-            <th>Simultaneos</th>
-            <th>Bienvenida</th>
-            <th>Frecuencia</th>
-            <th>Timeout</th>
-            <th>Multigestion</th>
-            <th>Clave</th>
+            <th>Cliente_Id</th>
+            <th>Cliente</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="servicedef in getAllServiceDef" class="repeat-animation">
-            <td>{{servicedef.clienteAtentoId}}</td>
-            <td>{{servicedef.servicio}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
+          <tr ng-repeat="service in listaServiciosResult" class="repeat-animation">
+            <td>{{service.serviciosID}}</td>
+            <td>{{service.servicio}}</td>
+            <td>{{service.clienteAtentoId}}</td>
+            <td>{{service.cliente}}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
+
+  <script type="text/ng-template" id="ModalCreate_Service.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Servicio</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="cliente">* Cliente</label>
+            <select class="form-control" ng-model="addService.clienteAtentoID" required>
+              <option ng-repeat="linea in lineasResult" value="{{linea.value}}"> {{linea.name}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="Cliente">* Cliente</label>
+            <input type="text" class="form-control" ng-model="addService.Cliente" placeholder="Cliente" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addService.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addService.Activo" value="0">Desactivo
+            </label>
+          </div>
+          
+          <button class="btn btn-primary" ng-click="AddClient()">Crear</button>
+        </form>
+      </div>
+  </script>
 </div>
