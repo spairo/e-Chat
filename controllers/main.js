@@ -213,7 +213,7 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
   }
 
 
-  $scope.addU = { op: "Mantenimiento_Usuarios", Id: "0", Nombre: "", Apellidos: "", Usuario: "", Password: "", PerfilId: "", Sexo: "", Activo: "", UserIdModif: myid };
+  $scope.addU = { op: "mantUsuarios", Id: "0", Nombre: "", Apellidos: "", User: "", Password: "", perfilId: "", Sexo: "", Activo: "", UserModificacion: myid };
 
   $scope.CreateUser = function(){
 
@@ -242,7 +242,6 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
         $modalStack.dismissAll();
         ngToast.create('El Usuario fue creado con exito');
-        console.info("Add User >>> Ok");
 
       }else{
         var msg = ngToast.create({
@@ -258,7 +257,6 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
         content: 'Opps!, Algo salio mal intenta otra vez',
         className:	'danger'
       });
-      console.error("Add User >>> Oops");
     })
 
   };
@@ -364,28 +362,75 @@ app.controller('CentersCtrl', function($scope, $http, ngToast){
 
 //Channels Controller
 
-app.controller('ChannelsCtrl', function($scope, $http, ngToast){
-  
-  $scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" };
+app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
 
   $http({
     method : 'POST',
     url : 'api/rest.php',
-    data : $.param($scope.getListChannels),
+    data : $.param($scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" }),
     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
   })
   .success(function(data){
-
     $scope.getChannels = data;
-    console.log(data);
-
   })
   .error(function(data){
+
     var msg = ngToast.create({
       content: 'Opps!, Algo salio mal intenta otra vez',
       className:	'danger'
     });
+
   })
+
+  //Modal, Create, Edit
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.CreateChannel = function(){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate.html',
+      controller: 'ChannelsCtrl'
+    });
+
+  };
+
+  $scope.addCha = { op: "mantCanales", Id: "0", Canal: "", Activo: "", UserId: myid };
+
+  $scope.AddChannel = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.addCha),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var channel_checked = angular.isNumber(data[0].Column1);
+
+      if(channel_checked == true){
+
+        $modalStack.dismissAll();
+        ngToast.create('El Canal fue creado con exito');
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Canal no fue creado',
+          className:	'danger'
+        });
+        return;
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
 
 
 });

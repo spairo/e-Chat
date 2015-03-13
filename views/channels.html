@@ -5,6 +5,9 @@
         <span class="glyphicon glyphicon-th"></span> Canales</strong>
     </div>
     <div class="panel-body">
+      <div class="btn-group btn-group-lg pull-right" role="group">
+        <button type="button" class="btn btn-default" ng-click="CreateChannel()"><span class="glyphicon glyphicon-plus"></span></button>
+      </div>
       <table class="table">
         <thead>
           <tr>
@@ -30,4 +33,32 @@
       </table>
     </div>
   </section>
+  <script type="text/ng-template" id="ModalCreate.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Canal</h3>
+      </div>
+      <div class="modal-body">
+
+        <form name="userForm" novalidate>
+          <div class="form-group">
+            <label for="user">Nombre</label>
+            <input type="text" class="form-control" ng-model="addCha.Canal" placeholder="Canal" required>
+          </div>
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addCha.Activo" value="1" checked> Activo
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addCha.Activo" value="0"> Inactivo
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" ng-disabled="userForm.$invalid"  ng-click="AddChannel()">Agregar Canal</button>
+        </form>
+
+      </div>
+  </script>
 </div>

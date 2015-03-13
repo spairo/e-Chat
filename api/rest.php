@@ -5,7 +5,7 @@
 session_start();
 header('Content-type: application/json');
 
-$ws = new SoapClient('http://172.18.130.203/wsCamu/Camu_Service.asmx?WSDL');
+$ws = new SoapClient('http://172.18.149.189:8050/?WSDL');
 
 $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
 
@@ -20,42 +20,25 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
       echo $res->seguridadLoginResult;
     break;
 
-    case 'listaServicios':
-      $a = array();
-      try{
-
-        $res = $ws->listaServicios($a);
-        echo $res->listaServiciosResult;
-
-      }catch(Exception $e){
-        echo 'Error: ',  $e->getMessage(), "\n";
-      }
-    break;
-
     case 'listaCanales':
       $a = array(
         'Canal' => $_POST['Canal'],
         'Activo' => $_POST['Activo']
       );
-      try{
-        $res = $ws->listaCanales($a);
-        echo $res->listaCanalesResult;
-      }catch(Exception $e){
-        echo 'El Error: ',  $e->getMessage(), "\n";
-      }
+      $res = $ws->listaCanales($a);
+      echo $res->listaCanalesResult;
     break;
 
-    /*
-    case 'listaServicios':
-    $a = array(
-      'Servicio' => $_POST['Servicio'],
-      'Cliente' => $_POST['Cliente'],
-      'Activo' => $_POST['Activo']
-    );
-    $res = $ws->listaServicios($a);
-    echo $res->listaServiciosResult;
+    case 'mantCanales':
+      $a = array(
+        'Id' => $_POST['Id'],
+        'Canal' => $_POST['Canal'],
+        'Activo' => $_POST['Activo'],
+        'UserId' => $_POST['UserId']
+      );
+      $res = $ws->mantCanales($a);
+      echo $res->mantCanalesResult;
     break;
-    */
 
     case 'ListaSkills':
       $a = array(
@@ -78,7 +61,7 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     echo $res->listaUsuarioResult;
     break;
 
-    case 'Mantenimiento_Usuarios':
+    case 'mantUsuarios':
     $a = array(
       'Id' => $_POST['Id'],
       'PerfilId' => $_POST['PerfilId'],
@@ -90,8 +73,12 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
       'Activo' => $_POST['Activo'],
       'UserIdModif' => $_POST['UserIdModif']
     );
-    $res = $ws->Mantenimiento_Usuarios($a);
-    echo $res->Mantenimiento_UsuariosResult;
+    try{
+      $res = $ws->mantUsuarios($a);
+      echo $res->mantUsuariosResult;
+    }catch(Exception $e){
+      echo 'Error: ',  $e->getMessage(), "\n";
+    }
     break;
 
     default: echo 'Opps!';

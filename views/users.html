@@ -6,6 +6,7 @@
     <div class="panel-body">
         <div class="btn-group btn-group-lg pull-right" role="group">
           <button type="button" class="btn btn-default" ng-click="CreateUser()"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></span></button>
+          <button type="button" class="btn btn-default" ng-click="AddUsers2()"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
         <br />
         <table class="table">
@@ -71,7 +72,7 @@
 
           <div class="form-group">
             <label for="user">Usuario</label>
-            <input type="text" class="form-control" ng-model="addU.Usuario" placeholder="Usuario" required>
+            <input type="text" class="form-control" ng-model="addU.User" placeholder="Usuario" required>
           </div>
 
           <div class="form-group">
@@ -81,7 +82,7 @@
 
           <div class="form-group">
             <label for="Rol">Rol</label>
-            <select class="form-control" ng-model="addU.PerfilId" required>
+            <select class="form-control" ng-model="addU.perfilId" required>
               <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
             </select>
           </div>
