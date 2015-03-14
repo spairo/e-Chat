@@ -53,9 +53,11 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
 
     case 'listaUsuario':
     $a = array(
-      'servicioId' => $_POST['servicioId'],
-      'skillId' => $_POST['skillId'],
-      'perfilId' => $_POST['perfilId']
+      'Usuario' => $_POST['Usuario'],
+      'Servicio' => $_POST['Servicio'],
+      'Skill' => $_POST['Skill'],
+      'Perfil' => $_POST['Perfil'],
+      'activo' => $_POST['activo']
     );
     $res = $ws->listaUsuario($a);
     echo $res->listaUsuarioResult;
@@ -73,12 +75,8 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
       'Activo' => $_POST['Activo'],
       'UserIdModif' => $_POST['UserIdModif']
     );
-    try{
-      $res = $ws->mantUsuarios($a);
-      echo $res->mantUsuariosResult;
-    }catch(Exception $e){
-      echo 'Error: ',  $e->getMessage(), "\n";
-    }
+    $res = $ws->mantUsuarios($a);
+    echo $res->mantUsuariosResult;
     break;
 
     default: echo 'Opps!';
