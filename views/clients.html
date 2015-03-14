@@ -11,29 +11,29 @@
         <table class="table">
           <thead>
             <tr>
-              <th>clienteAtentoId</th>
-              <th>lineaNegocioId</th>
+              <!--<th>clienteAtentoId</th>-->
+              <!--<th>lineaNegocioId</th>-->
               <th>cliente</th>
               <th>activo</th>
-              <th>usuarioCreacion</th>
-              <th>fechaCreacion</th>
-              <th>usuarioModificacion</th>
-              <th>fechaModificacion</th>
+              <!--<th>usuarioCreacion</th>-->
+              <!--<th>fechaCreacion</th>-->
+              <!--<th>usuarioModificacion</th>-->
+              <!--<th>fechaModificacion</th>-->
               <th>linea</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="cliente in listaClienteAtentoResult" class="repeat-animation">
-              <td>{{cliente.clienteAtentoId}}</td>
-              <td>{{cliente.lineaNegocioId}}</td>
-              <td>{{cliente.cliente}}</td>
               <!--<td>{{cliente.cliente}}  {{usersList.apellidos}}</td>-->
+              <!--<td>{{cliente.clienteAtentoId}}</td>-->
+              <!--<td>{{cliente.lineaNegocioId}}</td>-->
+              <td>{{cliente.cliente}}</td>              
               <td>{{cliente.activo}}</td>
-              <td>{{cliente.usuarioCreacion}}</td>
-              <td>{{cliente.fechaCreacion}}</td>
-              <td>{{cliente.usuarioModificacion}}</td>
-              <td>{{cliente.fechaModificacion}}</td>
+              <!--<td>{{cliente.usuarioCreacion}}</td>-->
+              <!--<td>{{cliente.fechaCreacion}}</td>-->
+              <!--<td>{{cliente.usuarioModificacion}}</td>-->
+              <!--<td>{{cliente.fechaModificacion}}</td>-->
               <td>{{cliente.linea}}</td>
               <td>
                 <div class="btn-group" role="group" aria-label="Edit">
@@ -81,13 +81,10 @@
 
   <script type="text/ng-template" id="ModalEdit_Client.html">
       <div class="modal-header">
-          <h3 class="modal-title">Editar Cliente</h3>
+        <h3 class="modal-title">Editar Cliente</h3>
       </div>
       <div class="modal-body">
-      <label for="surname">First Name:</label> {{client[0].cliente}}<br>
-          //<b>this Value {{fifi}} is the pass </b>
-          <hr>
-          <form>
+        <form>
           <div class="form-group">
             <label for="Linea">* Linea de Negocio</label>
             <select class="form-control" data-ng-options="o.linea for o in listaLineaNegocioResult" data-ng-model="selectedOption" ng-change="changedValueLine(selectedOption)" required></select>
@@ -109,7 +106,7 @@
             </label>
           </div>
           
-          <button class="btn btn-primary" ng-click="EditClient()">Crear</button>
+          <button class="btn btn-primary" ng-click="EditClient()">Editar</button>
         </form>
       </div>
   </script>

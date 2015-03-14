@@ -89,29 +89,37 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
         }
       break;
 
-         /*$a = array(
-          'Servicio' => $_POST['Servicio'],
-          'Cliente' => $_POST['Cliente'],
-          'Activo' => $_POST['Activo']
-        );*/
-
-      case 'ListaServicios':
+      case 'listaServicios':
         $a = array(
           'Servicio' => $_POST['Servicio'],
-          'Skill' => $_POST['Skill'],
-          'Perfil' => $_POST['Perfil']
+          'ClienteAtento' => $_POST['ClienteAtento'],
+          'Activo' => $_POST['Activo']
         );
               
-        //$a = array();
         ChromePhp::log("ENTRA: {a}:");
         try {
           $res = $ws->listaServicios($a);          
           echo $res->listaServiciosResult;   
         } catch (SoapFault $exception) {
-          ChromePhp::log("ERROR MUY FEO: ".$exception->$detail );
+           ChromePhp::log("ERROR EN LLAMADA AL WS <<listaServicios>> DESDE PHP: ".$exception->$detail );
         }
       break;
       
+      case 'mantServicio':
+        $a = array(
+          'id' => $_POST['id'],
+          'cliAteId' => $_POST['cliAteId'],
+          'Servicio' => $_POST['Servicio'],
+          'Activo' => $_POST['Activo'],
+          'UserId' => $_POST['UserId']
+        );
+        try {
+          $res = $ws->mantServicio($a);
+          echo $res->mantServicioResult;
+        } catch (SoapFault $exception) {
+          ChromePhp::log("ERROR EN LLAMADA AL WS <<mantServicio>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
 
       default: echo 'Opps!';
 
