@@ -93,37 +93,13 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
   var myname = $scope.status = auth.user;
   ngToast.create('Bienvenido a Camu ' + myname);
-
   //ngToast.dismiss();
 
 });
 
 // Services Controller
 
-app.controller('ServicesCtrl', function($scope, $http, ngToast){
-
-  $scope.getListaServicios = { op: "2" };
-
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaServicios),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-
-    $scope.getServices = data;
-    console.log(data);
-
-  })
-  .error(function(data){
-    var msg = ngToast.create({
-      content: 'Opps!, Algo salio mal intenta otra vez',
-      className:	'danger'
-    });
-  })
-
-});
+app.controller('ServicesCtrl', function($scope, $http, ngToast){});
 
 // Users Controller
 
@@ -253,7 +229,6 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
           content: 'Error, EL Usuario no fue Creado',
           className:	'danger'
         });
-        return;
       }
 
     })
@@ -268,35 +243,23 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   // Edit User
 
-  $scope.openedit = function (usuariosId) {
+  $scope.openedit = function (usuariosId, nombres, apellidos, sexo) {
 
     var modalInstance = $modal.open({
       templateUrl: 'ModalEdit.html',
       controller: 'InstanceUserCtrl',
       resolve: {
-        fifi: function () {
-          return $scope.fifi = usuariosId;
-        }
-      }
-    });
 
-  };
-
-  $scope.openedit = function (usuariosId, canal, activo) {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'ModalChannelEdit.html',
-      controller: 'InstanceChannelCtrl',
-      resolve: {
-        userdata: function () {
-          return $scope.canaldata = [
+        userdatas: function () {
+          return $scope.userdatas = [
             {
               id: usuariosId,
-              canal: canal,
-              activo: activo,
-              myid: myid,
+              name: nombres,
+              lastname: apellidos,
+              sex: sexo,
+              myid: myid
             }
-          ]
+          ];
         },
         grid: function(){
           return $scope;
@@ -304,92 +267,124 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
       }
     });
-
-  };
-
-
-
-
-  $scope.EditUser = function(usuariosId){
-
-      //alert(usuariosId);
-      //console.log("fuaaaa", usuariosId);
-
-
-      /*
-      $scope.subF = 0;
-      var subcasesface = u1;
-
-      $http({
-        method: 'POST',
-        url: 'api/rest.php',
-        data: $.param($scope.findInfoT = { op: 'getHistorialCasoFb', caseID: subcasesface }),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      })
-      .success(function(data, status){
-        $scope.subF = 1;
-        $scope.subcaseF = data;
-        console.info("Get Sub Cases Facebook >>>", status);
-      })
-      .error(function(data, status){
-        console.error("Get Sub Cases Facebook >>>", status, "Oops!");
-      })
-      */
   };
 
   $scope.EraseUser = function(){
-
     var msg = ngToast.create({
-      content: 'No puedes Eliminar Usuarios',
+      content: 'No Puedes Eliminar Usuarios',
       className:	'danger'
     });
-
-  };
-
-  $scope.cancel = function () {
-    $modalStack.dismiss('cancel');
   };
 
 });
 
-app.controller('InstanceUserCtrl', function ($scope, $modalInstance, fifi) {
+app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $modalStack, ngToast, userdatas, grid) {
 
-  $scope.fifi = fifi;
+  $scope.userdatas = userdatas;
 
-  $scope.ok = function (){
-    $modalInstance.close($scope.selected.item);
-  };
+  $scope.EditUs = { op: "mantUsuarios", Id: userdatas[0].id, Nombre: "", Apellidos: "", Sexo: "", Activo: "", UserIdModif: userdatas[0].myid };
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
+  $scope.EditUser = function(usuariosId){
+
+      $http({
+        method: 'POST',
+        url: 'api/rest.php',
+        data: $.param($scope.EditUs),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){
+
+
+      })
+      .error(function(data){
+        var msg = ngToast.create({
+          content: 'Opps!, Algo salio mal intenta otra vez',
+          className:	'danger'
+        });
+      })
+
   };
 
 });
 
 //Centers Controller
 
-app.controller('CentersCtrl', function($scope, $http, ngToast){
+app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
 
-  $scope.getListCanales = { op: "listaCentros" };
+  //Get Center List
 
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListCanales),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
+  $scope.$on('LoadCenterList', function(event){
 
-    $scope.getChannels = data;
-    console.log(data);
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getListChannels = { op: "listaCentros", Centro: "", Activo: "" }),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.getCenters = data;
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
 
-  })
-  .error(function(data){
-    var msg = ngToast.create({
-      content: 'Opps!, Algo salio mal intenta otra vez',
-      className:	'danger'
+
+  });
+
+  $scope.$emit('LoadCenterList');
+
+  //Modal, Create, Edit
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.CreateCenter = function(){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate.html',
+      controller: 'CentersCtrl'
     });
-  })
+
+  };
+
+  $scope.addCen = { op: "mantCentros", Id: "0", Centro: "", Activo: "", UserId: myid };
+
+  $scope.AddCenter = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.addCen),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var center_checked = angular.isNumber(data[0].Column1);
+
+      if(center_checked == true){
+
+        ngToast.create('El Centro fue agregado con exito');
+        $scope.$emit('LoadCenterList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Centro no fue creado',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
 
 });
 
@@ -450,15 +445,16 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
 
       if(channel_checked == true){
 
-        $modalStack.dismissAll();
         ngToast.create('El Canal fue creado con exito');
+        $scope.$emit('LoadList');
+        $modalStack.dismissAll();
+
 
       }else{
         var msg = ngToast.create({
           content: 'Error, EL Canal no fue creado',
           className:	'danger'
         });
-        return;
       }
 
     })
@@ -505,7 +501,7 @@ app.controller('InstanceChannelCtrl', function ($scope, $http, $timeout, $modalI
   $scope.canaldata = canaldata;
   var editdata = canaldata;
 
-  $scope.EditCha = { op: "mantCanales", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
+  $scope.EditUs = { op: "mantCanales", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
 
   $scope.EditChannel = function(){
 

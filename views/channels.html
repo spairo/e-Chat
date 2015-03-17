@@ -5,6 +5,16 @@
         <span class="glyphicon glyphicon-th"></span> Canales</strong>
     </div>
     <div class="panel-body">
+      <div class="pull-left">
+        <div class="form-group">
+          <label for="Rol">Filtrar Por:</label>
+          <select class="form-control" ng-model="search.activo">
+            <option value="">Todos</option>
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
+        </div>
+      </div>
       <div class="btn-group btn-group-lg pull-right" role="group">
         <button type="button" class="btn btn-default" ng-click="CreateChannel()"><span class="glyphicon glyphicon-plus"></span></button>
       </div>
@@ -18,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="getChannel in getChannels" class="repeat-animation">
+          <tr ng-repeat="getChannel in getChannels | filter:search" class="repeat-animation">
             <td>{{getChannel.canalesId}}</td>
             <td>{{getChannel.canal}}</td>
             <td>{{getChannel.activo}}</td>

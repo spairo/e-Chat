@@ -79,6 +79,26 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     echo $res->mantUsuariosResult;
     break;
 
+    case 'listaCentros':
+    $a = array(
+      'Centro' => $_POST['Centro'],
+      'Activo' => $_POST['Activo']
+    );
+    $res = $ws->listaCentros($a);
+    echo $res->listaCentrosResult;
+    break;
+
+    case 'mantCentros':
+    $a = array(
+      'Id' => $_POST['Id'],
+      'Centro' => $_POST['Centro'],
+      'Activo' => $_POST['Activo'],
+      'UserId' => $_POST['UserId']
+    );
+    $res = $ws->mantCentros($a);
+    echo $res->mantCentrosResult;
+    break;
+
     default: echo 'Opps!';
 
     break;

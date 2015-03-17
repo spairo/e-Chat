@@ -5,7 +5,72 @@
         <span class="glyphicon glyphicon-th"></span> Centros</strong>
     </div>
     <div class="panel-body">
-      <p>{{getChannels}}</p>
+      <div class="pull-left">
+        <div class="form-group">
+          <label for="Rol">Filtrar Por:</label>
+          <select class="form-control" ng-model="search.activo">
+            <option value="">Todos</option>
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group btn-group-lg pull-right" role="group">
+        <button type="button" class="btn btn-default" ng-click="CreateCenter()"><span class="glyphicon glyphicon-plus"></span></button>
+      </div>
+      <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Centro</th>
+            <th>Activo</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="center in getCenters | filter:search" class="repeat-animation">
+            <td>{{center.centrosId}}</td>
+            <td>{{center.centro}}</td>
+            <td>{{center.activo}}</td>
+            <td></td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Edit">
+                <button type="button" class="btn btn-default" ng-click="openedit()"><span class="glyphicon glyphicon-edit"></span></button>
+                <button type="button" class="btn btn-default" ng-click="EraseCenter()"><span class="glyphicon glyphicon-trash"></span></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
+  <script type="text/ng-template" id="ModalCreate.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Agregar Centro</h3>
+      </div>
+      <div class="modal-body">
+        <form name="centerForm" novalidate>
+          <div class="form-group">
+            <label for="user">Centro</label>
+            <input type="text" class="form-control" ng-model="addCen.Centro" placeholder="Centro" required>
+          </div>
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addCen.Activo" value="1" checked> Activo
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="addCen.Activo" value="0"> Inactivo
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" ng-disabled="centerForm.$invalid"  ng-click="AddCenter()">Agregar</button>
+          {{addCen}}
+        </form>
+      </div>
+  </script>
 </div>
