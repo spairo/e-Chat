@@ -496,12 +496,12 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
 
 });
 
-app.controller('InstanceChannelCtrl', function ($scope, $http, $timeout, $modalInstance, $modalStack, ngToast, canaldata, grid) {
+app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, canaldata, grid){
 
   $scope.canaldata = canaldata;
   var editdata = canaldata;
 
-  $scope.EditUs = { op: "mantCanales", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
+  $scope.EditCha = { op: "mantCanales", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
 
   $scope.EditChannel = function(){
 
@@ -536,6 +536,13 @@ app.controller('InstanceChannelCtrl', function ($scope, $http, $timeout, $modalI
       });
     })
 
+
   };
+
+});
+
+//Business Lines Controller
+
+app.controller('InstanceChannel2Ctrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
 
 });
