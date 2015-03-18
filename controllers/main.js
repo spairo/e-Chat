@@ -97,9 +97,6 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
 });
 
-// Services Controller
-
-app.controller('ServicesCtrl', function($scope, $http, ngToast){});
 
 // Users Controller
 
@@ -543,6 +540,6 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
 //Business Lines Controller
 
-app.controller('InstanceChannel2Ctrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
 
 });
