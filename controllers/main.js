@@ -381,6 +381,77 @@ app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToa
 
   };
 
+  // Edit Center
+
+  $scope.openedit = function (centrosId, centro, activo) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalEdit.html',
+      controller: 'InstanceCenterCtrl',
+      resolve: {
+        centerdata: function () {
+          return $scope.centerdata = [
+            {
+              id: centrosId,
+              centro: centro,
+              activo: activo,
+              myid: myid,
+            }
+          ]
+        },
+        grid: function(){
+          return $scope;
+        }
+
+      }
+    });
+
+  };
+
+});
+
+app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, centerdata, grid){
+
+  $scope.centerdata = centerdata;
+  var editdata = centerdata;
+
+  $scope.EditCe = { op: "mantCentros", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
+
+  $scope.EditCenter = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.EditCe),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var channel_checked = angular.isNumber(data[0].Column1);
+
+      if(channel_checked == true){
+
+        ngToast.create('El Centro fue Editado con Exito');
+        grid.$emit('LoadCenterList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Centro no fue Editado',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
+
 });
 
 //Channels Controller
@@ -462,7 +533,7 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
 
   };
 
-  // Edit Canal
+  // Edit channel
 
   $scope.openedit = function (usuariosId, canal, activo) {
 

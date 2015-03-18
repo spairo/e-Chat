@@ -4,42 +4,8 @@
       <strong><span class="glyphicon glyphicon-th"></span> Servicios</strong>
     </div>
     <div class="panel-body">
-<<<<<<< HEAD
-      <div class="btn-group btn-group-lg pull-right" role="group" aria-label="...">
-        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Servicio</button>
-      </div>
-      {{getServices}}
-
-      <table class="table">
-        <caption>{{getAllServiceDef}}</caption>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Servicio</th>
-            <th>Simultaneos</th>
-            <th>Bienvenida</th>
-            <th>Frecuencia</th>
-            <th>Timeout</th>
-            <th>Multigestion</th>
-            <th>Clave</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="servicedef in getAllServiceDef" class="repeat-animation">
-            <td>{{servicedef.clienteAtentoId}}</td>
-            <td>{{servicedef.servicio}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-            <td>{{servicedef.activo}}</td>
-          </tr>
-        </tbody>
-      </table>
-=======
         <div class="btn-group btn-group-lg pull-right" role="group">
-          <button type="button" class="btn btn-default" ng-click="CreateServicio()"><span class="glyphicon glyphicon-plus">Servicio</span> <span class="glyphicon glyphicon-user"></span></button>
+          <button type="button" class="btn btn-default" ng-click="CreateServicio()"><span class="glyphicon glyphicon-plus"> Servicio</span></button>
         </div>
         <br />
         <table class="table">
@@ -68,7 +34,7 @@
               <!--<td>{{servicio.cliente}}  {{servicio.apellidos}}</td>-->
               <!--<td>{{servicio.serviciosId}}</td>-->
               <!--<td>{{servicio.clienteAtentoId}}</td>-->
-              <td>{{servicio.servicio}}</td>              
+              <td>{{servicio.servicio}}</td>
               <td>{{servicio.activo}}</td>
               <!--<td>{{servicio.usuarioCreacion}}</td>-->
               <!--<td>{{servicio.fechaCreacion}}</td>-->
@@ -120,7 +86,7 @@
               <input type="radio" ng-model="addServicio.Activo" value="0">Desactivo
             </label>
           </div>
-          
+
           <button class="btn btn-primary" ng-click="AddServicio()">Crear</button>
         </form>
       </div>
@@ -151,7 +117,7 @@
               <input type="radio" ng-model="editServicio.Activo" value="0">Desactivo
             </label>
           </div>
-          
+
           <button class="btn btn-primary" ng-click="EditServicio()">Editar</button>
         </form>
       </div>

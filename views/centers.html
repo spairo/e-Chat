@@ -37,7 +37,7 @@
             <td></td>
             <td>
               <div class="btn-group" role="group" aria-label="Edit">
-                <button type="button" class="btn btn-default" ng-click="openedit()"><span class="glyphicon glyphicon-edit"></span></button>
+                <button type="button" class="btn btn-default" ng-click="openedit(center.centrosId, center.centro, center.activo)"><span class="glyphicon glyphicon-edit"></span></button>
                 <button type="button" class="btn btn-default" ng-click="EraseCenter()"><span class="glyphicon glyphicon-trash"></span></button>
               </div>
             </td>
@@ -69,6 +69,33 @@
             </div>
           </div>
           <button class="btn btn-primary btn-lg btn-block" ng-disabled="centerForm.$invalid"  ng-click="AddCenter()">Agregar</button>
+          {{addCen}}
+        </form>
+      </div>
+  </script>
+  <script type="text/ng-template" id="ModalEdit.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Editar Centro</h3>
+      </div>
+      <div class="modal-body">
+        <form name="centerForm" novalidate>
+          <div class="form-group">
+            <label for="user">Centro</label>
+            <input type="text" class="form-control" ng-model="EditCe.Centro" placeholder="{{centerdata[0].centro}}" required>
+          </div>
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="EditCe.Activo" value="1" checked> Activo
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="EditCe.Activo" value="0"> Inactivo
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" ng-click="EditCenter()">Editar Centro</button>
           {{addCen}}
         </form>
       </div>
