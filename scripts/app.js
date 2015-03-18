@@ -41,6 +41,9 @@ app.config(["$routeProvider", function($routeProvider) {
       .when('/catalogs/business',{
         templateUrl: 'views/businessflow.html'
       })
+      .when('/catalogs/clients',{
+        templateUrl: 'views/clients.html'
+      })
       .otherwise({
         redirectTo: "/signin"
       })
