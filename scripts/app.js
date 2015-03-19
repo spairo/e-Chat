@@ -29,6 +29,9 @@ app.config(["$routeProvider", function($routeProvider) {
       .when('/catalogs/services',{
         templateUrl: 'views/services.html'
       })
+      .when('/catalogs/profiles',{
+        templateUrl: 'views/profiles.html'
+      })
       .when('/catalogs/users',{
         templateUrl: 'views/users.html'
       })
