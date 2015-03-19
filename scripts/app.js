@@ -20,11 +20,11 @@ app.config(["$routeProvider", function($routeProvider) {
       .when("/signin", {
         templateUrl: "views/signin.html"
       })
-      .when("/dashboard", {
-        templateUrl: "views/dashboard.html"
-      })
       .when("/pages/blank", {
         templateUrl: "views/pages/blank.html"
+      })
+      .when("/dashboard", {
+        templateUrl: "views/dashboard.html"
       })
       .when('/catalogs/services',{
         templateUrl: 'views/services.html'
@@ -46,6 +46,9 @@ app.config(["$routeProvider", function($routeProvider) {
       })
       .when('/catalogs/clients',{
         templateUrl: 'views/clients.html'
+      })
+      .when('/catalogs/typing',{
+        templateUrl: 'views/typing.html'
       })
       .when('/catalogs/bases',{
         templateUrl: 'views/bases.html'

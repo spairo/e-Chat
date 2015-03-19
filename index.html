@@ -23,8 +23,8 @@
         <toast></toast>
         <div data-ng-controller="AppCtrl">
             <div data-ng-hide="isSpecificPage()" data-ng-cloak class="no-print">
-                <section data-ng-include=" 'views/header.html' " id="header" class="top-header"></section>
-                <aside data-ng-include=" 'views/nav.html' " id="nav-container"></aside>
+                <section data-ng-include=" 'views/partials/header.html' " id="header" class="top-header"></section>
+                <aside data-ng-include=" 'views/partials/nav.html' " id="nav-container"></aside>
             </div>
             <div class="view-container">
                 <section data-ng-view id="content" class="animate-fade-up">

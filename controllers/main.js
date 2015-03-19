@@ -20,12 +20,6 @@ app.controller("AppCtrl", function($scope, $location, auth){
     brand: "Camu Dash"
   }
 
-  $scope.bye = function(){
-
-    alert("bye");
-
-  };
-
 });
 
 // Nav Controller
@@ -57,11 +51,8 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
           content: 'Usuario o Password no valido',
           className:	'danger'
         });
-        console.warn("Login Failed");
 
       }else{
-
-        console.info("Login Done");
 
         //cookies everywhere
         $scope.LoginFactory = auth;
@@ -91,7 +82,6 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
   var myname = $scope.status = auth.user;
   ngToast.create('Bienvenido a Camu ' + myname);
-  //ngToast.dismiss();
 
 });
 
