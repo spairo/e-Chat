@@ -528,6 +528,7 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
     })
 
   };
+  $scope.CloseCenter = function(){ $modalStack.dismissAll(); };
 
 });
 
@@ -680,6 +681,7 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
 
   };
+  $scope.CloseChannel = function(){ $modalStack.dismissAll(); };
 
 });
 
@@ -829,6 +831,8 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
     })
 
   };
+
+  $scope.CloseLines = function(){ $modalStack.dismissAll(); };
 
 });
 
@@ -1255,7 +1259,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   $scope.Fecha_Ini = "";
   $scope.Fecha_Fin = "";
-    
+
   $scope.baseDataCollapseFn = function () {
     $scope.baseDataCollapse = [];
       for (var i = 0; i < $scope.listaBasesResult.length; i += 1) {
@@ -1279,7 +1283,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     })
     .error(function(data){
       console.error("BasesCtrl > getListaBases >>> ERROR HTTP");
-    })  
+    })
 
     //get lista de skills
     $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
@@ -1295,7 +1299,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     })
     .error(function(data){
       console.error("BasesCtrl > getListaSkills >>> ERROR HTTP");
-    })  
+    })
 
   });
 
@@ -1312,17 +1316,17 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
   $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
 
   //funcion que agrega una base nueva a la base de datos
-  $scope.AddBase = function(){    
+  $scope.AddBase = function(){
     var dd = $scope.Fecha_Ini.getDate();
     var mm = $scope.Fecha_Ini.getMonth()+1;
     var yyyy = $scope.Fecha_Ini.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.addBase.FechaIni = yyyy+"-"+mm+"-"+dd;
 
     dd = $scope.Fecha_Fin.getDate();
     mm = $scope.Fecha_Fin.getMonth()+1;
     yyyy = $scope.Fecha_Fin.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
     $http({
@@ -1407,8 +1411,8 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
       $scope.nombreExpanded = nombre;
       $scope.baseDataCollapse[index] = true;
       $scope.getBase2 = true;
-    } 
-    else 
+    }
+    else
       if ($scope.tableRowExpanded === true) {
         if ($scope.tableRowIndexExpandedCurr === index && $scope.nombreExpanded === nombre) {
           $scope.tableRowExpanded = false;
@@ -1416,7 +1420,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
           $scope.nombreExpanded = "";
           $scope.baseDataCollapse[index] = false;
           $scope.getBase2 = false;
-        } 
+        }
         else {
           $scope.tableRowIndexExpandedPrev = $scope.tableRowIndexExpandedCurr;
           $scope.tableRowIndexExpandedCurr = index;
@@ -1443,9 +1447,9 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
       })
       .error(function(data){
         console.error("BasesCtrl > getListaBasesCampos >>> ERROR HTTP");
-      })  
+      })
     }
-  };  
+  };
 
 });
 
@@ -1476,7 +1480,7 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
   })
   .error(function(data){
     console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
-  })  
+  })
 
   $scope.base = base;
 
