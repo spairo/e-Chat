@@ -238,46 +238,104 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   // Edit User
 
-  $scope.openedit = function (usuariosId, nombres, apellidos, sexo) {
+  $scope.openedit = function (usuariosId, perfil, nombres, apellidos, usuario, password, sexo, servicio) {
 
-    var modalInstance = $modal.open({
-      templateUrl: 'ModalEdit.html',
-      controller: 'InstanceUserCtrl',
-      resolve: {
+    if(myid == 1){
+      $scope.roloptions = [
+        { name: 'SuperAdmin2', value: '1' },
+        { name: 'Administrador', value: '2' },
+        { name: 'TAM LN', value: '3' },
+        { name: 'Gerente', value: '4' },
+        { name: 'Supervisor', value: '5' },
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }else if(myid == 2){
+      $scope.roloptions = [
+        { name: 'Administrador', value: '2' },
+        { name: 'TAM LN', value: '3' },
+        { name: 'Gerente', value: '4' },
+        { name: 'Supervisor', value: '5' },
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else if(myid == 3){
+      $scope.roloptions = [
+        { name: 'TAM LN', value: '3' },
+        { name: 'Gerente', value: '4' },
+        { name: 'Supervisor', value: '5' },
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else if(myid == 4){
+      $scope.roloptions = [
+        { name: 'Gerente', value: '4' },
+        { name: 'Supervisor', value: '5' },
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else if(myid == 5){
+      $scope.roloptions = [
+        { name: 'Supervisor', value: '5' },
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else if(myid == 6){
+      $scope.roloptions = [
+        { name: 'BackOffice', value: '6' },
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else if(myid == 7){
+      $scope.roloptions = [
+        { name: 'Agente', value: '7' }
+      ];
+    }
+    else{
+      var msg = ngToast.create({
+        content: 'Alerta , No puedes crear Usuarios',
+        className:	'warning'
+      });
+    }
 
-        userdatas: function () {
-          return $scope.userdatas = [
-            {
-              id: usuariosId,
-              name: nombres,
-              lastname: apellidos,
-              sex: sexo,
-              myid: myid
-            }
-          ];
-        },
-        grid: function(){
-          return $scope;
+      var modalInstance = $modal.open({
+        templateUrl: 'ModalEdit.html',
+        controller: 'InstanceUserCtrl',
+        resolve: {
+
+          userdatas: function () {
+            return $scope.userdatas = [
+              {
+                id: usuariosId,
+                name: nombres,
+                lastname: apellidos,
+                sex: sexo,
+                profile: perfil,
+                user: usuario,
+                pass: password,
+                service: servicio,
+                myid: myid
+              }
+            ];
+          },
+          grid: function(){
+            return $scope;
+          }
+
         }
-
-      }
-    });
-  };
-
-  $scope.EraseUser = function(){
-    var msg = ngToast.create({
-      content: 'No Puedes Eliminar Usuarios',
-      className:	'danger'
-    });
+      });
   };
 
 });
 
-app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $modalStack, ngToast, userdatas, grid) {
+app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $modalStack, ngToast, userdatas, grid){
 
-  $scope.userdatas = userdatas;
 
-  $scope.EditUs = { op: "mantUsuarios", Id: userdatas[0].id, Nombre: "", Apellidos: "", Sexo: "", Activo: "", UserIdModif: userdatas[0].myid };
+  $scope.EditUs = { op: "mantUsuarios", Id: userdatas[0].id, PerfilId: userdatas[0].profile, Nombre: userdatas[0].name, Apellidos: userdatas[0].lastname, Sexo: userdatas[0].sex, Usuario: userdatas[0].user, Password: userdatas[0].pass, Activo: userdatas[0].activo, UserIdModif: userdatas[0].myid };
 
   $scope.EditUser = function(usuariosId){
 
@@ -385,37 +443,56 @@ app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToa
 
   $scope.openedit = function (centrosId, centro, activo) {
 
-    var modalInstance = $modal.open({
-      templateUrl: 'ModalEdit.html',
-      controller: 'InstanceCenterCtrl',
-      resolve: {
-        centerdata: function () {
-          return $scope.centerdata = [
-            {
-              id: centrosId,
-              centro: centro,
-              activo: activo,
-              myid: myid,
-            }
-          ]
-        },
-        grid: function(){
-          return $scope;
-        }
+    var idcenter = centrosId;
 
-      }
-    });
+    $scope.getCenterProfile = { op: "listaCentros", Centro: centro, Activo: activo };
+
+    $http({
+       method : 'POST',
+       url : 'api/rest.php',
+       data : $.param($scope.getCenterProfile),
+       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+        $scope.centerResult = data;
+
+        var modalInstance = $modal.open({
+          templateUrl: 'ModalEdit.html',
+          controller: 'InstanceCenterCtrl',
+          resolve: {
+            centerdata: function(){
+              return $scope.centerResult;
+            },
+            idcenter: function(){
+              return idcenter;
+            },
+            grid: function(){
+              return $scope;
+            }
+
+          }
+        });
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
 
   };
 
 });
 
-app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, centerdata, grid){
+app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, centerdata, idcenter, grid){
 
-  $scope.centerdata = centerdata;
+  var myid = $scope.status = auth.profileID;
+  var idcenter = idcenter;
   var editdata = centerdata;
 
-  $scope.EditCe = { op: "mantCentros", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
+  $scope.EditCe = { op: "mantCentros", Id: idcenter, Centro: editdata[0].centro, Activo: editdata[0].activo, UserId: myid };
 
   $scope.EditCenter = function(){
 
@@ -458,7 +535,7 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 
 app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
 
-  //Get Channels list
+   //Get Channels list
 
    $scope.$on('LoadList', function(event){
 
@@ -564,10 +641,9 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
 
 app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, canaldata, grid){
 
-  $scope.canaldata = canaldata;
   var editdata = canaldata;
 
-  $scope.EditCha = { op: "mantCanales", Id: editdata[0].id, Canal: "", Activo: "", UserId: editdata[0].myid };
+  $scope.EditCha = { op: "mantCanales", Id: editdata[0].id, Canal: editdata[0].canal, Activo: editdata[0].activo, UserId: editdata[0].myid };
 
   $scope.EditChannel = function(){
 
@@ -611,7 +687,152 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
 app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
 
+  //Get Centers list
+
+  $scope.$on('LoadList', function(event){
+
+      $http({
+        method : 'POST',
+        url : 'api/rest.php',
+        data : $.param($scope.getListBusiness = { op: "listaLineaNegocio", Linea: "", Activo: "" }),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){
+        $scope.getBusiness = data;
+      })
+      .error(function(data){
+        var msg = ngToast.create({
+          content: 'Opps!, Algo salio mal intenta otra vez',
+          className:	'danger'
+        });
+      })
+
+  });
+
+  $scope.$emit('LoadList');
+
+  //Modal, Create, Edit
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.CreateBusiness = function(){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate.html',
+      controller: 'BusinessCtrl'
+    });
+
+  };
+
+  $scope.addLine = { op: "mantLineaNegocio", Id: "0", Linea: "", Activo: "", Descripcion: "", UserId: myid };
+
+  $scope.AddBusiness = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.addLine),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var line_checked = angular.isNumber(data[0].Column1);
+
+      if(line_checked == true){
+
+        ngToast.create('Línea de Negocio creada con exito');
+        $scope.$emit('LoadList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, La Línea de Negocio no fue creada',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+  };
+
+  // Edit Line
+
+  $scope.openedit = function(lineaNegocioId, linea, Descripcion, activo){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalEditLines.html',
+      controller: 'InstanceLinesCtrl',
+      resolve: {
+        linesdata: function (){
+          return $scope.linesdata = [
+            {
+              id: lineaNegocioId,
+              linea: linea,
+              descripcion: Descripcion,
+              activo: activo,
+              myid: myid
+            }
+          ]
+        },
+        grid: function(){
+          return $scope;
+        }
+      }
+    });
+
+  };
+
 });
+
+app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, linesdata, grid){
+
+  var editdata = linesdata;
+
+  $scope.EditLine = { op: "mantLineaNegocio", Id: editdata[0].id, Linea: editdata[0].linea, Descripcion: editdata[0].descripcion, Activo: editdata[0].activo, UserId: editdata[0].myid };
+
+  $scope.EditLines = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.EditLine),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var line_checked = angular.isNumber(data[0].Column1);
+
+      if(line_checked == true){
+
+        ngToast.create('La Línea de Negocio fue Editada con Exito');
+        grid.$emit('LoadList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, La Línea de Negocio no fue Editada',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
+
+});
+
+
 
 // Clientes Controller
 app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){

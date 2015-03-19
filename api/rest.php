@@ -114,6 +114,27 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     echo $res->mantCentrosResult;
     break;
 
+    case 'listaLineaNegocio':
+      $a = array(
+        'Linea' => $_POST['Linea'],
+        'Activo' => $_POST['Activo']
+      );
+      $res = $ws->listaLineaNegocio($a);
+      echo $res->listaLineaNegocioResult;
+    break;
+
+    case 'mantLineaNegocio':
+      $a = array(
+        'Id' => $_POST['Id'],
+        'Linea' => $_POST['Linea'],
+        'Descripcion' => $_POST['Descripcion'],
+        'Activo' => $_POST['Activo'],
+        'UserId' => $_POST['UserId']
+      );
+      $res = $ws->mantLineaNegocio($a);
+      echo $res->mantLineaNegocioResult;
+    break;
+
       case 'getServicesDef':
         $a = array(
           'serviceId' => $_POST['serviceId']
@@ -144,21 +165,6 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
           echo $res->listaClienteAtentoResult;
         } catch (SoapFault $exception) {
           ChromePhp::log("ERROR EN LLAMADA AL WS <<listaClienteAtento>> DESDE PHP: ".$exception->$detail );
-        }
-      break;
-
-
-      case 'listaLineaNegocio':
-        $a = array(
-          'Linea' => $_POST['Linea'],
-          'Activo' => $_POST['Activo']
-        );
-        ChromePhp::log("ENTRA: {a}: ".$a[0][0]);
-        try {
-          $res = $ws->listaLineaNegocio($a);
-          echo $res->listaLineaNegocioResult;
-        } catch (SoapFault $exception) {
-          ChromePhp::log("ERROR EN LLAMADA AL WS <<listaLineaNegocio>> DESDE PHP: ".$exception->$detail );
         }
       break;
 
