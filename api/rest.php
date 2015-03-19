@@ -210,6 +210,72 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
         }
       break;
 
+      case 'listaBases':
+        $a = array(
+          'Skill' => $_POST['Skill'],
+          'Base' => $_POST['Base'],
+          'Activo' => $_POST['Activo']
+        );
+
+        ChromePhp::log("ENTRA: {a}:");
+        try {
+          $res = $ws->listaBases($a);
+          echo $res->listaBasesResult;
+        } catch (SoapFault $exception) {
+           ChromePhp::log("ERROR EN LLAMADA AL WS <<listaBases>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
+
+      case 'listaSkills':
+        $a = array(
+          'Skill' => $_POST['Skill'],
+          'Servicio' => $_POST['Servicio'],
+          'Canal' => $_POST['Canal'],
+          'Activo' => $_POST['Activo']
+        );
+
+        ChromePhp::log("ENTRA: {a}:");
+        try {
+          $res = $ws->listaSkills($a);
+          echo $res->listaSkillsResult;
+        } catch (SoapFault $exception) {
+           ChromePhp::log("ERROR EN LLAMADA AL WS <<listaSkills>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
+
+      case 'listaBasesCampos':
+        $a = array(
+          'Base' => $_POST['Base']
+        );
+
+        ChromePhp::log("ENTRA: {a}:");
+        try {
+          $res = $ws->listaBasesCampos($a);
+          echo $res->listaBasesCamposResult;
+        } catch (SoapFault $exception) {
+           ChromePhp::log("ERROR EN LLAMADA AL WS <<listaBasesCampos>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
+      
+      case 'mantBases':
+        $a = array(
+          'Id' => $_POST['Id'],
+          'SkillId' => $_POST['SkillId'],
+          'NombreBase' => $_POST['NombreBase'],
+          'Descripcion' => $_POST['Descripcion'],
+          'FechaIni' => $_POST['FechaIni'],
+          'FechaFin' => $_POST['FechaFin'],
+          'Activo' => $_POST['Activo'],
+          'UserIdModif' => $_POST['UserIdModif']
+        );
+        try {
+          $res = $ws->mantBases($a);
+          echo $res->mantBasesResult;
+        } catch (SoapFault $exception) {
+          ChromePhp::log("ERROR EN LLAMADA AL WS <<mantBases>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
+
       default: echo 'Opps!';
 
       break;

@@ -1020,4 +1020,284 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
 });
 
 
-//comentario test en master 18/03/2015
+// BasesCtrl Controller
+app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+
+  //get id de autenticado
+  var myid = $scope.status = auth.profileID;
+
+  $scope.tableRowExpanded = false;
+  $scope.tableRowIndexExpandedCurr = "";
+  $scope.tableRowIndexExpandedPrev = "";
+  $scope.nombreExpanded = "";
+  $scope.getBase2 = false;
+
+  $scope.Fecha_Ini = "";
+  $scope.Fecha_Fin = "";
+    
+  $scope.baseDataCollapseFn = function () {
+    $scope.baseDataCollapse = [];
+      for (var i = 0; i < $scope.listaBasesResult.length; i += 1) {
+        $scope.baseDataCollapse.push(false);
+      }
+  };
+
+  $scope.$on('cargaListas', function(event){
+
+    //get lista de bases
+    $scope.getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getListaBases),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.listaBasesResult = data;
+      console.info("BasesCtrl > getListaBases >>> OK");
+    })
+    .error(function(data){
+      console.error("BasesCtrl > getListaBases >>> ERROR HTTP");
+    })  
+
+    //get lista de skills
+    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getListaSkills),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.listaSkillsResult = data;
+      console.info("BasesCtrl > getListaSkills >>> OK");
+    })
+    .error(function(data){
+      console.error("BasesCtrl > getListaSkills >>> ERROR HTTP");
+    })  
+
+  });
+
+  $scope.$emit('cargaListas');
+
+  //se muestra modal para crear base
+  $scope.CreateBase = function(){
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate_Base.html',
+      controller: 'BasesCtrl'
+    });
+  };
+
+  $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
+
+  //funcion que agrega una base nueva a la base de datos
+  $scope.AddBase = function(){    
+    var dd = $scope.Fecha_Ini.getDate();
+    var mm = $scope.Fecha_Ini.getMonth()+1;
+    var yyyy = $scope.Fecha_Ini.getFullYear();
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    $scope.addBase.FechaIni = yyyy+"-"+mm+"-"+dd;
+
+    dd = $scope.Fecha_Fin.getDate();
+    mm = $scope.Fecha_Fin.getMonth()+1;
+    yyyy = $scope.Fecha_Fin.getFullYear();
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
+
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addBase),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('La base no ha sido creada, revisa tus datos requeridos');
+        console.warn("BasesCtrl > AddServicio > mantServicio >>> ERROR WS");
+      }
+      else{
+        var servicio_checked = angular.isNumber(data[0].Column1);
+        if(servicio_checked == true){
+          ngToast.create('La base fue creada con exito');
+          console.info("BasesCtrl > AddServicio > mantServicio >>> Ok");
+        }
+        else{
+          ngToast.create('La base no ha sido creada');
+          $scope.result = data;
+          console.warn("BasesCtrl > AddServicio > mantServicio >>> BASE NO CREADA");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("BasesCtrl > AddServicio > mantServicio >>> ERROR HTTP");
+      return;
+    })
+  };
+
+  //se muestra modal para editar una base
+  $scope.openEdit = function(skill, nombre, activo){
+    //consultamos los datos de la base a la que se le dio click para editar
+    $scope.getBaseData = { op: "listaBases", Skill: skill, Base: nombre, Activo: activo};
+
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getBaseData),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.baseResult = data;
+      console.info("BasesCtrl > openEdit > getBaseData >>> OK");
+
+      var modalInstance = $modal.open({
+        templateUrl: 'ModalEdit_Base.html',
+        controller: 'ModalEdit_BaseController',
+        resolve: {
+          base: function () {
+          return $scope.baseResult;
+          },
+          scopee: function () {
+          return $scope;
+          }
+        }
+      });
+
+    })
+    .error(function(data){
+      console.error("BasesCtrl > openEdit > getBaseData >>> ERROR HTTP");
+    })
+  };
+
+
+  $scope.selectTableRow = function (index, nombre) {
+    $scope.listaBasesCamposResult = null;
+
+    if (typeof $scope.baseDataCollapse === 'undefined') {
+      $scope.baseDataCollapseFn();
+    }
+
+    if ($scope.tableRowExpanded === false && $scope.tableRowIndexExpandedCurr === "" && $scope.nombreExpanded === "") {
+      $scope.tableRowIndexExpandedPrev = "";
+      $scope.tableRowExpanded = true;
+      $scope.tableRowIndexExpandedCurr = index;
+      $scope.nombreExpanded = nombre;
+      $scope.baseDataCollapse[index] = true;
+      $scope.getBase2 = true;
+    } 
+    else 
+      if ($scope.tableRowExpanded === true) {
+        if ($scope.tableRowIndexExpandedCurr === index && $scope.nombreExpanded === nombre) {
+          $scope.tableRowExpanded = false;
+          $scope.tableRowIndexExpandedCurr = "";
+          $scope.nombreExpanded = "";
+          $scope.baseDataCollapse[index] = false;
+          $scope.getBase2 = false;
+        } 
+        else {
+          $scope.tableRowIndexExpandedPrev = $scope.tableRowIndexExpandedCurr;
+          $scope.tableRowIndexExpandedCurr = index;
+          $scope.nombreExpanded = nombre;
+          $scope.baseDataCollapse[$scope.tableRowIndexExpandedPrev] = false;
+          $scope.baseDataCollapse[$scope.tableRowIndexExpandedCurr] = true;
+          $scope.getBase2 = true;
+        }
+      }
+
+    if($scope.getBase2 = true)
+    {
+      //get lista de bases
+      $scope.getListaBasesCampos = { op: "listaBasesCampos", Base: nombre};
+      $http({
+        method : 'POST',
+        url : 'api/rest.php',
+        data : $.param($scope.getListaBasesCampos),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){
+        $scope.listaBasesCamposResult = data;
+        console.info("BasesCtrl > getListaBasesCampos >>> OK");
+      })
+      .error(function(data){
+        console.error("BasesCtrl > getListaBasesCampos >>> ERROR HTTP");
+      })  
+    }
+  };  
+
+});
+
+//controlador para model de edicion de bases
+app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstance, ngToast, auth, base, scopee){
+  //get id de autenticado
+  var myid = $scope.status = auth.profileID;
+
+  $scope.editBase = { op: "mantBases", Id: base[0].skillsBasesId, SkillId: base[0].skillsId, NombreBase: base[0].nombre, Descripcion: base[0].descripcion, FechaIni: base[0].fechaInicio, FechaFin: base[0].fechaFin, Activo: base[0].activo,  UserId: myid };
+
+  //get lista de skills
+  $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
+  $http({
+    method : 'POST',
+    url : 'api/rest.php',
+    data : $.param($scope.getListaSkills),
+    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+    $scope.listaSkillsResult = data;
+
+    angular.forEach($scope.listaSkillsResult, function(item) {
+      if(base[0].skillsId == item.skillsId)
+        $scope.selectedOption = item;
+    });
+
+    console.info("ModalEdit_BaseController > getListaSkills >>> OK");
+  })
+  .error(function(data){
+    console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
+  })  
+
+  $scope.base = base;
+
+  $scope.changedValueSkill=function(item){
+    $scope.editBase.SkillId = item.skillsId;
+  }
+
+  $scope.EditBase = function () {
+     $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.editBase),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('La base no ha sido editada, revisa tus datos requeridos');
+        console.warn("ModalEdit_BaseController > EditBase > mantServicios >>> ERROR WS");
+      }
+      else{
+        var servicio_checked = angular.isNumber(data[0].Column1);
+        if(servicio_checked == true){
+          ngToast.create('La base fue editada con exito');
+          console.info("ModalEdit_BaseController > EditBase > mantServicios >>> Ok");
+          scopee.$emit('cargaListas');
+          $modalInstance.close();
+        }
+        else{
+          ngToast.create('La base no ha sido editada');
+          $scope.result = data;
+          console.warn("ModalEdit_BaseController > EditBase > mantServicios >>> BASE NO EDITADA");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("ModalEdit_BaseController > EditBase > mantServicios >>> ERROR HTTP");
+      $modalInstance.close();
+      return;
+    })
+  };
+
+});
