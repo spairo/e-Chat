@@ -1,0 +1,42 @@
+<header class="clearfix">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!-- Logo -->
+  <div class="logo">
+    <a href="#/dashboard">
+      <!--<span class="logo-icon glyphicon glyphicon-fire"></span>-->
+      <span>{{main.brand}}</span>
+    </a>
+  </div>
+
+  <div class="menu-button" toggle-off-canvas>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </div>
+
+  <div class="top-nav">
+    <ul class="nav-left list-unstyled">
+      <li>
+        <a href="header.html#/" data-toggle-min-nav class="toggle-min"><i class="fa fa-bars"></i></a>
+      </li>
+      <li class="dropdown text-normal nav-profile" dropdown is-open="status.isopenProfile">
+        <a href="javascript:;" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+          <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" alt="" class="img-circle img30_30">
+          <span class="hidden-xs">
+            <span data-i18n="{{status.user}}"></span>
+          </span>
+        </a>
+        <ul class="dropdown-menu dropdown-dark with-arrow">
+          <li>
+            <a href="#/sign">
+              <i class="fa fa-sign-out"></i>
+              <span data-i18n="Cerrar Session"></span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  
+</header>
