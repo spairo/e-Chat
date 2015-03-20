@@ -5,18 +5,36 @@
         <span class="glyphicon glyphicon-th"></span> Centros</strong>
     </div>
     <div class="panel-body">
-      <div class="pull-left">
-        <div class="form-group">
-          <label for="Rol">Filtrar Por:</label>
-          <select class="form-control" ng-model="search.activo">
-            <option value="">Todos</option>
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-          </select>
-        </div>
+      <div class="grid-structure">
+          <div class="row">
+              <div class="col-md-4">
+                <div class="widget-container">
+                  <label for="Rol">Filtrar por Activos:</label>
+                  <select class="form-control" ng-model="search.activo">
+                    <option value="">Todos</option>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="widget-container">
+                  <div class="form-group">
+                    <label for="Rol">Filtrar por Centro:</label>
+                    <input type="text" class="form-control" ng-model="search.centro" placeholder="Nombre">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="widget-container">
+
+                  </div>
+              </div>
+          </div>
       </div>
+      <hr>
       <div class="btn-group btn-group-lg pull-right" role="group">
-        <button type="button" class="btn btn-default" ng-click="CreateCenter()"><span class="glyphicon glyphicon-plus"></span></button>
+        <button type="button" class="btn btn-default" ng-click="CreateCenter()"><span class="glyphicon glyphicon-plus"></span> Centro</button>
       </div>
       <br />
       <table class="table">
@@ -68,7 +86,6 @@
             </div>
           </div>
           <button class="btn btn-primary btn-lg btn-block" ng-disabled="centerForm.$invalid"  ng-click="AddCenter()">Agregar</button>
-          {{addCen}}
         </form>
       </div>
   </script>
@@ -94,8 +111,8 @@
               </label>
             </div>
           </div>
-          <button class="btn btn-primary btn-lg btn-block" ng-click="EditCenter()">Editar Centro</button>
-          {{addCen}}
+          <button class="btn btn-primary btn-lg btn-block" ng-click="EditCenter()">Editar</button>
+          <button class="btn btn-danger btn-lg btn-block" ng-click="CloseCenter()">Cancelar</button>
         </form>
       </div>
   </script>

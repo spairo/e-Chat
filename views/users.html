@@ -20,13 +20,16 @@
                   <div class="widget-container">
                     <div class="form-group">
                       <label for="Rol">Filtrar por Perfil:</label>
-                      <input type="text" class="form-control" ng-value="Lopez">
+                      <input type="text" class="form-control" ng-value="search.perfil">
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="widget-container">
-
+                    <div class="form-group">
+                      <label for="Rol">Filtrar por Servicio:</label>
+                      <input type="text" class="form-control" ng-value="search.servicio">
+                    </div>
                   </div>
                 </div>
             </div>
@@ -203,6 +206,7 @@
             </div>
 
             <button class="btn btn-primary btn-lg btn-block" ng-click="EditUser()">Editar</button>
+            <button class="btn btn-danger btn-lg btn-block" ng-click="CloseUser()">Cancelar</button>
             <pre>{{EditUs}}</pre>
           </form>
       </div>

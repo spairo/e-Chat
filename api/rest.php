@@ -16,15 +16,15 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
 
     switch($opcion){
 
-      case 'SeguridadLogin':
-        $a = array(
+    case 'SeguridadLogin':
+      $a = array(
           'User' => $_POST['User'],
           'Password' => $_POST['Password']
-        );
-          $res = $ws->SeguridadLogin($a);
-          ChromePhp::log($res);
-          echo $res->seguridadLoginResult;
-      break;
+      );
+      $res = $ws->SeguridadLogin($a);
+      ChromePhp::log($res);
+      echo $res->seguridadLoginResult;
+    break;
 
     case 'seguridadLogin':
       $a = array(
@@ -34,6 +34,28 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
       $res = $ws->seguridadLogin($a);
       echo $res->seguridadLoginResult;
     break;
+
+    case 'listaPerfiles':
+      $a = array(
+        'Perfil' => $_POST['Perfil'],
+        'Activo' => $_POST['Activo']
+      );
+      $res = $ws->listaPerfiles($a);
+      echo $res->listaPerfilesResult;
+    break;
+
+    case 'mantPerfiles':
+      $a = array(
+        'Id' => $_POST['Id'],
+        'Perfil' => $_POST['Perfil'],
+        'Descripcion' => $_POST['Descripcion'],
+        'Activo' => $_POST['Activo'],
+        'UserId' => $_POST['UserId']
+      );
+      $res = $ws->mantPerfiles($a);
+      echo $res->mantPerfilesResult;
+    break;
+
 
     case 'listaCanales':
       $a = array(
@@ -262,7 +284,7 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
            ChromePhp::log("ERROR EN LLAMADA AL WS <<listaBasesCampos>> DESDE PHP: ".$exception->$detail );
         }
       break;
-      
+
       case 'mantBases':
         $a = array(
           'Id' => $_POST['Id'],

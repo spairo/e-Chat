@@ -8,7 +8,7 @@
           <div class="row">
               <div class="col-md-4">
                 <div class="widget-container">
-                  <label for="Rol">Filtrar por Activos:</label>
+                  <label for="Rol">Filtrar Activos:</label>
                   <select class="form-control" ng-model="search.activo">
                     <option value="">Todos</option>
                     <option value="1">Activo</option>
@@ -19,7 +19,7 @@
               <div class="col-md-4">
                 <div class="widget-container">
                   <div class="form-group">
-                    <label for="Rol">Filtrar por Linea:</label>
+                    <label for="Rol">Filtrar Linea de Negocio:</label>
                     <input type="text" class="form-control" ng-model="name.linea" placeholder="Nombre">
                   </div>
                 </div>
@@ -55,7 +55,6 @@
             <td>
               <div class="btn-group" role="group" aria-label="Edit">
                 <button type="button" class="btn btn-default" ng-click="openedit(business.lineaNegocioId, business.linea, business.descripcion, business.activo)"><span class="glyphicon glyphicon-edit"></span></button>
-                <button type="button" class="btn btn-default" ng-click="EraseBusiness()"><span class="glyphicon glyphicon-trash"></span></button>
               </div>
             </td>
           </tr>
@@ -123,6 +122,7 @@
             </div>
           </div>
           <button class="btn btn-primary btn-lg btn-block" ng-disabled="businessEditForm.$invalid"  ng-click="EditLines()">Editar</button>
+          <button class="btn btn-danger btn-lg btn-block" ng-click="CloseLines()">Cancelar</button>
         </form>
       </div>
   </script>
