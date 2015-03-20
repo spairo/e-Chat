@@ -28,6 +28,21 @@ app.controller("AppCtrl", function($scope, $location, auth){
 
 });
 
+//Header Controller
+
+app.controller("HeaderCtrl", function($scope, $location, $cookies){
+
+  $scope.logout = function(){
+
+    //$cookies.remove("usuariocookie");
+    //$cookies.remove("perfilcookie");
+    //$cookies.remove("perfilesIdcookie");
+    $location.path('signin');
+
+  };
+
+});
+
 // Nav Controller
 app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
