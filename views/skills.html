@@ -1,0 +1,200 @@
+<div class="page" ng-controller="SkillsCtrl">
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <strong><span class="glyphicon glyphicon-th"></span> Skills</strong>
+    </div>
+    <div class="panel-body">
+      <div class="grid-structure">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SSkill">Skill</label>
+                <input type="text" class="form-control" ng-model="search.skill" placeholder="Skill">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SServicio">Servicio</label>
+                <input type="text" class="form-control" ng-model="search.servicio" placeholder="Servicio">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SCanal">Canal</label>
+                <input type="text" class="form-control" ng-model="search.canal" placeholder="Canal">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <label for="Rol">Activos:</label>
+              <select class="form-control" ng-model="search.activo">
+                <option value="">Todos</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+      <div class="btn-group btn-group-lg pull-right" role="group">
+        <button type="button" class="btn btn-default" ng-click="CreateSkill()"><span class="glyphicon glyphicon-plus">Skill</span> <span class="glyphicon glyphicon-user"></span></button>
+      </div>
+      <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <!--<th>skillsId</th>-->
+            <!--<th>canalesId</th>-->
+            <!--<th>serviciosId</th>-->
+            <th>skill</th>
+            <th>activo</th>
+            <!--<th>usuarioCreacion</th>-->
+            <!--<th>fechaCreacion</th>-->
+            <!--<th>usuarioModificacion</th>-->
+            <!--<th>fechaModificacion</th>-->
+            <!--<th>serviciosId1</th>-->
+            <!--<th>clienteAtentoId</th>-->
+            <th>servicio</th>
+            <!--<th>activo1</th>-->
+            <!--<th>usuarioCreacion1</th>-->
+            <!--<th>fechaCreacion1</th>-->
+            <!--<th>usuarioModificacion1</th>-->
+            <!--<th>fechaModificacion1</th>-->
+            <!--<th>canalesId1</th>-->
+            <th>canal</th>
+            <!--<th>activo2</th>-->
+            <!--<th>usuarioCreacion2</th>-->
+            <!--<th>fechaCreacion2</th>-->
+            <!--<th>usuarioModificacion2</th>-->
+            <!--<th>fechaModificacion2</th>-->
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="skill in listaSkillsResult | filter:search" class="repeat-animation">
+            <!--<td>{{skill.skillsId}}</td>-->
+            <!--<td>{{skill.canalesId}}</td>-->
+            <!--<td>{{skill.serviciosId}}</td>-->
+            <td>{{skill.skill}}</td>
+            <td>{{skill.activo}}</td>
+            <!--<td>{{skill.usuarioCreacion}}</td>-->
+            <!--<td>{{skill.fechaCreacion}}</td>-->
+            <!--<td>{{skill.usuarioModificacion}}</td>-->
+            <!--<td>{{skill.fechaModificacion}}</td>-->
+            <!--<td>{{skill.serviciosId1}}</td>-->
+            <!--<td>{{skill.clienteAtentoId}}</td>-->
+            <td>{{skill.servicio}}</td>
+            <!--<td>{{skill.activo1}}</td>-->
+            <!--<td>{{skill.usuarioCreacion1}}</td>-->
+            <!--<td>{{skill.fechaCreacion1}}</td>-->
+            <!--<td>{{skill.usuarioModificacion1}}</td>-->
+            <!--<td>{{skill.fechaModificacion1}}</td>-->
+            <!--<td>{{skill.canalesId1}}</td>-->
+            <td>{{skill.canal}}</td>
+            <!--<td>{{skill.activo2}}</td>-->
+            <!--<td>{{skill.usuarioCreacion2}}</td>-->
+            <!--<td>{{skill.fechaCreacion2}}</td>-->
+            <!--<td>{{skill.usuarioModificacion2}}</td>-->
+            <!--<td>{{skill.fechaModificacion2}}</td>-->
+            <td>
+              <div class="btn-group" role="group" aria-label="Edit">
+                <button type="button" class="btn btn-default" ng-click="openEdit(skill.skill, skill.servicio, skill.canal, skill.activo)"><span class="glyphicon glyphicon-edit"></span></button>
+                    <!--<button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>-->
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <script type="text/ng-template" id="ModalCreate_Skill.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Skill</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="Canal">* Canal</label>
+            <select class="form-control" ng-model="addSkill.CanalesId" required>
+              <option ng-repeat="canal in listaCanalesResult" value="{{canal.canalesId}}"> {{canal.canal}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="Servicio">* Servicio</label>
+            <select class="form-control" ng-model="addSkill.ServiciosId" required>
+              <option ng-repeat="servicio in listaServiciosResult" value="{{servicio.serviciosId}}"> {{servicio.servicio}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="Skill">* Skill</label>
+            <input type="text" class="form-control" ng-model="addSkill.Skill" placeholder="Skill" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addSkill.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addSkill.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="AddSkill()">Crear</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit_Skill.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Editar Skill</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="Canal">* Canal</label>
+            <select class="form-control" data-ng-options="o.canal for o in listaCanalesResult" data-ng-model="selectedCanal" ng-change="changedValueCanal(selectedCanal)" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="Servicio">* Servicio</label>
+            <select class="form-control" data-ng-options="o.servicio for o in listaServiciosResult" data-ng-model="selectedServicio" ng-change="changedValueServicio(selectedServicio)" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="Skill">* Skill</label>
+            <input type="text" class="form-control" ng-model="editSkill.Skill" placeholder="Skill" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editSkill.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editSkill.Activo" value="0">Inactivo
+            </label>
+          </div>
+          
+          <button class="btn btn-primary" ng-click="EditSkill()">Editar</button> 
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+</div>
