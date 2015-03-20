@@ -95,7 +95,6 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
 });
 
-
 // Users Controller
 
 app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
@@ -537,24 +536,22 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
 
    //Get Channels list
 
-   $scope.$on('LoadList', function(event){
-
-       $http({
-         method : 'POST',
-         url : 'api/rest.php',
-         data : $.param($scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" }),
-         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-       })
-       .success(function(data){
-         $scope.getChannels = data;
-       })
-       .error(function(data){
-         var msg = ngToast.create({
-           content: 'Opps!, Algo salio mal intenta otra vez',
-           className:	'danger'
-         });
-       })
-
+  $scope.$on('LoadList', function(event){
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" }),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.getChannels = data;
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
    });
 
    $scope.$emit('LoadList');
@@ -684,7 +681,6 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 });
 
 //Business Lines Controller
-
 app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
 
   //Get Centers list
@@ -832,8 +828,6 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
 });
 
-
-
 // Clientes Controller
 app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
 
@@ -882,6 +876,9 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
 
   $scope.$emit('cargaListas');
 
+  //$scope.search = {Linea:"", Cliente:"", Activo:""};
+
+
   //se muestra modal para crear cliente
   $scope.CreateClient = function(){
     var modalInstance = $modal.open({
@@ -909,6 +906,8 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
         if(cliente_checked == true){
           ngToast.create('El cliente fue creado con exito');
           console.info("ClientesCtrl > AddClient > mantClienteAtento >>> Ok");
+          $scope.$emit('cargaListas');
+          $modalStack.dismissAll();
         }
         else{
           ngToast.create('EL cliente no ha sido creado');
@@ -957,8 +956,11 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
     .error(function(data){
       console.error("ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP");
     })
+  };
 
-
+  $scope.CloseLines = function()
+  { 
+    $modalStack.dismissAll(); 
   };
 
 });
@@ -1035,8 +1037,13 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
     })
   };
 
-});
+  $scope.CloseLines = function()
+  { 
+    //$modalInstance.dismissAll(); 
+    $modalInstance.close(); 
+  };
 
+});
 
 // Servicios Controller
 app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
@@ -1112,6 +1119,8 @@ app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngT
         if(servicio_checked == true){
           ngToast.create('El servicio fue creado con exito');
           console.info("ServiciosCtrl > AddServicio > mantServicio >>> Ok");
+          $scope.$emit('cargaListas');
+          $modalStack.dismissAll();
         }
         else{
           ngToast.create('EL servicio no ha sido creado');
@@ -1160,8 +1169,11 @@ app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngT
     .error(function(data){
       console.error("ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP");
     })
+  };
 
-
+  $scope.CloseLines = function()
+  { 
+    $modalStack.dismissAll(); 
   };
 
 });
@@ -1238,8 +1250,12 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
     })
   };
 
-});
+  $scope.CloseLines = function()
+  { 
+    $modalInstance.close(); 
+  };
 
+});
 
 // BasesCtrl Controller
 app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
@@ -1342,6 +1358,8 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
         if(servicio_checked == true){
           ngToast.create('La base fue creada con exito');
           console.info("BasesCtrl > AddServicio > mantServicio >>> Ok");
+          $scope.$emit('cargaListas');
+          $modalStack.dismissAll();
         }
         else{
           ngToast.create('La base no ha sido creada');
@@ -1447,6 +1465,11 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     }
   };  
 
+  $scope.CloseLines = function()
+  { 
+    $modalStack.dismissAll(); 
+  };
+
 });
 
 //controlador para model de edicion de bases
@@ -1521,4 +1544,10 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
     })
   };
 
+   $scope.CloseLines = function()
+  { 
+    $modalInstance.close(); 
+  };
+
 });
+

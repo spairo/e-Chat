@@ -4,6 +4,42 @@
       <strong><span class="glyphicon glyphicon-th"></span> Bases</strong>
     </div>
     <div class="panel-body">
+      <div class="grid-structure">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SSkill">Skill</label>
+                <input type="text" class="form-control" ng-model="search.skill" placeholder="Linea de Negocio">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SBase">Base</label>
+                <input type="text" class="form-control" ng-model="search.nombre" placeholder="Cliente">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <label for="Rol">Activos:</label>
+              <select class="form-control" ng-model="search.activo">
+                <option value="">Todos</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+
         <div class="btn-group btn-group-lg pull-right" role="group">
           <button type="button" class="btn btn-default" ng-click="CreateBase()"><span class="glyphicon glyphicon-plus"> Bases</span></button>
         </div>
@@ -22,7 +58,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody data-ng-repeat="base in listaBasesResult" data-ng-switch on="baseDataCollapse[$index]">
+          <tbody data-ng-repeat="base in listaBasesResult | filter:search" data-ng-switch on="baseDataCollapse[$index]">
             <tr data-ng-click="selectTableRow($index, base.nombre)">
               <td>{{base.skillsBasesId}}</td>
               <td>{{base.nombre}}</td>
