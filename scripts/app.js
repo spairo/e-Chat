@@ -17,11 +17,14 @@ app.config(["$routeProvider", function($routeProvider) {
       return $routeProvider.when("/", {
         redirectTo: "/signin"
       })
-      .when("/signin", {
-        templateUrl: "views/signin.html"
-      })
       .when("/pages/blank", {
         templateUrl: "views/pages/blank.html"
+      })
+      .when("/pages/grid", {
+        templateUrl: "views/pages/grid.html"
+      })
+      .when("/signin", {
+        templateUrl: "views/signin.html"
       })
       .when("/dashboard", {
         templateUrl: "views/dashboard.html"
