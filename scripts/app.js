@@ -10,7 +10,7 @@
 * Main module of the application.
 */
 
-var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "angular-loading-bar"])
+var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "treeControl", "angular-loading-bar"])
 
 app.config(["$routeProvider", function($routeProvider) {
 

@@ -693,6 +693,8 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 
   };
 
+  $scope.CloseCenter = function(){ $modalStack.dismissAll(); };
+
 });
 
 //Channels Controller
@@ -843,6 +845,8 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
   };
 
+  $scope.CloseChannel = function(){ $modalStack.dismissAll(); };
+
 });
 
 //Business Lines Controller
@@ -991,12 +995,30 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
   };
 
+  $scope.CloseLines = function(){ $modalStack.dismissAll(); };
+
+
 });
 
 //Typing Controller
 
 app.controller("TypingCtrl", function($scope, $http){
 
+    //Customers
+    $scope.getTypiClients = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
+
+    $http({
+      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypiClients), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){ $scope.listAtentoClients = data; })
+
+    //Channels
+    $scope.getTypicha = { op: "listaCanales", Canal: "", Activo: "" };
+
+    $http({
+      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypicha), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){ $scope.Typichannel = data; })
 
 
 });
