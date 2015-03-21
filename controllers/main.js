@@ -110,6 +110,156 @@ app.controller('DashboardCtrl', function($scope, ngToast, auth){
 
 });
 
+// Profiles Controller
+
+app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+
+  $scope.$on('LoadList', function(event){
+
+      $http({
+        method : 'POST',
+        url : 'api/rest.php',
+        data : $.param($scope.getProfileList = { op: "listaPerfiles", Perfil: "", Activo: "" }),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){
+        $scope.getProfiles = data;
+      })
+      .error(function(data){
+        var msg = ngToast.create({
+          content: 'Opps! Algo salio mal Intenta Otra vez',
+          className:	'danger'
+        });
+      })
+
+  });
+
+  $scope.$emit('LoadList');
+
+  // Create/Modal
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.CreateProfile = function(){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalCreate.html',
+      controller: 'ProfilesCtrl'
+    });
+
+  };
+
+  $scope.addProfile = { op: "mantPerfiles", Id: "0", Perfil:"", Descripcion: "", Activo: "", UserId: myid };
+
+  $scope.AddProf = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.addProfile),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var profile_checked = angular.isNumber(data[0].Column1);
+
+      if(profile_checked == true){
+
+        ngToast.create('El Perfil fue agregado con exito');
+        $scope.$emit('LoadList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Perfil no fue creado',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
+
+  //Edit Profile
+
+  $scope.openedit = function (perfilesId, perfil, descripcion, activo) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalProfileEdit.html',
+      controller: 'InstanceProfileCtrl',
+      resolve: {
+        profiledata: function () {
+          return $scope.profiledata = [
+            {
+              id: perfilesId,
+              perfil: perfil,
+              descripcion: descripcion,
+              activo: activo,
+              myid: myid
+            }
+          ]
+        },
+        grid: function(){
+          return $scope;
+        }
+
+      }
+    });
+
+  };
+
+});
+
+app.controller('InstanceProfileCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, profiledata, grid){
+
+  var editdata = profiledata;
+
+  $scope.EditPro = { op: "mantPerfiles", Id: editdata[0].id, Perfil: editdata[0].perfil, Descripcion: editdata[0].descripcion, Activo: editdata[0].activo, UserId: editdata[0].myid };
+
+  $scope.EditProfile = function(){
+
+    $http({
+      method: 'POST',
+      url: 'api/rest.php',
+      data: $.param($scope.EditPro),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      var profile_checked = angular.isNumber(data[0].Column1);
+
+      if(profile_checked == true){
+
+        ngToast.create('El Perfil fue Editado con Exito');
+        grid.$emit('LoadList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Perfil no fue Editado',
+          className:	'danger'
+        });
+      }
+
+    })
+    .error(function(data){
+      var msg = ngToast.create({
+        content: 'Opps!, Algo salio mal intenta otra vez',
+        className:	'danger'
+      });
+    })
+
+  };
+  $scope.CloseProfile = function(){ $modalStack.dismissAll(); };
+
+});
+
 // Users Controller
 
 app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
@@ -543,6 +693,8 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 
   };
 
+  $scope.CloseCenter = function(){ $modalStack.dismissAll(); };
+
 });
 
 //Channels Controller
@@ -693,6 +845,8 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
   };
 
+  $scope.CloseChannel = function(){ $modalStack.dismissAll(); };
+
 });
 
 //Business Lines Controller
@@ -841,6 +995,32 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
   };
 
+  $scope.CloseLines = function(){ $modalStack.dismissAll(); };
+
+
+});
+
+//Typing Controller
+
+app.controller("TypingCtrl", function($scope, $http){
+
+    //Customers
+    $scope.getTypiClients = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
+
+    $http({
+      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypiClients), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){ $scope.listAtentoClients = data; })
+
+    //Channels
+    $scope.getTypicha = { op: "listaCanales", Canal: "", Activo: "" };
+
+    $http({
+      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypicha), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){ $scope.Typichannel = data; })
+
+
 });
 
 // Clientes Controller
@@ -974,8 +1154,8 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
   };
 
   $scope.CloseLines = function()
-  { 
-    $modalStack.dismissAll(); 
+  {
+    $modalStack.dismissAll();
   };
 
 });
@@ -1053,9 +1233,9 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
   };
 
   $scope.CloseLines = function()
-  { 
-    //$modalInstance.dismissAll(); 
-    $modalInstance.close(); 
+  {
+    //$modalInstance.dismissAll();
+    $modalInstance.close();
   };
 
 });
@@ -1187,8 +1367,8 @@ app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngT
   };
 
   $scope.CloseLines = function()
-  { 
-    $modalStack.dismissAll(); 
+  {
+    $modalStack.dismissAll();
   };
 
 });
@@ -1266,8 +1446,8 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
   };
 
   $scope.CloseLines = function()
-  { 
-    $modalInstance.close(); 
+  {
+    $modalInstance.close();
   };
 
 });
@@ -1286,7 +1466,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   $scope.Fecha_Ini = "";
   $scope.Fecha_Fin = "";
-    
+
   $scope.baseDataCollapseFn = function () {
     $scope.baseDataCollapse = [];
       for (var i = 0; i < $scope.listaBasesResult.length; i += 1) {
@@ -1310,7 +1490,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     })
     .error(function(data){
       console.error("BasesCtrl > getListaBases >>> ERROR HTTP");
-    })  
+    })
 
     //get lista de skills
     $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
@@ -1326,7 +1506,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     })
     .error(function(data){
       console.error("BasesCtrl > getListaSkills >>> ERROR HTTP");
-    })  
+    })
 
   });
 
@@ -1344,17 +1524,17 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
   $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
 
   //funcion que agrega una base nueva a la base de datos
-  $scope.AddBase = function(){    
+  $scope.AddBase = function(){
     var dd = $scope.Fecha_Ini.getDate();
     var mm = $scope.Fecha_Ini.getMonth()+1;
     var yyyy = $scope.Fecha_Ini.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.addBase.FechaIni = yyyy+"-"+mm+"-"+dd;
 
     dd = $scope.Fecha_Fin.getDate();
     mm = $scope.Fecha_Fin.getMonth()+1;
     yyyy = $scope.Fecha_Fin.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
     
@@ -1449,8 +1629,8 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
       $scope.nombreExpanded = nombre;
       $scope.baseDataCollapse[index] = true;
       $scope.getBase2 = true;
-    } 
-    else 
+    }
+    else
       if ($scope.tableRowExpanded === true) {
         if ($scope.tableRowIndexExpandedCurr === index && $scope.nombreExpanded === nombre) {
           $scope.tableRowExpanded = false;
@@ -1458,7 +1638,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
           $scope.nombreExpanded = "";
           $scope.baseDataCollapse[index] = false;
           $scope.getBase2 = false;
-        } 
+        }
         else {
           $scope.tableRowIndexExpandedPrev = $scope.tableRowIndexExpandedCurr;
           $scope.tableRowIndexExpandedCurr = index;
@@ -1485,13 +1665,13 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
       })
       .error(function(data){
         console.error("BasesCtrl > getListaBasesCampos >>> ERROR HTTP");
-      })  
+      })
     }
-  };  
+  };
 
   $scope.CloseLines = function()
-  { 
-    $modalStack.dismissAll(); 
+  {
+    $modalStack.dismissAll();
   };
 
 });
@@ -1523,7 +1703,7 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
   })
   .error(function(data){
     console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
-  })  
+  })
 
   $scope.base = base;
 
@@ -1569,11 +1749,12 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
   };
 
    $scope.CloseLines = function()
-  { 
-    $modalInstance.close(); 
+  {
+    $modalInstance.close();
   };
 
 });
+
 
 // Skills Controller
 app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
@@ -1686,7 +1867,7 @@ app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToas
   $scope.openEdit = function(skill, servicio, canal, activo){
     //consultamos los datos del skillId al que se le dio click para editar
     $scope.getSkillData = { op: "listaSkills", Skill: skill, Servicio: servicio, Canal: canal, Activo:activo};
-    
+
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1717,8 +1898,8 @@ app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToas
   };
 
   $scope.CloseLines = function()
-  { 
-    $modalStack.dismissAll(); 
+  {
+    $modalStack.dismissAll();
   };
 
 });
@@ -1822,9 +2003,9 @@ app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstan
   };
 
   $scope.CloseLines = function()
-  { 
-    //$modalInstance.dismissAll(); 
-    $modalInstance.close(); 
+  {
+    //$modalInstance.dismissAll();
+    $modalInstance.close();
   };
 
 });

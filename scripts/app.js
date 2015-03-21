@@ -10,18 +10,21 @@
 * Main module of the application.
 */
 
-var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "angular-loading-bar", "dialogs.main"])
+var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "treeControl", "angular-loading-bar", "dialogs.main"])
 
 app.config(["$routeProvider", function($routeProvider) {
 
       return $routeProvider.when("/", {
         redirectTo: "/signin"
       })
-      .when("/signin", {
-        templateUrl: "views/signin.html"
-      })
       .when("/pages/blank", {
         templateUrl: "views/pages/blank.html"
+      })
+      .when("/pages/grid", {
+        templateUrl: "views/pages/grid.html"
+      })
+      .when("/signin", {
+        templateUrl: "views/signin.html"
       })
       .when("/dashboard", {
         templateUrl: "views/dashboard.html"
