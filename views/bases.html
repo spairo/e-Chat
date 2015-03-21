@@ -129,6 +129,7 @@
     </div>
   </section>
   <script type="text/ng-template" id="ModalCreate_Base.html">
+    <div ng-hide="showCampos">
       <div class="modal-header">
           <h3 class="modal-title">Crear Base</h3>
       </div>
@@ -175,6 +176,20 @@
           <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
         </form>
       </div>
+    </div>
+
+    <div ng-show="showCampos">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Campos de Base {{addBase.NombreBase}}</h3>
+      </div>
+      <div class="modal-body">
+        <form name="ModalCreate_CamposBase_Form">
+          <div class="check-element animate-hide">
+            <span class="glyphicon glyphicon-thumbs-up"></span> aqui va todo lo de campos de la base.
+          </div>
+        </form>
+      </div>
+    </div>
   </script>
 
   <script type="text/ng-template" id="ModalEdit_Base.html">

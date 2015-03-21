@@ -1273,7 +1273,7 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, dialogs){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -1340,6 +1340,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     });
   };
 
+  $scope.showCampos = false;
   $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
 
   //funcion que agrega una base nueva a la base de datos
@@ -1356,6 +1357,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
     $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
+    
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1374,7 +1376,14 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
           ngToast.create('La base fue creada con exito');
           console.info("BasesCtrl > AddServicio > mantServicio >>> Ok");
           $scope.$emit('cargaListas');
-          $modalStack.dismissAll();
+
+          var dlg = dialogs.confirm('Selecciona una respuesta','¿Deseas dar de alta los campos para esta base?');
+          dlg.result.then(function(btn){
+            $scope.showCampos = true;
+          },function(btn){
+            $scope.showCampos = false;
+            $modalStack.dismissAll();
+          });          
         }
         else{
           ngToast.create('La base no ha sido creada');
