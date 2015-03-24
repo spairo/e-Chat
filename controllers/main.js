@@ -402,69 +402,7 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   // Edit User
 
-  $scope.openedit = function (usuariosId, perfil, nombres, apellidos, usuario, password, sexo, servicio) {
-
-    if(myid == 1){
-      $scope.roloptions = [
-        { name: 'SuperAdmin2', value: '1' },
-        { name: 'Administrador', value: '2' },
-        { name: 'TAM LN', value: '3' },
-        { name: 'Gerente', value: '4' },
-        { name: 'Supervisor', value: '5' },
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }else if(myid == 2){
-      $scope.roloptions = [
-        { name: 'Administrador', value: '2' },
-        { name: 'TAM LN', value: '3' },
-        { name: 'Gerente', value: '4' },
-        { name: 'Supervisor', value: '5' },
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else if(myid == 3){
-      $scope.roloptions = [
-        { name: 'TAM LN', value: '3' },
-        { name: 'Gerente', value: '4' },
-        { name: 'Supervisor', value: '5' },
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else if(myid == 4){
-      $scope.roloptions = [
-        { name: 'Gerente', value: '4' },
-        { name: 'Supervisor', value: '5' },
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else if(myid == 5){
-      $scope.roloptions = [
-        { name: 'Supervisor', value: '5' },
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else if(myid == 6){
-      $scope.roloptions = [
-        { name: 'BackOffice', value: '6' },
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else if(myid == 7){
-      $scope.roloptions = [
-        { name: 'Agente', value: '7' }
-      ];
-    }
-    else{
-      var msg = ngToast.create({
-        content: 'Alerta , No puedes crear Usuarios',
-        className:	'warning'
-      });
-    }
+  $scope.openedit = function (usuariosId, perfilesId, perfil, nombres, apellidos, usuario, password, sexo, servicio, activo) {
 
       var modalInstance = $modal.open({
         templateUrl: 'ModalEdit.html',
@@ -479,9 +417,11 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
                 lastname: apellidos,
                 sex: sexo,
                 profile: perfil,
+                profileid : perfilesId,
                 user: usuario,
                 pass: password,
                 service: servicio,
+                active: activo,
                 myid: myid
               }
             ];
@@ -489,17 +429,90 @@ app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast
           grid: function(){
             return $scope;
           }
-
         }
       });
   };
 
 });
 
-app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $modalStack, ngToast, userdatas, grid){
+app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $modalStack, ngToast, auth, userdatas, grid){
 
+  var myid = $scope.status = auth.profileID;
 
-  $scope.EditUs = { op: "mantUsuarios", Id: userdatas[0].id, PerfilId: userdatas[0].profile, Nombre: userdatas[0].name, Apellidos: userdatas[0].lastname, Sexo: userdatas[0].sex, Usuario: userdatas[0].user, Password: userdatas[0].pass, Activo: userdatas[0].activo, UserIdModif: userdatas[0].myid };
+  if(myid == 1){
+    $scope.roloptions = [
+      { name: 'SuperAdmin2', value: '1' },
+      { name: 'Administrador', value: '2' },
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }else if(myid == 2){
+    $scope.roloptions = [
+      { name: 'Administrador', value: '2' },
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 3){
+    $scope.roloptions = [
+      { name: 'TAM LN', value: '3' },
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 4){
+    $scope.roloptions = [
+      { name: 'Gerente', value: '4' },
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 5){
+    $scope.roloptions = [
+      { name: 'Supervisor', value: '5' },
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 6){
+    $scope.roloptions = [
+      { name: 'BackOffice', value: '6' },
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else if(myid == 7){
+    $scope.roloptions = [
+      { name: 'Agente', value: '7' }
+    ];
+  }
+  else{
+    var msg = ngToast.create({
+      content: 'Alerta , No puedes crear Usuarios',
+      className:	'warning'
+    });
+  }
+
+  $scope.EditUs = {
+    op: "mantUsuarios",
+    Id: userdatas[0].id,
+    PerfilId: userdatas[0].profileid,
+    Nombre: userdatas[0].name,
+    Apellidos: userdatas[0].lastname,
+    Sexo: userdatas[0].sex,
+    Usuario: userdatas[0].user,
+    Password: userdatas[0].pass,
+    Activo: userdatas[0].active,
+    UserIdModif: userdatas[0].myid
+  };
 
   $scope.EditUser = function(usuariosId){
 
@@ -511,6 +524,20 @@ app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $mod
       })
       .success(function(data){
 
+        var user_checked = angular.isNumber(data[0].Column1);
+
+        if(user_checked == true){
+
+          ngToast.create('El Usuario fue Editado con Exito');
+          grid.$emit('LoadList');
+          $modalStack.dismissAll();
+
+        }else{
+          var msg = ngToast.create({
+            content: 'Error, EL Usuario no fue editado',
+            className:	'danger'
+          });
+        }
 
       })
       .error(function(data){
@@ -519,8 +546,9 @@ app.controller('InstanceUserCtrl', function ($scope, $http, $modalInstance, $mod
           className:	'danger'
         });
       })
-
   };
+
+  $scope.CloseUser = function(){ $modalStack.dismissAll(); };
 
 });
 
@@ -850,11 +878,16 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 });
 
 //Business Lines Controller
-app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth){
+
+app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth, listline){
 
   //Get Centers list
+  //$scope.getBusiness = listline.data;
+  //$scope.getBusiness = listline.data;
 
   $scope.$on('LoadList', function(event){
+
+      //$scope.getBusiness = listline.data;
 
       $http({
         method : 'POST',
@@ -907,6 +940,7 @@ app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngT
 
         ngToast.create('Línea de Negocio creada con exito');
         $scope.$emit('LoadList');
+        $scope.$apply;
         $modalStack.dismissAll();
 
       }else{
@@ -958,7 +992,14 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
   var editdata = linesdata;
 
-  $scope.EditLine = { op: "mantLineaNegocio", Id: editdata[0].id, Linea: editdata[0].linea, Descripcion: editdata[0].descripcion, Activo: editdata[0].activo, UserId: editdata[0].myid };
+  $scope.EditLine = {
+    op: "mantLineaNegocio",
+    Id: editdata[0].id,
+    Linea: editdata[0].linea,
+    Descripcion: editdata[0].descripcion,
+    Activo: editdata[0].activo,
+    UserId: editdata[0].myid
+  };
 
   $scope.EditLines = function(){
 
@@ -997,7 +1038,6 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
   $scope.CloseLines = function(){ $modalStack.dismissAll(); };
 
-
 });
 
 //Typing Controller
@@ -1020,6 +1060,34 @@ app.controller("TypingCtrl", function($scope, $http){
     })
     .success(function(data){ $scope.Typichannel = data; })
 
+    $scope.treeOptions = {
+      nodeChildren: "children",
+      dirSelectable: true,
+      injectClasses: {
+          ul: "a1",
+          li: "a2",
+          liSelected: "a7",
+          iExpanded: "a3",
+          iCollapsed: "a4",
+          iLeaf: "a5",
+          label: "a6",
+          labelSelected: "a8"
+      }
+    }
+
+    $scope.dataForTheTree = [
+        { "name" : "Joe", "we" : "21", "children" : [
+            { "name" : "Smith", "we" : "42", "children" : [] },
+            { "name" : "Gary", "we" : "21", "children" : [
+                { "name" : "Jenifer", "we" : "23", "children" : [
+                    { "name" : "Dani", "we" : "32", "children" : [] },
+                    { "name" : "Max", "we" : "34", "children" : [] }
+                ]}
+            ]}
+        ]},
+        { "name" : "Albert", "we" : "33", "children" : [] },
+        { "name" : "Ron", "we" : "29", "children" : [] }
+    ];
 
 });
 
