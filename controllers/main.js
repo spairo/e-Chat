@@ -1453,10 +1453,11 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, dialogs){
+app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, dialogs, myFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
+  $scope.datoss = [{nombre:"uno"},{nombre:"dos"}];
 
   $scope.tableRowExpanded = false;
   $scope.tableRowIndexExpandedCurr = "";
@@ -1514,12 +1515,24 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   //se muestra modal para crear base
   $scope.CreateBase = function(){
+
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate_Base.html',
-      controller: 'BasesCtrl'
+      controller: 'ModalCreate_BaseController',
+      resolve: {
+        listaSkillsResult: function () {
+          return $scope.listaSkillsResult;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(){
+      $scope.$emit('cargaListas');
     });
   };
 
+  /*aqui va todo eso
+  *********************************************************************************************************
   $scope.showCampos = false;
   $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
 
@@ -1559,8 +1572,20 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
           var dlg = dialogs.confirm('Selecciona una respuesta','¿Deseas dar de alta los campos para esta base?');
           dlg.result.then(function(btn){
+
+            $scope.addCampoBase = { op: "mantBasesCampos", Id: "0", BaseId: $scope.addBase.Id, Titulo: "", 
+            NombreCampo: "", TipoDato: "", TipoCampo: "", Longitud: "", 
+            ValorDefault: "", Requerido: "", Orden: "", Activo: "", 
+            UserId: myid };
+
+            $scope.listaBasesCamposResult2 = {};
+            $scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
+            $scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
             $scope.showCampos = true;
           },function(btn){
+
+           //$scope.submitTest();
+
             $scope.showCampos = false;
             $modalStack.dismissAll();
           });          
@@ -1579,6 +1604,63 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
       return;
     })
   };
+
+  $scope.submitTest = function(){
+   
+      myFactory.callTest()
+      .then(function(data){
+        $scope.$apply(function () {
+          $scope.datoss = data;
+        });
+      }, function(data){
+        alert(data);
+      })
+    
+  }
+
+  $scope.AddCampoBase = function(){
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addCampoBase),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('El campo base no ha sido creado, revisa tus datos requeridos');
+        console.warn("BasesCtrl > AddCampoBase > mantBasesCampos >>> ERROR WS");
+      }
+      else{
+        var campoBase_checked = angular.isNumber(data[0].Column1);
+        if(campoBase_checked == true){
+          $scope.listaBasesCamposResult2.push($scope.addCampoBase);
+          $scope.addCampoBase = { op: "mantBasesCampos", Id: "0", BaseId: $scope.addBase.Id, Titulo: "", 
+            NombreCampo: "", TipoDato: "", TipoCampo: "", Longitud: "", 
+            ValorDefault: "", Requerido: "", Orden: "", Activo: "", 
+            UserId: myid };
+
+          ngToast.create('El campo para la base fue creado con exito');
+          console.info("BasesCtrl > AddCampoBase > mantBasesCampos >>> Ok");
+        }
+        else{
+          ngToast.create('El campo no ha sido creado');
+          $scope.result = data;
+          console.warn("BasesCtrl > AddCampoBase > mantBasesCampos >>> CAMPO BASE NO CREADO");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("BasesCtrl > AddCampoBase > mantBasesCampos >>> ERROR HTTP");
+      $modalStack.close();
+      return;
+    })
+  };
+
+*********************************************************************************************************
+  */
 
   //se muestra modal para editar una base
   $scope.openEdit = function(skill, nombre, activo){
@@ -1606,6 +1688,11 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
           return $scope;
           }
         }
+      });
+
+      modalInstance.result.then(function(){
+        var start ="";
+        $scope.$emit('cargaListas');
       });
 
     })
@@ -1672,6 +1759,138 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
   $scope.CloseLines = function()
   {
     $modalStack.dismissAll();
+  };
+
+});
+
+//controlador para model de creacion de bases y campos
+app.controller("ModalCreate_BaseController", function($scope, $http, $modalInstance, ngToast, auth, dialogs, listaSkillsResult){
+  //get id de autenticado
+  var myid = $scope.status = auth.profileID;
+
+  $scope.listaSkillsResult = listaSkillsResult;
+  $scope.showCampos = false;
+  $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
+
+  //funcion que agrega una base nueva a la base de datos
+  $scope.AddBase = function(){
+    var dd = $scope.Fecha_Ini.getDate();
+    var mm = $scope.Fecha_Ini.getMonth()+1;
+    var yyyy = $scope.Fecha_Ini.getFullYear();
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+    $scope.addBase.FechaIni = yyyy+"-"+mm+"-"+dd;
+
+    dd = $scope.Fecha_Fin.getDate();
+    mm = $scope.Fecha_Fin.getMonth()+1;
+    yyyy = $scope.Fecha_Fin.getFullYear();
+    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+    $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
+
+    
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addBase),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('La base no ha sido creada, revisa tus datos requeridos');
+        console.warn("BasesCtrl > AddServicio > mantServicio >>> ERROR WS");
+      }
+      else{
+        var base_checked = angular.isNumber(data[0].Column1);
+        if(base_checked == true){
+          $scope.BaseId = data[0].Column1;
+          ngToast.create('La base fue creada con exito');
+          console.info("BasesCtrl > AddServicio > mantServicio >>> Ok");
+          $scope.$emit('cargaListas');
+
+          var dlg = dialogs.confirm('Selecciona una respuesta','¿Deseas dar de alta los campos para esta base?');
+          dlg.result.then(function(btn){
+
+            $scope.addCampoBase = { op: "mantBasesCampos", Id: "0", BaseId: $scope.BaseId, Titulo: "", 
+            NombreCampo: "", TipoDato: "", TipoCampo: "", Longitud: "", 
+            ValorDefault: "", Requerido: "", Orden: "", Activo: "", 
+            UserId: myid };
+
+            $scope.listaBasesCamposResult2 = {};
+            $scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
+            $scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
+            $scope.showCampos = true;
+          },function(btn){
+            $scope.showCampos = false;
+            $modalInstance.close();
+          });          
+        }
+        else{
+          ngToast.create('La base no ha sido creada');
+          $scope.result = data;
+          console.warn("BasesCtrl > AddServicio > mantServicio >>> BASE NO CREADA");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("BasesCtrl > AddServicio > mantServicio >>> ERROR HTTP");
+      return;
+    })
+  };
+
+  /*$scope.submitTest = function(){
+   
+      myFactory.callTest()
+      .then(function(data){
+        $scope.$apply(function () {
+          $scope.datoss = data;
+        });
+      }, function(data){
+        alert(data);
+      })
+    
+  }*/
+
+  $scope.AddCampoBase = function(){
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addCampoBase),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('El campo base no ha sido creado, revisa tus datos requeridos');
+        console.warn("BasesCtrl > AddCampoBase > mantBasesCampos >>> ERROR WS");
+      }
+      else{
+        var campoBase_checked = angular.isNumber(data[0].Column1);
+        if(campoBase_checked == true){
+          $scope.listaBasesCamposResult2.push($scope.addCampoBase);
+          $scope.addCampoBase = { op: "mantBasesCampos", Id: "0", BaseId: $scope.BaseId, Titulo: "", 
+            NombreCampo: "", TipoDato: "", TipoCampo: "", Longitud: "", 
+            ValorDefault: "", Requerido: "", Orden: "", Activo: "", 
+            UserId: myid };
+
+          ngToast.create('El campo para la base fue creado con exito');
+          console.info("BasesCtrl > AddCampoBase > mantBasesCampos >>> Ok");
+        }
+        else{
+          ngToast.create('El campo no ha sido creado');
+          $scope.result = data;
+          console.warn("BasesCtrl > AddCampoBase > mantBasesCampos >>> CAMPO BASE NO CREADO");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("BasesCtrl > AddCampoBase > mantBasesCampos >>> ERROR HTTP");
+      $modalInstance.close();
+      return;
+    })
   };
 
 });

@@ -303,6 +303,29 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
           ChromePhp::log("ERROR EN LLAMADA AL WS <<mantBases>> DESDE PHP: ".$exception->$detail );
         }
       break;
+      
+      case 'mantBasesCampos':
+        $a = array(
+          'Id' => $_POST['Id'],
+          'BaseId' => $_POST['BaseId'],
+          'Titulo' => $_POST['Titulo'],
+          'NombreCampo' => $_POST['NombreCampo'],
+          'TipoDato' => $_POST['TipoDato'],
+          'TipoCampo' => $_POST['TipoCampo'],
+          'Longitud' => $_POST['Longitud'],
+          'ValorDefault' => $_POST['ValorDefault'],
+          'Requerido' => $_POST['Requerido'],
+          'Orden' => $_POST['Orden'],
+          'Activo' => $_POST['Activo'],
+          'UserId' => $_POST['UserId']
+        );
+        try {
+          $res = $ws->mantBasesCampos($a);
+          echo $res->mantBasesCamposResult;
+        } catch (SoapFault $exception) {
+          ChromePhp::log("ERROR EN LLAMADA AL WS <<mantBasesCampos>> DESDE PHP: ".$exception->$detail );
+        }
+      break;
 
       case 'mantSkills':
         $a = array(

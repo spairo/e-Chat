@@ -126,6 +126,13 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="form-group">
+                <label for="a">* aaaaaa</label>
+                <select name="a" class="form-control">
+                  <option ng-repeat="s in datoss" value="{{s.nombre}}"> {{s.nombre}} </option>
+                </select>
+              </div> 
     </div>
   </section>
   <script type="text/ng-template" id="ModalCreate_Base.html">
@@ -185,7 +192,111 @@
       <div class="modal-body">
         <form name="ModalCreate_CamposBase_Form">
           <div class="check-element animate-hide">
-            <span class="glyphicon glyphicon-thumbs-up"></span> aqui va todo lo de campos de la base.
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <!--<th>nombre</th>-->
+                    <!--<th>skillsBasesCamposId</th>-->
+                    <!--<th>skillsBasesId</th>-->
+                    <th>titulo</th>
+                    <!--<th>nombre1</th>
+                    <th>tipoDato</th>
+                    <th>tipoCampo</th>
+                    <th>longitud</th>
+                    <th>valorDefault</th>
+                    <th>requerido</th>
+                    <th>orden</th>
+                    <th>activo</th>-->
+                    <!--<th>usuarioCreacion</th>-->
+                    <!--<th>fechaCreacion</th>-->
+                    <!--<th>usuarioModificacion</th>-->
+                    <!--<th>fechaModificacion</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="baseCampo in listaBasesCamposResult2" class="repeat-animation">
+                    <!--<td>{{baseCampo.nombre}}</td>-->
+                    <!--<td>{{baseCampo.skillsBasesCamposId}}</td>-->
+                    <!--<td>{{baseCampo.skillsBasesId}}</td>-->
+                    <td>{{baseCampo.Titulo}}</td>
+                    <!--<td>{{baseCampo.nombre1}}</td>
+                    <td>{{baseCampo.tipoDato}}</td>
+                    <td>{{baseCampo.tipoCampo}}</td>
+                    <td>{{baseCampo.longitud}}</td>
+                    <td>{{baseCampo.valorDefault}}</td>
+                    <td>{{baseCampo.requerido}}</td>
+                    <td>{{baseCampo.orden}}</td>
+                    <td>{{baseCampo.activo}}</td>-->
+                    <!--<td>{{baseCampo.usuarioCreacion}}</td>-->
+                    <!--<td>{{baseCampo.fechaCreacion}}</td>-->
+                    <!--<td>{{baseCampo.usuarioModificacion}}</td>-->
+                    <!--<td>{{baseCampo.fechaModificacion}}</td>-->
+                  </tr>
+                </tbody>
+              </table>
+              <br/>
+              <div class="form-group">
+                <label for="Titulo">* Titulo</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.Titulo" placeholder="Titulo" required>
+              </div>
+              <div class="form-group">
+                <label for="NombreCampo">* Nombre del Campo</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.NombreCampo" placeholder="Nombre del Campo" required>
+              </div>
+              <div class="form-group">
+                <label for="TipoDato">* Tipo de Dato</label>
+                <select name="TipoDato" class="form-control" ng-model="addCampoBase.TipoDato" required>
+                  <option ng-repeat="dato in listaTiposDeDato" value="{{dato.tipo}}"> {{dato.tipo}} </option>
+                </select>
+                <!--<p ng-show="ModalCreate_CamposBase_Form.TipoDato.$invalid && !ModalCreate_CamposBase_Form.TipoDato.$pristine" class="help-block">Se requiere Tipo.</p>-->
+              </div>
+              <div class="form-group">
+                <label for="TipoCampo">* Tipo de Campo</label>
+                <select name="TipoCampo" class="form-control" ng-model="addCampoBase.TipoCampo" required>
+                  <option ng-repeat="campo in listaTiposDeCampo" value="{{campo.campo}}"> {{campo.campo}} </option>
+                </select>
+                <!--<span class="error" ng-show="ModalCreate_CamposBase_Form.TipoCampo.$dirty && ModalCreate_CamposBase_Form.TipoCampo.$invalid">Select service</span>-->
+              </div>              
+              <div class="form-group">
+                <label for="Longitud">* Longitud</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.Longitud" placeholder="Longitud" required>
+              </div>
+              <div class="form-group">
+                <label for="ValorDefault">* Valor Default</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.ValorDefault" placeholder="Valor Default" required>
+              </div>
+              <!--<div class="form-group">
+                <label for="Requerido">* Requerido</label>
+                <input type="checkbox" ng-model="addCampoBase.Requerido" ng-true-value="'1'" ng-false-value="'0'">
+              </div>-->
+              <div class="form-group">
+                <label for="Requerido">* Requerido</label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Requerido" value="1">Si Requerido
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Requerido" value="0">No Requerido
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="Orden">* Orden</label>
+                <input type="number" name="orden" ng-model="addCampoBase.Orden"
+                 min="1" max="99" required>
+              </div>
+              <div class="form-group">
+                <label for="Estatus">* Estatus</label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Activo" value="1">Activo
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Activo" value="0">Inactivo
+                </label>
+              </div>
+              
+              <button class="btn btn-primary" ng-click="AddCampoBase()">Crear</button>
+              <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+            </div>
           </div>
         </form>
       </div>

@@ -53,3 +53,32 @@ app.factory("localize", function($http, $rootScope, $window) {
   }
 
 });
+
+
+
+app.factory('myFactory', function($http, $q) {
+  var service = {};
+
+  var getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+
+  service.callTest = function(){
+    var deferred = $q.defer();
+
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param(getListaBases),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+       deferred.resolve(data);
+    })
+    .error(function(data){
+      deferred.reject('There was an error')
+    })
+
+    return deferred.promise;
+  }
+
+  return service;
+});
