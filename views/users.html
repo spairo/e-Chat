@@ -20,7 +20,7 @@
                   <div class="widget-container">
                     <div class="form-group">
                       <label for="Rol">Filtrar por Perfil:</label>
-                      <input type="text" class="form-control" ng-value="search.perfil">
+                      <input type="text" class="form-control" ng-model="search.perfil">
                     </div>
                   </div>
                 </div>
@@ -28,18 +28,16 @@
                   <div class="widget-container">
                     <div class="form-group">
                       <label for="Rol">Filtrar por Servicio:</label>
-                      <input type="text" class="form-control" ng-value="search.servicio">
+                      <input type="text" class="form-control" ng-model="search.servicio">
                     </div>
                   </div>
                 </div>
             </div>
         </div>
         <hr>
-
         <div class="btn-group btn-group-lg pull-right" role="group">
           <button type="button" class="btn btn-default" ng-click="CreateUser()"><span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-user"></span></button>
         </div>
-        <br />
         <table class="table">
           <thead>
             <tr>
@@ -57,7 +55,7 @@
           <tbody>
             <tr ng-repeat="usersList in getUsers | filter:search" class="repeat-animation">
               <td>{{usersList.usuariosId}}</td>
-              <td>{{usersList.perfil}}</td>
+              <td>{{usersList.perfilesId}} - {{usersList.perfil}}</td>
               <td>{{usersList.nombres}}  {{usersList.apellidos}}</td>
               <td>{{usersList.usuario}}</td>
               <td>{{usersList.password}}</td>
@@ -66,7 +64,7 @@
               <td>{{usersList.activo}}</td>
               <td>
                 <div class="btn-group" role="group" aria-label="Edit">
-                  <button type="button" class="btn btn-default" ng-click="openedit(usersList.usuariosId, usersList.perfil, usersList.nombres, usersList.apellidos, usersList.usuario, usersList.password, usersList.sexo, usersList.servicio)"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button type="button" class="btn btn-default" ng-click="openedit(usersList.usuariosId, usersList.perfilesId, usersList.perfil, usersList.nombres, usersList.apellidos, usersList.usuario, usersList.password, usersList.sexo, usersList.servicio, usersList.activo)"><span class="glyphicon glyphicon-edit"></span></button>
                 </div>
               </td>
             </tr>
@@ -145,17 +143,6 @@
       </div>
       <div class="modal-body">
 
-
-      Id: userdatas[0].id,
-      PerfilId: userdatas[0].profile,
-      Nombre: userdatas[0].name,
-      Apellidos: userdatas[0].lastname,
-      Sexo: userdatas[0].sex,
-      Usuario: userdatas[0].user,
-      Password: userdatas[0].pass,
-      Activo
-      UserIdModif
-
           <form>
             <div class="form-group">
               <label for="Nombre">Nombre</label>
@@ -191,8 +178,6 @@
               <select class="form-control" ng-model="EditUs.PerfilId">
                 <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
               </select>
-
-              <select class="form-control" data-ng-options="o.rol for o in roloptions" data-ng-model="EditUs" ng-change="changedValueCliente(EditUs)" required></select>
             </div>
 
             <div class="form-group">

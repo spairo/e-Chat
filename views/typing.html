@@ -14,7 +14,23 @@
                       <h3>Tipificaciones Arbol<h3>
                       <hr>
                       <!-- as a Dom element -->
-  
+                      <treecontrol class="tree-classic"
+                         tree-model="dataForTheTree"
+                         options="treeOptions"
+                         on-selection="showSelected(node)"
+                         selected-node="node1">
+                         Cliente: {{node.cliente}}
+                      </treecontrol>
+                      <!-- as an attribute -->
+
+                      <div treecontrol class="tree-classic"
+                         tree-model="listAtentoClients"
+                         options="treeOptions"
+                         on-selection="showSelected(node)"
+                         selected-node="node1">
+                         employee: {{node.cliente}} age {{node.cliente}}
+                      </div>
+                      
                   </div>
               </div>
           </div>

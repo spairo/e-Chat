@@ -20,7 +20,7 @@
                 <div class="widget-container">
                   <div class="form-group">
                     <label for="Rol">Filtrar Linea de Negocio:</label>
-                    <input type="text" class="form-control" ng-model="name.linea" placeholder="Nombre">
+                    <input type="text" class="form-control" ng-model="search.linea" placeholder="Nombre">
                   </div>
                 </div>
               </div>
@@ -35,7 +35,6 @@
               </div>
           </div>
       </div>
-      <br />
       <table class="table">
         <thead>
           <tr>
@@ -47,7 +46,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="business in getBusiness | filter:search | filter:name" class="repeat-animation">
+          <tr ng-repeat="business in getBusiness | filter:search" class="repeat-animation">
             <td>{{business.lineaNegocioId}}</td>
             <td>{{business.linea}}</td>
             <td>{{business.descripcion}}</td>
