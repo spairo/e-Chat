@@ -97,6 +97,7 @@
                           <!--<th>fechaCreacion</th>-->
                           <!--<th>usuarioModificacion</th>-->
                           <!--<th>fechaModificacion</th>-->
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -117,6 +118,11 @@
                           <!--<td>{{baseCampo.fechaCreacion}}</td>-->
                           <!--<td>{{baseCampo.usuarioModificacion}}</td>-->
                           <!--<td>{{baseCampo.fechaModificacion}}</td>-->
+                          <td>
+                            <div class="btn-group" role="group" aria-label="Edit">
+                              <button type="button" class="btn btn-default" ng-click="openCampoEdit(baseCampo)"><span class="glyphicon glyphicon-edit"></span></button>
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -126,13 +132,6 @@
             </tr>
           </tbody>
         </table>
-
-        <div class="form-group">
-                <label for="a">* aaaaaa</label>
-                <select name="a" class="form-control">
-                  <option ng-repeat="s in datoss" value="{{s.nombre}}"> {{s.nombre}} </option>
-                </select>
-              </div> 
     </div>
   </section>
   <script type="text/ng-template" id="ModalCreate_Base.html">
@@ -200,14 +199,14 @@
                     <!--<th>skillsBasesCamposId</th>-->
                     <!--<th>skillsBasesId</th>-->
                     <th>titulo</th>
-                    <!--<th>nombre1</th>
+                    <th>nombre1</th>
                     <th>tipoDato</th>
                     <th>tipoCampo</th>
                     <th>longitud</th>
                     <th>valorDefault</th>
                     <th>requerido</th>
                     <th>orden</th>
-                    <th>activo</th>-->
+                    <th>activo</th>
                     <!--<th>usuarioCreacion</th>-->
                     <!--<th>fechaCreacion</th>-->
                     <!--<th>usuarioModificacion</th>-->
@@ -215,19 +214,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="baseCampo in listaBasesCamposResult2" class="repeat-animation">
+                  <tr ng-repeat="baseCampo in listaBasesCamposResult" class="repeat-animation">
                     <!--<td>{{baseCampo.nombre}}</td>-->
                     <!--<td>{{baseCampo.skillsBasesCamposId}}</td>-->
                     <!--<td>{{baseCampo.skillsBasesId}}</td>-->
-                    <td>{{baseCampo.Titulo}}</td>
-                    <!--<td>{{baseCampo.nombre1}}</td>
+                    <td>{{baseCampo.titulo}}</td>
+                    <td>{{baseCampo.nombre1}}</td>
                     <td>{{baseCampo.tipoDato}}</td>
                     <td>{{baseCampo.tipoCampo}}</td>
                     <td>{{baseCampo.longitud}}</td>
                     <td>{{baseCampo.valorDefault}}</td>
                     <td>{{baseCampo.requerido}}</td>
                     <td>{{baseCampo.orden}}</td>
-                    <td>{{baseCampo.activo}}</td>-->
+                    <td>{{baseCampo.activo}}</td>
                     <!--<td>{{baseCampo.usuarioCreacion}}</td>-->
                     <!--<td>{{baseCampo.fechaCreacion}}</td>-->
                     <!--<td>{{baseCampo.usuarioModificacion}}</td>-->
@@ -295,6 +294,7 @@
               </div>
               
               <button class="btn btn-primary" ng-click="AddCampoBase()">Crear</button>
+              <button class="btn btn-danger" ng-click="CloseLines()">Listo</button>
               <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
             </div>
           </div>
@@ -310,12 +310,9 @@
       <div class="modal-body">
         <form>
 
-          <div class="form-group">
+          <div class="form-group">            
             <label for="Skill">* Skill</label>
-            <select class="form-control" ng-model="addBase.SkillId" required>
-              <option ng-repeat="skill in listaSkillsResult" value="{{skill.skillsId}}"> {{skill.skill}} </option>
-              <select class="form-control" data-ng-options="skill.skill for skill in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
-            </select>
+              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
           </div>
 
 
@@ -331,12 +328,61 @@
 
           <div class="form-group">
             <label for="FechaIni">  Fecha Inicial</label>
-            <input type="date" name="FechaIni" class="form-control" ng-model="editBase.FechaIni" placeholder="yyyy-MM-dd">
+            <input type="date" name="FechaIni" class="form-control" ng-model="fechas.FechaIni" placeholder="yyyy-MM-dd">
           </div>
 
           <div class="form-group">
             <label for="FechaFin">  Fecha Final</label>
-            <input type="date" name="FechaFin" class="form-control" ng-model="editBase.FechaFin" placeholder="yyyy-MM-dd">
+            <input type="date" name="FechaFin" class="form-control" ng-model="fechas.FechaFin" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="EditBase()">Editar</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit_CampoBase.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Editar Base</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">            
+            <label for="Skill">* Skill</label>
+              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="NombreBase">* Nombre de Base</label>
+            <input type="text" class="form-control" ng-model="editBase.NombreBase" placeholder="Nombre de Base" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Descripcion">* Descripcion</label>
+            <input type="text" class="form-control" ng-model="editBase.Descripcion" placeholder="Descripcion" required>
+          </div>
+
+          <div class="form-group">
+            <label for="FechaIni">  Fecha Inicial</label>
+            <input type="date" name="FechaIni" class="form-control" ng-model="fechas.FechaIni" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="FechaFin">  Fecha Final</label>
+            <input type="date" name="FechaFin" class="form-control" ng-model="fechas.FechaFin" placeholder="yyyy-MM-dd">
           </div>
 
           <div class="form-group">

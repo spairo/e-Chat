@@ -6,7 +6,7 @@ ChromePhp::log("INICIA PHP");
 session_start();
 header('Content-type: application/json');
 
-$ws = new SoapClient('http://172.18.149.122:8050/Camu_Service.asmx?WSDL');
+$ws = new SoapClient('http://172.18.149.178:8050/Camu_Service.asmx?WSDL');
 
 
 $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
