@@ -41,20 +41,15 @@ app.directive("customBackground", function() {
           case "/pages/500":
           case "/signin":
           return $element.addClass("body-special");
-          case "/pages/lock-screen":
-          return $element.addClass("body-special body-lock");
-          case "/tasks":
-          return $element.addClass("body-tasks")
         }
       }, addBg($location.path()), $scope.$watch(path, function(newVal, oldVal) {
           return newVal !== oldVal ? addBg($location.path()) : void 0
       })
     }]
   }
-
 });
 
-app.directive("toggleMinNav", function($rootScope) {
+app.directive("toggleMinNav", function($rootScope){
   return {
     restrict: "A",
     link: function(scope, ele) {

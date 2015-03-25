@@ -1,5 +1,3 @@
-'use strict';
-
 /**
 * @ngdoc overview
 * @name CamuApp
@@ -9,60 +7,86 @@
 *
 * Main module of the application.
 */
+'use strict';
 
-var app = angular.module("app", ["ngRoute", "ngSanitize", "ngAnimate", "ui.bootstrap", "ngCookies", "ngToast", "treeControl", "angular-loading-bar", "dialogs.main"])
+var app = angular.module("app",
+  [
+    "ui.router",
+    "ngSanitize",
+    "ngAnimate",
+    "ui.bootstrap",
+    "ngCookies",
+    "ngToast",
+    "treeControl",
+    "angular-loading-bar",
+    "dialogs.main"
+  ]
+)
 
-app.config(["$routeProvider", function($routeProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
 
-      return $routeProvider.when("/", {
-        redirectTo: "/signin"
-      })
-      .when("/pages/blank", {
-        templateUrl: "views/pages/blank.html"
-      })
-      .when("/pages/grid", {
-        templateUrl: "views/pages/grid.html"
-      })
-      .when("/signin", {
-        templateUrl: "views/signin.html"
-      })
-      .when("/dashboard", {
-        templateUrl: "views/dashboard.html"
-      })
-      .when('/catalogs/services',{
-        templateUrl: 'views/services.html'
-      })
-      .when('/catalogs/profiles',{
-        templateUrl: 'views/profiles.html'
-      })
-      .when('/catalogs/users',{
-        templateUrl: 'views/users.html'
-      })
-      .when('/catalogs/centers',{
-        templateUrl: 'views/centers.html'
-      })
-      .when('/catalogs/channels',{
-        templateUrl: 'views/channels.html'
-      })
-      .when('/catalogs/business',{
-        templateUrl: 'views/businessflow.html'
-      })
-      .when('/catalogs/clients',{
-        templateUrl: 'views/clients.html'
-      })
-      .when('/catalogs/typing',{
-        templateUrl: 'views/typing.html'
-      })
-      .when('/catalogs/bases',{
-        templateUrl: 'views/bases.html'
-      })
-      .when('/catalogs/skills',{
-        templateUrl: 'views/skills.html'
-      })
-      .otherwise({
-        redirectTo: "/signin"
-      })
-}]);
+    $stateProvider
+
+    .state('pages/blank', {
+      url: '/pages/blank',
+      templateUrl: 'views/pages/blank.html',
+    })
+    .state('pages/grid', {
+      url: '/pages/grid',
+      templateUrl: 'views/pages/grid.html',
+    })
+    .state('signin', {
+      url: '/signin',
+      templateUrl: 'views/signin.html',
+    })
+    .state('dashboard', {
+      url: '/dashboard',
+      templateUrl: 'views/dashboard.html',
+    })
+    .state('catalogs/services', {
+      url: '/catalogs/services',
+      templateUrl: 'views/services.html',
+    })
+    .state('catalogs/profiles', {
+      url: '/catalogs/profiles',
+      templateUrl: 'views/profiles.html',
+    })
+    .state('catalogs/users', {
+      url: '/catalogs/users',
+      templateUrl: 'views/users.html',
+    })
+    .state('catalogs/centers', {
+      url: '/catalogs/centers',
+      templateUrl: 'views/centers.html',
+    })
+    .state('catalogs/channels', {
+      url: '/catalogs/channels',
+      templateUrl: 'views/channels.html',
+    })
+    .state('catalogs/business', {
+      url: '/catalogs/business',
+      templateUrl: 'views/channels.html',
+    })
+    .state('catalogs/clients', {
+      url: '/catalogs/clients',
+      templateUrl: 'views/clients.html',
+    })
+    .state('catalogs/bases', {
+      url: '/catalogs/bases',
+      templateUrl: 'views/bases.html',
+    })
+    .state('catalogs/skills', {
+      url: '/catalogs/skills',
+      templateUrl: 'views/skills.html',
+    })
+    .state('catalogs/typing', {
+      url: '/catalogs/typing',
+      templateUrl: 'views/typing.html',
+    });
+
+    // catch all route
+    $urlRouterProvider.otherwise('/signin');
+})
 
 app.config(['ngToastProvider', function(ngToast){
     ngToast.configure({

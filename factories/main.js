@@ -87,7 +87,7 @@ app.factory("taskStorage", function() {
   }
 });
 
-app.factory("localize", function($http, $rootScope, $window) {
+app.factory("localize", function($http, $rootScope, $window){
 
   var localize;
   return localize = {

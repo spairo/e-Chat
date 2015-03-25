@@ -41,7 +41,7 @@
       <hr>
 
         <div class="btn-group btn-group-lg pull-right" role="group">
-          <button type="button" class="btn btn-default" ng-click="CreateBase()"><span class="glyphicon glyphicon-plus"> Bases</span></button>
+          <button type="button" class="btn btn-default" ng-click="CreateBase()"><span class="glyphicon glyphicon-plus"></span> Bases</button>
         </div>
         <br />
         <table class="table">
@@ -132,7 +132,7 @@
                 <select name="a" class="form-control">
                   <option ng-repeat="s in datoss" value="{{s.nombre}}"> {{s.nombre}} </option>
                 </select>
-              </div> 
+              </div>
     </div>
   </section>
   <script type="text/ng-template" id="ModalCreate_Base.html">
@@ -257,7 +257,7 @@
                   <option ng-repeat="campo in listaTiposDeCampo" value="{{campo.campo}}"> {{campo.campo}} </option>
                 </select>
                 <!--<span class="error" ng-show="ModalCreate_CamposBase_Form.TipoCampo.$dirty && ModalCreate_CamposBase_Form.TipoCampo.$invalid">Select service</span>-->
-              </div>              
+              </div>
               <div class="form-group">
                 <label for="Longitud">* Longitud</label>
                 <input type="text" class="form-control" ng-model="addCampoBase.Longitud" placeholder="Longitud" required>
@@ -293,7 +293,7 @@
                   <input type="radio" ng-model="addCampoBase.Activo" value="0">Inactivo
                 </label>
               </div>
-              
+
               <button class="btn btn-primary" ng-click="AddCampoBase()">Crear</button>
               <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
             </div>
