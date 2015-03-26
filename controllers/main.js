@@ -1061,14 +1061,6 @@ app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFact
 
     $scope.getLN = TypingLNFactory;
 
-    //Customers
-    $scope.getTypiClients = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
-
-    $http({
-      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypiClients), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){ $scope.listAtentosClient = data; })
-
 
 });
 
