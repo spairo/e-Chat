@@ -1,65 +1,26 @@
 <div class="page" ng-controller="TypingCtrl">
   <div class="panel panel-default">
-      <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Tipificaciones</strong></div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Linea</th>
-              <th>Linea</th>
-              <th>Activo</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="ln in LNlist" class="repeat-animation">
-              <td>{{ln.lineaNegocioId}}</td>
-              <td>{{ln.linea}}</td>
-              <td>{{ln.activo}}</td>
-              <td>
-                <div class="btn-group" role="group" aria-label="Edit">
-                  <button type="button" class="btn btn-default" title="Seleccionar" ng-click="selected(ln.lineaNegocioId)"><span class="glyphicon glyphicon-hand-right"></span></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
-        <div class="grid-structure">
-          <div class="row">
-              <div class="col-md-6">
-                  <div class="widget-container">
-                    <pre>{{listAtentoClients}}</pre>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="widget-container">
-                      <h3>Tipificaciones Arbol<h3>
-                      <hr>
-
-                      <!-- as a Dom element -->
-                      <treecontrol class="tree-classic"
-                         tree-model="dataForTheTree"
-                         options="treeOptions"
-                         on-selection="showSelected(node)"
-                         selected-node="node1">
-                         Cliente: {{node.cliente}}
-                      </treecontrol>
-                      <!-- as an attribute -->
-
-                      <div treecontrol class="tree-classic"
-                         tree-model="listAtentoClients"
-                         options="treeOptions"
-                         on-selection="showSelected(node)"
-                         selected-node="node1">
-                         employee: {{node.cliente}} age {{node.cliente}}
-                      </div>
-
-                  </div>
-              </div>
-          </div>
+    <div class="panel-body">
+      <div class="page-header text-center">
+        <h2>Tipificaciones</h2>
+        {{status}}
+        <div id="status-buttons" class="text-center">
+          <a ui-sref-active="active" ui-sref=".lines">
+            <span>1</span> 1
+          </a>
+          <a ui-sref-active="active" ui-sref=".customers">
+            <span>2</span> 2
+          </a>
+          <a ui-sref-active="active" ui-sref=".services">
+            <span>3</span> 3
+          </a>
         </div>
       </div>
+
+      <div id="signup-form" ng-submit="processForm()">
+        <div id="form-views" ui-view></div>
+      </div>
+
+    </div>
   </div>
 </div>

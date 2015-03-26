@@ -12,6 +12,11 @@ app.factory('auth',function(){
   return { user:"", profile:"", profileID:"" };
 });
 
+
+app.factory('TypingLNFactory',function(){
+  return { id:"", linea:"" };
+});
+
 /*
 app.factory('listline', function($http) {
 

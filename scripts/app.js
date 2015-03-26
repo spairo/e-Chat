@@ -79,10 +79,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: '/catalogs/skills',
       templateUrl: 'views/skills.html',
     })
-    .state('catalogs/typing', {
-      url: '/catalogs/typing',
+    .state('typing', {
+      url: '/typing',
       templateUrl: 'views/typing.html',
-    });
+    })
+
+       //Multi Typing
+
+       .state('typing.lines', {
+           url: '/lines',
+           templateUrl: 'views/typing-line.html'
+       })
+       .state('typing.customers', {
+           url: '/customers',
+           templateUrl: 'views/typing-customers.html'
+       })
+       .state('typing.services', {
+           url: '/services',
+           templateUrl: 'views/typing-services.html'
+       });
 
     // catch all route
     $urlRouterProvider.otherwise('/signin');
