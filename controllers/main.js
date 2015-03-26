@@ -996,13 +996,6 @@ app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngT
     $scope.TypingLN.id = lineaNegocioId;
     $scope.TypingLN.linea = linea;
 
-    //cookies everywhere
-    /*
-    $scope.LoginFactory = auth;
-    $scope.LoginFactory.user = $cookies.usuariocookie = data[0].usuario;
-    $scope.LoginFactory.profile = $cookies.perfilcookie = data[0].perfil;
-    $scope.LoginFactory.profileID = $cookies.perfilesIdcookie = data[0].perfilesId;
-    */
 
   };
 
@@ -1066,7 +1059,7 @@ app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFact
 
     //$scope.items = TypingService.getItem();
 
-    $scope.status = TypingLNFactory;
+    $scope.getLN = TypingLNFactory;
 
     //Customers
     $scope.getTypiClients = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
@@ -1080,10 +1073,13 @@ app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFact
 });
 
 // Clientes Controller
-app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
+
+  //get values LN factory
+  $scope.getLN = TypingLNFactory;
 
   //modelos
   $scope.addClient = { op: "mantClienteAtento", Id: "0", LineaId: "", Cliente: "", Activo: "",  UserId: myid };

@@ -1,1 +1,151 @@
-{{listAtentosClient}}
+<div class="page" ng-controller="ClientesCtrl">
+  <pre>{{getLN.id}}</pre>
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <strong><span class="glyphicon glyphicon-th"></span> Clientes Atento</strong>
+    </div>
+    <div class="panel-body">
+      <div class="grid-structure">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SLinea">Linea de Negocio</label>
+                <input type="text" class="form-control" ng-model="search.linea" placeholder="Linea de Negocio">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SCliente">Cliente</label>
+                <input type="text" class="form-control" ng-model="search.cliente" placeholder="Cliente">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <label for="Rol">Activos:</label>
+              <select class="form-control" ng-model="search.activo">
+                <option value="">Todos</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+      <div class="btn-group btn-group-lg pull-right" role="group">
+        <button type="button" class="btn btn-default" ng-click="CreateClient()"><span class="glyphicon glyphicon-plus">Cliente</span></button>
+      </div>
+      <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <!--<th>clienteAtentoId</th>-->
+            <!--<th>lineaNegocioId</th>-->
+            <th>cliente</th>
+            <th>activo</th>
+            <!--<th>usuarioCreacion</th>-->
+            <!--<th>fechaCreacion</th>-->
+            <!--<th>usuarioModificacion</th>-->
+            <!--<th>fechaModificacion</th>-->
+            <th>linea</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="cliente in listaClienteAtentoResult | filter:search | filter:{ 'clienteAtentoId':  getLN.id }:true" class="repeat-animation">
+            <!--<td>{{cliente.cliente}}  {{usersList.apellidos}}</td>-->
+            <!--<td>{{cliente.clienteAtentoId}}</td>-->
+            <!--<td>{{cliente.lineaNegocioId}}</td>-->
+            <td>{{cliente.cliente}}</td>
+            <td>{{cliente.activo}}</td>
+            <!--<td>{{cliente.usuarioCreacion}}</td>-->
+            <!--<td>{{cliente.fechaCreacion}}</td>-->
+            <!--<td>{{cliente.usuarioModificacion}}</td>-->
+            <!--<td>{{cliente.fechaModificacion}}</td>-->
+            <td>{{cliente.linea}}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Edit">
+                <button type="button" class="btn btn-default" ng-click="openEdit(cliente.linea, cliente.cliente, cliente.activo)"><span class="glyphicon glyphicon-edit"></span></button>
+                    <!--<button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>-->
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <script type="text/ng-template" id="ModalCreate_Client.html">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Cliente</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="Linea">* Linea de Negocio</label>
+            <select class="form-control" ng-model="addClient.LineaId" required>
+              <option ng-repeat="linea in listaLineaNegocioResult" value="{{linea.lineaNegocioId}}"> {{linea.linea}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="Cliente">* Cliente</label>
+            <input type="text" class="form-control" ng-model="addClient.Cliente" placeholder="Cliente" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addClient.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addClient.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="AddClient()">Crear</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit_Client.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Editar Cliente</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="Linea">* Linea de Negocio</label>
+            <select class="form-control" data-ng-options="o.linea for o in listaLineaNegocioResult" data-ng-model="selectedOption" ng-change="changedValueLine(selectedOption)" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="Cliente">* Cliente</label>
+            <input type="text" class="form-control" ng-model="editClient.Cliente" placeholder="Cliente" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editClient.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editClient.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="EditClient()">Editar</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+</div>
