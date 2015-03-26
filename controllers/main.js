@@ -730,7 +730,6 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
 
    //Get Channels list
-
   $scope.$on('LoadList', function(event){
     $http({
       method : 'POST',
@@ -1649,38 +1648,20 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   //se muestra modal para editar una base
   $scope.openCampoEdit = function(baseCampo){
-    //consultamos los datos de la base a la que se le dio click para editar
-    //$scope.getListaBasesCampos = { op: "listaBasesCampos", Base: nombre1};
-
-    /*$http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaBasesCampos),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.listaBasesCamposResult = data;
-      console.info("BasesCtrl > openCampoEdit > getListaBasesCampos >>> OK");*/
-
-      var modalInstance = $modal.open({
-        templateUrl: 'ModalEdit_CampoBase.html',
-        controller: 'ModalEdit_CampoBaseController',
-        resolve: {
-          baseCampo: function () {
-          return baseCampo;
-          }
+    var modalInstance = $modal.open({
+      templateUrl: 'ModalEdit_CampoBase.html',
+      controller: 'ModalEdit_CampoBaseController',
+      resolve: {
+        baseCampo: function () {
+        return baseCampo;
         }
-      });
+      }
+    });
 
-      modalInstance.result.then(function(){
-        var start ="";
-        $scope.$emit('cargaListas');
-      });
-
-    /*})
-    .error(function(data){
-      console.error("BasesCtrl > openCampoEdit > getListaBasesCampos >>> ERROR HTTP");
-    })*/
+    modalInstance.result.then(function(){
+      var start ="";
+      $scope.$emit('cargaListas');
+    });
   };
 
 
