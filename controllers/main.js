@@ -256,6 +256,7 @@ app.controller('InstanceProfileCtrl', function($scope, $http, $modalInstance, $m
     })
 
   };
+
   $scope.CloseProfile = function(){ $modalStack.dismissAll(); };
 
 });
@@ -878,10 +879,9 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
 //Business Lines Controller
 
-app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth, listline){
+app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth, TypingService, TypingLNFactory){
 
   //Get Centers list
-  //$scope.getBusiness = listline.data;
   //$scope.getBusiness = listline.data;
 
   $scope.$on('LoadList', function(event){
@@ -985,6 +985,27 @@ app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngT
 
   };
 
+  //Selected Line
+
+  $scope.selected = function(lineaNegocioId, linea){
+
+    TypingService.addItem(lineaNegocioId, linea);
+
+    //add LN factory
+    $scope.TypingLN = TypingLNFactory;
+    $scope.TypingLN.id = lineaNegocioId;
+    $scope.TypingLN.linea = linea;
+
+    //cookies everywhere
+    /*
+    $scope.LoginFactory = auth;
+    $scope.LoginFactory.user = $cookies.usuariocookie = data[0].usuario;
+    $scope.LoginFactory.profile = $cookies.perfilcookie = data[0].perfil;
+    $scope.LoginFactory.profileID = $cookies.perfilesIdcookie = data[0].perfilesId;
+    */
+
+  };
+
 });
 
 app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, linesdata, grid){
@@ -1041,17 +1062,11 @@ app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $mod
 
 //Typing Controller
 
-app.controller("TypingCtrl", function($scope, $http){
+app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFactory){
 
-    //Business Lines
-    $scope.getTypingLN = { op: "listaLineaNegocio", Linea: "", Activo: ""};
+    //$scope.items = TypingService.getItem();
 
-    $http({
-      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypingLN), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){ $scope.LNlist = data;  console.log("***", data); })
-
-
+    $scope.status = TypingLNFactory;
 
     //Customers
     $scope.getTypiClients = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
@@ -1059,44 +1074,8 @@ app.controller("TypingCtrl", function($scope, $http){
     $http({
       method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypiClients), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
-    .success(function(data){ $scope.listAtentoClients = data; })
+    .success(function(data){ $scope.listAtentosClient = data; })
 
-    //Channels
-    $scope.getTypicha = { op: "listaCanales", Canal: "", Activo: "" };
-
-    $http({
-      method : 'POST', url : 'api/rest.php', data : $.param($scope.getTypicha), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){ $scope.Typichannel = data; })
-
-    $scope.treeOptions = {
-      nodeChildren: "children",
-      dirSelectable: true,
-      injectClasses: {
-          ul: "a1",
-          li: "a2",
-          liSelected: "a7",
-          iExpanded: "a3",
-          iCollapsed: "a4",
-          iLeaf: "a5",
-          label: "a6",
-          labelSelected: "a8"
-      }
-    }
-
-    $scope.dataForTheTree = [
-        { "name" : "Joe", "we" : "21", "children" : [
-            { "name" : "Smith", "we" : "42", "children" : [] },
-            { "name" : "Gary", "we" : "21", "children" : [
-                { "name" : "Jenifer", "we" : "23", "children" : [
-                    { "name" : "Dani", "we" : "32", "children" : [] },
-                    { "name" : "Max", "we" : "34", "children" : [] }
-                ]}
-            ]}
-        ]},
-        { "name" : "Albert", "we" : "33", "children" : [] },
-        { "name" : "Ron", "we" : "29", "children" : [] }
-    ];
 
 });
 
