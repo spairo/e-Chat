@@ -9746,7 +9746,7 @@ button.toast-close-button {
 
 /* Typing Pages */
 
-#signup-form{
+#multi-form{
   position:relative;
   min-height:300px;
   overflow:hidden;
@@ -9765,14 +9765,14 @@ button.toast-close-button {
 }
 
 /* enter animation */
-#form-views.ng-enter            {
-    -webkit-animation:slideInRight 0.5s both ease;
-    -moz-animation:slideInRight 0.5s both ease;
-    animation:slideInRight 0.5s both ease;
+#form-views.ng-enter{
+  -webkit-animation:slideInRight 0.5s both ease;
+  -moz-animation:slideInRight 0.5s both ease;
+  animation:slideInRight 0.5s both ease;
 }
 
 /* leave animation */
-#form-views.ng-leave            {
+#form-views.ng-leave{
     -webkit-animation:slideOutLeft 0.5s both ease;
     -moz-animation:slideOutLeft 0.5s both ease;
     animation:slideOutLeft 0.5s both ease;

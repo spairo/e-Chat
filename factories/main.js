@@ -14,7 +14,7 @@ app.factory('auth',function(){
 
 
 app.factory('TypingLNFactory',function(){
-  return { id:"", linea:"" };
+  return { id:"", linea:"", clienteAtentoId:"", cliente:"" };
 });
 
 /*

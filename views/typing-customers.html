@@ -1,5 +1,4 @@
 <div class="page" ng-controller="ClientesCtrl">
-  <pre>{{getLN.id}}</pre>
   <section class="panel panel-default">
     <div class="panel-heading">
       <strong><span class="glyphicon glyphicon-th"></span> Clientes Atento</strong>
@@ -60,7 +59,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="cliente in listaClienteAtentoResult | filter:search | filter:{ 'clienteAtentoId':  getLN.id }:true" class="repeat-animation">
+          <tr ng-repeat="cliente in listaClienteAtentoResult | filter:search | filter:{ 'lineaNegocioId':  getLN.id }:true" class="repeat-animation">
             <!--<td>{{cliente.cliente}}  {{usersList.apellidos}}</td>-->
             <!--<td>{{cliente.clienteAtentoId}}</td>-->
             <!--<td>{{cliente.lineaNegocioId}}</td>-->
@@ -73,8 +72,8 @@
             <td>{{cliente.linea}}</td>
             <td>
               <div class="btn-group" role="group" aria-label="Edit">
+                <button type="button" class="btn btn-default" ui-sref="typing.services" ng-click="selected(cliente.clienteAtentoId, cliente.cliente)"><span class="glyphicon glyphicon-ok-circle"></span></button>
                 <button type="button" class="btn btn-default" ng-click="openEdit(cliente.linea, cliente.cliente, cliente.activo)"><span class="glyphicon glyphicon-edit"></span></button>
-                    <!--<button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>-->
               </div>
             </td>
           </tr>

@@ -1061,7 +1061,6 @@ app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFact
 
     $scope.getLN = TypingLNFactory;
 
-
 });
 
 // Clientes Controller
@@ -1202,6 +1201,18 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
   $scope.CloseLines = function()
   {
     $modalStack.dismissAll();
+  };
+
+  $scope.selected = function(clienteAtentoId, cliente){
+
+    //TypingService.addItem(lineaNegocioId, linea);
+
+    //add LN factory
+    $scope.TypingLN = TypingLNFactory;
+    $scope.TypingLN.clienteAtentoId = clienteAtentoId;
+    $scope.TypingLN.cliente = cliente;
+
+
   };
 
 });

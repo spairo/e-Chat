@@ -97,6 +97,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
        .state('typing.services', {
            url: '/services',
            templateUrl: 'views/typing-services.html'
+       })
+       .state('typing.channels', {
+           url: '/channels',
+           templateUrl: 'views/typing-channels.html'
        });
 
     // catch all route

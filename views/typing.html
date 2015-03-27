@@ -1,9 +1,11 @@
 <div class="page" ng-controller="TypingCtrl">
   <div class="panel panel-default">
     <div class="panel-body">
-      <div class="page-header text-center">
-        <h1>Tipificaciones</h1>
-        {{getLN}}
+      <div class="pull-left">
+        <button ui-sref=".lines" class="btn btn-default glyphicon glyphicon-chevron-left"></button>
+      </div>
+
+      <div class="text-center">
         <div id="status-buttons" class="text-center">
           <a ui-sref-active="active" ui-sref=".lines">
             <span>1</span> 1
@@ -14,10 +16,21 @@
           <a ui-sref-active="active" ui-sref=".services">
             <span>3</span> 3
           </a>
+          <a ui-sref-active="active" ui-sref=".channels">
+            <span>4</span> 4
+          </a>
         </div>
       </div>
-
-      <div id="signup-form" ng-submit="processForm()">
+      <!-- Breadcrumbs -->
+      <div class="">
+        <ol class="breadcrumb">
+            <li><a href="javascript:;">{{getLN.linea}}</a></li>
+            <li><a href="javascript:;">{{getLN.cliente}}</a></li>
+            <li><a href="javascript:;"></a></li>
+        </ol>
+      </div>
+      <!-- end Breadcrumbs -->
+      <div id="multi-form" ng-submit="processForm()">
         <div id="form-views" ui-view></div>
       </div>
 
