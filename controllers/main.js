@@ -1018,7 +1018,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
     if($state.current.name == "bases.lines")
       $state.go('bases.clients');
     else if($state.current.name == "typing.lines")
-      $state.go('typing.customers');
+      $state.go('typing.clients');
   };
 
 });
@@ -1242,13 +1242,13 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
     $scope.TypingLN.clienteAtentoId = clienteAtentoId;
     $scope.TypingLN.cliente = cliente;
 
-    
+
     $scope.dataBases.clienteAtentoId = clienteAtentoId;
     $scope.dataBases.cliente = cliente;
 
     if($state.current.name == "bases.clients")
       $state.go('bases.services');
-    else if($state.current.name == "typing.customers")
+    else if($state.current.name == "typing.clients")
       $state.go('typing.services');
   };
 
@@ -2341,7 +2341,7 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
     if($state.current.name == "bases.skills")
       $state.go('bases.bases');
     else if($state.current.name == "typing.skills")
-      $state.go('typing.channels');
+      $state.go('typing.trees');
   };
 
 });
