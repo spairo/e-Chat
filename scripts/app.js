@@ -98,11 +98,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
            url: '/services',
            templateUrl: 'views/typing-services.html'
        })
-<<<<<<< HEAD
        .state('typing.channels', {
            url: '/channels',
            templateUrl: 'views/typing-channels.html'
-=======
+      })
 
     .state('bases', {
       url: '/bases',
@@ -134,7 +133,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
        .state('bases.bases', {
            url: '/bases/bases',
            templateUrl: 'views/bases/bases-bases.html'
->>>>>>> origin/master
        });
 
     // catch all route
