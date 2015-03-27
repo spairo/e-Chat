@@ -1,0 +1,36 @@
+<h1>Bases</h1>
+<div class="page" ng-controller="BasesFormCtrl">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="page-header text-center">
+        <h2>Bases</h2>
+        {{dataBases}}
+        <div id="status-buttons" class="text-center">
+          <a ui-sref-active="active" ui-sref=".lines">
+            <span>1</span> 1
+          </a>
+          <a ui-sref-active="active" ui-sref=".clients">
+            <span>2</span> 2
+          </a>
+          <a ui-sref-active="active" ui-sref=".services">
+            <span>3</span> 3
+          </a>
+          <a ui-sref-active="active" ui-sref=".channels">
+            <span>4</span> 4
+          </a>
+          <a ui-sref-active="active" ui-sref=".skills">
+            <span>5</span> 5
+          </a>
+          <a ui-sref-active="active" ui-sref=".bases">
+            <span>6</span> 6
+          </a>
+        </div>
+      </div>
+
+      <div id="signup-form" ng-submit="processForm()">
+        <div id="form-views" ui-view></div>
+      </div>
+
+    </div>
+  </div>
+</div>

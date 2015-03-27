@@ -1,4 +1,4 @@
-<h1>Services</h1>
+<h1>bases-services</h1>
 <div class="page" ng-controller="ServiciosCtrl">
   <section class="panel panel-default">
     <div class="panel-heading">
@@ -84,6 +84,7 @@
               <!--<td>{{servicio.fechaModificacion1}}</td>-->
               <td>
                 <div class="btn-group" role="group" aria-label="Edit">
+                  <button type="button" class="btn btn-default" ng-click="selected(servicio.serviciosId, servicio.servicio)"><span class="glyphicon glyphicon-ok"></span></button>
                   <button type="button" class="btn btn-default" ng-click="openEdit(servicio.servicio, servicio.cliente, servicio.activo)"><span class="glyphicon glyphicon-edit"></span></button>
                   <!--<button type="button" class="btn btn-default" ng-click="EraseUser()"><span class="glyphicon glyphicon-trash"></span></button>-->
                 </div>
@@ -161,4 +162,3 @@
   </script>
 
 </div>
-

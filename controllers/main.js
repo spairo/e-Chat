@@ -879,7 +879,7 @@ app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $m
 
 //Business Lines Controller
 
-app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngToast, auth, TypingService, TypingLNFactory){
+app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingService, TypingLNFactory, BasesService, BasesFactory){
 
   //Get Centers list
   //$scope.getBusiness = listline.data;
@@ -996,7 +996,17 @@ app.controller('BusinessCtrl', function ($scope, $http, $modal, $modalStack, ngT
     $scope.TypingLN.id = lineaNegocioId;
     $scope.TypingLN.linea = linea;
 
+    BasesService.addItem(lineaNegocioId, linea);
 
+    //add LN factory
+    $scope.dataBases = BasesFactory;
+    $scope.dataBases.lineaNegocioId = lineaNegocioId;
+    $scope.dataBases.linea = linea;
+
+    if($state.current.name == "bases.lines")
+      $state.go('bases.clients');
+    else if($state.current.name == "typing.lines")
+      $state.go('typing.customers');
   };
 
 });
@@ -1065,13 +1075,14 @@ app.controller("TypingCtrl", function($scope, $http, TypingService, TypingLNFact
 });
 
 // Clientes Controller
-app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory){
+app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
   $scope.getLN = TypingLNFactory;
+  $scope.dataBases = BasesFactory;
 
   //modelos
   $scope.addClient = { op: "mantClienteAtento", Id: "0", LineaId: "", Cliente: "", Activo: "",  UserId: myid };
@@ -1081,7 +1092,13 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
   $scope.$on('cargaListas', function(event){
 
     //get lista de clientes
-    $scope.getListaClientes = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
+    var linea = "";
+    if($state.current.name == "bases.lines")
+      linea = $scope.dataBases.linea;
+    else if($state.current.name == "typing.lines")
+      linea = $scope.getLN.linea;
+
+    $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
 
     $http({
       method : 'POST',
@@ -1098,7 +1115,7 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
     })
 
     //get lista de lineas de negocio
-    $scope.getListaLineas = { op: "listaLineaNegocio", Linea: "", Activo:""};
+    $scope.getListaLineas = { op: "listaLineaNegocio", Linea: linea, Activo:""};
 
     $http({
       method : 'POST',
@@ -1204,6 +1221,18 @@ app.controller("ClientesCtrl", function($scope, $http, $modal, $modalStack, ngTo
     $modalStack.dismissAll();
   };
 
+  //Selected cliente
+  $scope.selected = function(clienteAtentoId, cliente){
+    $scope.dataBases.clienteAtentoId = clienteAtentoId;
+    $scope.dataBases.cliente = cliente;
+
+
+    if($state.current.name == "bases.clients")
+      $state.go('bases.services');
+    else if($state.current.name == "typing.customers")
+      $state.go('typing.services');
+  };
+
 });
 
 //controlador para la tabla de lista de clientes
@@ -1287,18 +1316,36 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
 });
 
 // Servicios Controller
-app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
+
+  //get values LN factory
+  $scope.getLN = TypingLNFactory;
+  $scope.dataBases = BasesFactory;
 
   //modelos
   $scope.addServicio = { op: "mantServicio", id: "0", cliAteId: "", Servicio: "", Activo: "",  UserId: myid };
 
   $scope.$on('cargaListas', function(event){
+    
+    var cliente = "";
+    var linea = "";
+    if($state.current.name == "bases.services")
+    {
+      cliente = $scope.dataBases.cliente;
+      linea = $scope.dataBases.linea;
+    }
+    else if($state.current.name == "typing.services")
+    {
+      cliente = $scope.getLN.cliente;
+      linea = $scope.dataBases.linea;
+    }
+
 
     //get lista de servicios
-    $scope.getListaServicios = { op: "listaServicios", Servicio: "", ClienteAtento: "", Activo:""};
+    $scope.getListaServicios = { op: "listaServicios", Servicio: "", ClienteAtento: cliente, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1314,7 +1361,7 @@ app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngT
     })
 
     //get lista de clientes
-    $scope.getListaClientes = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
+    $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: cliente, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1417,6 +1464,18 @@ app.controller("ServiciosCtrl", function($scope, $http, $modal, $modalStack, ngT
     $modalStack.dismissAll();
   };
 
+  //Selected servicio
+  $scope.selected = function(serviciosId, servicio){
+    $scope.dataBases.serviciosId = serviciosId;
+    $scope.dataBases.servicio = servicio;
+
+
+    if($state.current.name == "bases.services")
+      $state.go('bases.channels');
+    else if($state.current.name == "typing.services")
+      $state.go('typing.channels');
+  };
+
 });
 
 //controlador para model de edicion de servicios
@@ -1495,6 +1554,34 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
   {
     $modalInstance.close();
   };
+
+});
+
+
+//Bases Form Controller
+
+app.controller("BasesFormCtrl", function($scope, $http, BasesService, BasesFactory){
+
+    //$scope.items = TypingService.getItem();
+
+    $scope.dataBases = BasesFactory;
+
+    //get lista de bases
+    $scope.getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.getListaBases),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $scope.listaBasesResult = data;
+      console.info("BasesFormCtrl > getListaBases >>> OK");
+    })
+    .error(function(data){
+      console.error("BasesFormCtrl > getListaBases >>> ERROR HTTP");
+    })
+
 
 });
 
