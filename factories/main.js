@@ -126,8 +126,6 @@ app.factory("localize", function($http, $rootScope, $window){
 
 });
 
-
-
 app.factory('myFactory', function($http, $q) {
   var service = {};
 
