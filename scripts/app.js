@@ -81,26 +81,34 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('typing', {
       url: '/typing',
-      templateUrl: 'views/typing.html',
+      templateUrl: 'views/typing/typing.html',
     })
 
        //Multi Typing
 
        .state('typing.lines', {
            url: '/lines',
-           templateUrl: 'views/typing-line.html'
+           templateUrl: 'views/typing/typing-line.html'
        })
-       .state('typing.customers', {
-           url: '/customers',
-           templateUrl: 'views/typing-customers.html'
+       .state('typing.clients', {
+           url: '/clients',
+           templateUrl: 'views/typing/typing-clients.html'
        })
        .state('typing.services', {
            url: '/services',
-           templateUrl: 'views/typing-services.html'
+           templateUrl: 'views/typing/typing-services.html'
        })
        .state('typing.channels', {
            url: '/channels',
-           templateUrl: 'views/typing-channels.html'
+           templateUrl: 'views/typing/typing-channels.html'
+       })
+       .state('typing.skills', {
+           url: '/skills',
+           templateUrl: 'views/typing/typing-skills.html'
+       })
+       .state('typing.trees', {
+           url: '/trees',
+           templateUrl: 'views/typing/typing-trees.html'
        })
 
     .state('bases', {

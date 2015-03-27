@@ -1234,8 +1234,7 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
   //Selected cliente
   $scope.selected = function(clienteAtentoId, cliente){
-<<<<<<< HEAD
-=======
+
     //TypingService.addItem(lineaNegocioId, linea);
 
     //add LN factory
@@ -1243,7 +1242,7 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
     $scope.TypingLN.clienteAtentoId = clienteAtentoId;
     $scope.TypingLN.cliente = cliente;
 
->>>>>>> origin/master
+    
     $scope.dataBases.clienteAtentoId = clienteAtentoId;
     $scope.dataBases.cliente = cliente;
 
