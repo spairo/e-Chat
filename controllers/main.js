@@ -728,10 +728,11 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 
 //Channels Controller
 
-app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
 
    //Get Channels list
   $scope.$on('LoadList', function(event){
+
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -827,6 +828,17 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
       }
     });
 
+  };
+
+  //Selected channel
+  $scope.selected = function(canalesId, canal){
+    $scope.dataBases.canalesId = canalesId;
+    $scope.dataBases.canal = canal;
+
+    if($state.current.name == "bases.channels")
+      $state.go('bases.skills');
+    else if($state.current.name == "typing.channels")
+      $state.go('typing.skills');
   };
 
 });
