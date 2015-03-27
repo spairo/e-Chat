@@ -1,1 +1,402 @@
-<h1>bases-bases</h1>
+<div class="page" ng-controller="BasesCtrl">
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <strong><span class="glyphicon glyphicon-th"></span> Bases</strong>
+    </div>
+    <div class="panel-body">
+      <div class="grid-structure">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SSkill">Skill</label>
+                <input type="text" class="form-control" ng-model="search.skill" placeholder="Linea de Negocio">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <div class="form-group">
+                <label for="SBase">Base</label>
+                <input type="text" class="form-control" ng-model="search.nombre" placeholder="Cliente">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="widget-container">
+              <label for="Rol">Activos:</label>
+              <select class="form-control" ng-model="search.activo">
+                <option value="">Todos</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+
+        <div class="btn-group btn-group-lg pull-right" role="group">
+          <button type="button" class="btn btn-default" ng-click="CreateBase()"><span class="glyphicon glyphicon-plus"></span> Bases</button>
+        </div>
+        <br />
+        <table class="table">
+          <thead>
+            <tr>
+              <th>skillsBasesId</th>
+              <th>nombre</th>
+              <th>descripcion</th>
+              <th>fechaInicio</th>
+              <th>fechaFin</th>
+              <th>activo</th>
+              <th>skill</th>
+              <th>skillsId</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-ng-repeat="base in listaBasesResult | filter:search" data-ng-switch on="baseDataCollapse[$index]">
+            <tr data-ng-click="selectTableRow($index, base.nombre)">
+              <td>{{base.skillsBasesId}}</td>
+              <td>{{base.nombre}}</td>
+              <td>{{base.descripcion}}</td>
+              <td>{{base.fechaInicio | date}}</td>
+              <td>{{base.fechaFin | date}}</td>
+              <td>{{base.activo}}</td>
+              <td>{{base.skill}}</td>
+              <td>{{base.skillsId}}</td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Edit">
+                  <button type="button" class="btn btn-default" ng-click="openEdit(base.skill, base.nombre, base.activo)"><span class="glyphicon glyphicon-edit"></span></button>
+                </div>
+              </td>
+            </tr>
+            <tr data-ng-switch-when="true">
+              <td colspan=8>
+                <div>
+                  <div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <!--<th>nombre</th>-->
+                          <!--<th>skillsBasesCamposId</th>-->
+                          <!--<th>skillsBasesId</th>-->
+                          <th>titulo</th>
+                          <th>nombre1</th>
+                          <th>tipoDato</th>
+                          <th>tipoCampo</th>
+                          <th>longitud</th>
+                          <th>valorDefault</th>
+                          <th>requerido</th>
+                          <th>orden</th>
+                          <th>activo</th>
+                          <!--<th>usuarioCreacion</th>-->
+                          <!--<th>fechaCreacion</th>-->
+                          <!--<th>usuarioModificacion</th>-->
+                          <!--<th>fechaModificacion</th>-->
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="baseCampo in listaBasesCamposResult" class="repeat-animation">
+                          <!--<td>{{baseCampo.nombre}}</td>-->
+                          <!--<td>{{baseCampo.skillsBasesCamposId}}</td>-->
+                          <!--<td>{{baseCampo.skillsBasesId}}</td>-->
+                          <td>{{baseCampo.titulo}}</td>
+                          <td>{{baseCampo.nombre1}}</td>
+                          <td>{{baseCampo.tipoDato}}</td>
+                          <td>{{baseCampo.tipoCampo}}</td>
+                          <td>{{baseCampo.longitud}}</td>
+                          <td>{{baseCampo.valorDefault}}</td>
+                          <td>{{baseCampo.requerido}}</td>
+                          <td>{{baseCampo.orden}}</td>
+                          <td>{{baseCampo.activo}}</td>
+                          <!--<td>{{baseCampo.usuarioCreacion}}</td>-->
+                          <!--<td>{{baseCampo.fechaCreacion}}</td>-->
+                          <!--<td>{{baseCampo.usuarioModificacion}}</td>-->
+                          <!--<td>{{baseCampo.fechaModificacion}}</td>-->
+                          <td>
+                            <div class="btn-group" role="group" aria-label="Edit">
+                              <button type="button" class="btn btn-default" ng-click="openCampoEdit(baseCampo)"><span class="glyphicon glyphicon-edit"></span></button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </section>
+  <script type="text/ng-template" id="ModalCreate_Base.html">
+    <div ng-hide="showCampos">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Base</h3>
+      </div>
+      <div class="modal-body">
+        <form name="ModalCreate_Base_Form">
+          <div class="form-group">
+            <label for="Skill">* Skill</label>
+            <select class="form-control" ng-model="addBase.SkillId" required>
+              <option ng-repeat="skill in listaSkillsResult" value="{{skill.skillsId}}"> {{skill.skill}} </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="NombreBase">* Nombre de Base</label>
+            <input type="text" class="form-control" ng-model="addBase.NombreBase" placeholder="Nombre de Base" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Descripcion">* Descripcion</label>
+            <input type="text" class="form-control" ng-model="addBase.Descripcion" placeholder="Descripcion" required>
+          </div>
+
+          <div class="form-group">
+            <label for="FechaIni">  Fecha Inicial</label>
+            <input type="date" name="FechaIni" class="form-control" ng-model="Fecha_Ini" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="FechaFin">  Fecha Final</label>
+            <input type="date" name="FechaFin" class="form-control" ng-model="Fecha_Fin" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addBase.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="addBase.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="AddBase()">Crear</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <div ng-show="showCampos">
+      <div class="modal-header">
+          <h3 class="modal-title">Crear Campos de Base {{addBase.NombreBase}}</h3>
+      </div>
+      <div class="modal-body">
+        <form name="ModalCreate_CamposBase_Form">
+          <div class="check-element animate-hide">
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <!--<th>nombre</th>-->
+                    <!--<th>skillsBasesCamposId</th>-->
+                    <!--<th>skillsBasesId</th>-->
+                    <th>titulo</th>
+                    <th>nombre1</th>
+                    <th>tipoDato</th>
+                    <th>tipoCampo</th>
+                    <th>longitud</th>
+                    <th>valorDefault</th>
+                    <th>requerido</th>
+                    <th>orden</th>
+                    <th>activo</th>
+                    <!--<th>usuarioCreacion</th>-->
+                    <!--<th>fechaCreacion</th>-->
+                    <!--<th>usuarioModificacion</th>-->
+                    <!--<th>fechaModificacion</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="baseCampo in listaBasesCamposResult" class="repeat-animation">
+                    <!--<td>{{baseCampo.nombre}}</td>-->
+                    <!--<td>{{baseCampo.skillsBasesCamposId}}</td>-->
+                    <!--<td>{{baseCampo.skillsBasesId}}</td>-->
+                    <td>{{baseCampo.titulo}}</td>
+                    <td>{{baseCampo.nombre1}}</td>
+                    <td>{{baseCampo.tipoDato}}</td>
+                    <td>{{baseCampo.tipoCampo}}</td>
+                    <td>{{baseCampo.longitud}}</td>
+                    <td>{{baseCampo.valorDefault}}</td>
+                    <td>{{baseCampo.requerido}}</td>
+                    <td>{{baseCampo.orden}}</td>
+                    <td>{{baseCampo.activo}}</td>
+                    <!--<td>{{baseCampo.usuarioCreacion}}</td>-->
+                    <!--<td>{{baseCampo.fechaCreacion}}</td>-->
+                    <!--<td>{{baseCampo.usuarioModificacion}}</td>-->
+                    <!--<td>{{baseCampo.fechaModificacion}}</td>-->
+                  </tr>
+                </tbody>
+              </table>
+              <br/>
+              <div class="form-group">
+                <label for="Titulo">* Titulo</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.Titulo" placeholder="Titulo" required>
+              </div>
+              <div class="form-group">
+                <label for="NombreCampo">* Nombre del Campo</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.NombreCampo" placeholder="Nombre del Campo" required>
+              </div>
+              <div class="form-group">
+                <label for="TipoDato">* Tipo de Dato</label>
+                <select name="TipoDato" class="form-control" ng-model="addCampoBase.TipoDato" required>
+                  <option ng-repeat="dato in listaTiposDeDato" value="{{dato.tipo}}"> {{dato.tipo}} </option>
+                </select>
+                <!--<p ng-show="ModalCreate_CamposBase_Form.TipoDato.$invalid && !ModalCreate_CamposBase_Form.TipoDato.$pristine" class="help-block">Se requiere Tipo.</p>-->
+              </div>
+              <div class="form-group">
+                <label for="TipoCampo">* Tipo de Campo</label>
+                <select name="TipoCampo" class="form-control" ng-model="addCampoBase.TipoCampo" required>
+                  <option ng-repeat="campo in listaTiposDeCampo" value="{{campo.campo}}"> {{campo.campo}} </option>
+                </select>
+                <!--<span class="error" ng-show="ModalCreate_CamposBase_Form.TipoCampo.$dirty && ModalCreate_CamposBase_Form.TipoCampo.$invalid">Select service</span>-->
+              </div>
+              <div class="form-group">
+                <label for="Longitud">* Longitud</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.Longitud" placeholder="Longitud" required>
+              </div>
+              <div class="form-group">
+                <label for="ValorDefault">* Valor Default</label>
+                <input type="text" class="form-control" ng-model="addCampoBase.ValorDefault" placeholder="Valor Default" required>
+              </div>
+              <!--<div class="form-group">
+                <label for="Requerido">* Requerido</label>
+                <input type="checkbox" ng-model="addCampoBase.Requerido" ng-true-value="'1'" ng-false-value="'0'">
+              </div>-->
+              <div class="form-group">
+                <label for="Requerido">* Requerido</label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Requerido" value="1">Si Requerido
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Requerido" value="0">No Requerido
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="Orden">* Orden</label>
+                <input type="number" name="orden" ng-model="addCampoBase.Orden"
+                 min="1" max="99" required>
+              </div>
+              <div class="form-group">
+                <label for="Estatus">* Estatus</label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Activo" value="1">Activo
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="addCampoBase.Activo" value="0">Inactivo
+                </label>
+              </div>
+
+              <button class="btn btn-primary" ng-click="AddCampoBase()">Crear</button>
+              <button class="btn btn-danger" ng-click="CloseLines()">Listo</button>
+              <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit_Base.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Editar Base</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="Skill">* Skill</label>
+              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="NombreBase">* Nombre de Base</label>
+            <input type="text" class="form-control" ng-model="editBase.NombreBase" placeholder="Nombre de Base" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Descripcion">* Descripcion</label>
+            <input type="text" class="form-control" ng-model="editBase.Descripcion" placeholder="Descripcion" required>
+          </div>
+
+          <div class="form-group">
+            <label for="FechaIni">  Fecha Inicial</label>
+            <input type="date" name="FechaIni" class="form-control" ng-model="fechas.FechaIni" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="FechaFin">  Fecha Final</label>
+            <input type="date" name="FechaFin" class="form-control" ng-model="fechas.FechaFin" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="EditBase()">Editar</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="ModalEdit_CampoBase.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Editar Base</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="Skill">* Skill</label>
+              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="NombreBase">* Nombre de Base</label>
+            <input type="text" class="form-control" ng-model="editBase.NombreBase" placeholder="Nombre de Base" required>
+          </div>
+
+          <div class="form-group">
+            <label for="Descripcion">* Descripcion</label>
+            <input type="text" class="form-control" ng-model="editBase.Descripcion" placeholder="Descripcion" required>
+          </div>
+
+          <div class="form-group">
+            <label for="FechaIni">  Fecha Inicial</label>
+            <input type="date" name="FechaIni" class="form-control" ng-model="fechas.FechaIni" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="FechaFin">  Fecha Final</label>
+            <input type="date" name="FechaFin" class="form-control" ng-model="fechas.FechaFin" placeholder="yyyy-MM-dd">
+          </div>
+
+          <div class="form-group">
+            <label for="Estatus">* Estatus</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="1">Activo
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editBase.Activo" value="0">Inactivo
+            </label>
+          </div>
+
+          <button class="btn btn-primary" ng-click="EditBase()">Editar</button>
+          <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
+        </form>
+      </div>
+  </script>

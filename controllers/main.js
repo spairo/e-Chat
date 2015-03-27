@@ -1605,11 +1605,14 @@ app.controller("BasesFormCtrl", function($scope, $http, BasesService, BasesFacto
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, dialogs, myFactory){
+app.controller("BasesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, dialogs, myFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
-  $scope.datoss = [{nombre:"uno"},{nombre:"dos"}];
+  //$scope.datoss = [{nombre:"uno"},{nombre:"dos"}];
+
+  //get values LN factory
+  $scope.dataBases = BasesFactory;
 
   $scope.tableRowExpanded = false;
   $scope.tableRowIndexExpandedCurr = "";
@@ -1629,8 +1632,18 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
 
   $scope.$on('cargaListas', function(event){
 
+    var skill = "";
+    var servicio = "";
+    var canal = "";
+    if($state.current.name == "bases.bases")
+    {
+      skill = $scope.dataBases.skill;
+      servicio = $scope.dataBases.servicio;
+      canal = $scope.dataBases.canal;
+    }
+
     //get lista de bases
-    $scope.getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+    $scope.getListaBases = { op: "listaBases", Skill: skill, Base: "", Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1646,7 +1659,7 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
     })
 
     //get lista de skills
-    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
+    $scope.getListaSkills = { op: "listaSkills", Skill: skill, Servicio: servicio, Canal: canal, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -1796,7 +1809,6 @@ app.controller("BasesCtrl", function($scope, $http, $modal, $modalStack, ngToast
   {
     $modalStack.dismissAll();
   };
-
 });
 
 //controlador para model de creacion de bases y campos
