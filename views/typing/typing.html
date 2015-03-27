@@ -5,8 +5,7 @@
         <button ui-sref=".lines" class="btn btn-default glyphicon glyphicon-chevron-left"></button>
       </div>
       <div class="page-header text-center">
-        <h2>Typings</h2>
-        <!--{{dataBases}}-->
+        <h2>Tipificaciónes</h2>
         <div id="status-buttons" class="text-center">
           <a ui-sref-active="active" ui-sref=".lines">
             <span>1</span> 1
@@ -29,19 +28,17 @@
         </div>
       </div>
       <!-- Breadcrumbs -->
-      <div class="">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;">{{dataBases.linea}}</a></li>
-            <li><a href="javascript:;">{{dataBases.cliente}}</a></li>
-            <li><a href="javascript:;">{{dataBases.servicio}}</a></li>
-            <li><a href="javascript:;">{{dataBases.canal}}</a></li>
-            <li><a href="javascript:;">{{dataBases.skill}}</a></li>
-            <li><a href="javascript:;"></a></li>
-        </ol>
-      </div>
+      <ol class="breadcrumb">
+          <li><a href="javascript:;" ui-sref=".lines">{{dataBases.linea}}</a></li>
+          <li><a href="javascript:;" ui-sref=".clients">{{dataBases.cliente}}</a></li>
+          <li><a href="javascript:;" ui-sref=".services">{{dataBases.servicio}}</a></li>
+          <li><a href="javascript:;" ui-sref=".channels">{{dataBases.canal}}</a></li>
+          <li><a href="javascript:;" ui-sref=".skills">{{dataBases.skill}}</a></li>
+          <li><a href="javascript:;"></a></li>
+      </ol>
       <!-- end Breadcrumbs -->
 
-      <div id="signup-form" ng-submit="processForm()">
+      <div id="multi-form">
         <div id="form-views" ui-view></div>
       </div>
 
