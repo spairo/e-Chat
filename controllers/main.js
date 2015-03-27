@@ -1220,18 +1220,6 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
     $modalStack.dismissAll();
   };
 
-<<<<<<< HEAD
-  $scope.selected = function(clienteAtentoId, cliente){
-
-    //TypingService.addItem(lineaNegocioId, linea);
-
-    //add LN factory
-    $scope.TypingLN = TypingLNFactory;
-    $scope.TypingLN.clienteAtentoId = clienteAtentoId;
-    $scope.TypingLN.cliente = cliente;
-
-
-=======
   //Selected cliente
   $scope.selected = function(clienteAtentoId, cliente){
     $scope.dataBases.clienteAtentoId = clienteAtentoId;
@@ -1242,7 +1230,6 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
       $state.go('bases.services');
     else if($state.current.name == "typing.customers")
       $state.go('typing.services');
->>>>>>> origin/master
   };
 
 });
@@ -1341,7 +1328,7 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
   $scope.addServicio = { op: "mantServicio", id: "0", cliAteId: "", Servicio: "", Activo: "",  UserId: myid };
 
   $scope.$on('cargaListas', function(event){
-    
+
     var cliente = "";
     var linea = "";
     if($state.current.name == "bases.services")
