@@ -98,9 +98,43 @@ app.config(function($stateProvider, $urlRouterProvider) {
            url: '/services',
            templateUrl: 'views/typing-services.html'
        })
+<<<<<<< HEAD
        .state('typing.channels', {
            url: '/channels',
            templateUrl: 'views/typing-channels.html'
+=======
+
+    .state('bases', {
+      url: '/bases',
+      templateUrl: 'views/bases/bases.html',
+    })
+
+       //Multi Bases
+
+       .state('bases.lines', {
+           url: '/lines',
+           templateUrl: 'views/bases/bases-line.html'
+       })
+       .state('bases.clients', {
+           url: '/clients',
+           templateUrl: 'views/bases/bases-clients.html'
+       })
+       .state('bases.services', {
+           url: '/services',
+           templateUrl: 'views/bases/bases-services.html'
+       })
+       .state('bases.channels', {
+           url: '/channels',
+           templateUrl: 'views/bases/bases-channels.html'
+       })
+       .state('bases.skills', {
+           url: '/skills',
+           templateUrl: 'views/bases/bases-skills.html'
+       })
+       .state('bases.bases', {
+           url: '/bases/bases',
+           templateUrl: 'views/bases/bases-bases.html'
+>>>>>>> origin/master
        });
 
     // catch all route
