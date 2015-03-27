@@ -102,6 +102,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
            url: '/channels',
            templateUrl: 'views/typing-channels.html'
        })
+
     .state('bases', {
       url: '/bases',
       templateUrl: 'views/bases/bases.html',

@@ -1,10 +1,12 @@
-<h1>Bases</h1>
 <div class="page" ng-controller="BasesFormCtrl">
   <div class="panel panel-default">
     <div class="panel-body">
+      <div class="pull-left">
+        <button ui-sref=".lines" class="btn btn-default glyphicon glyphicon-chevron-left"></button>
+      </div>
       <div class="page-header text-center">
         <h2>Bases</h2>
-        {{dataBases}}
+        <!--{{dataBases}}-->
         <div id="status-buttons" class="text-center">
           <a ui-sref-active="active" ui-sref=".lines">
             <span>1</span> 1
@@ -26,6 +28,18 @@
           </a>
         </div>
       </div>
+      <!-- Breadcrumbs -->
+      <div class="">
+        <ol class="breadcrumb">
+            <li><a href="javascript:;">{{dataBases.linea}}</a></li>
+            <li><a href="javascript:;">{{dataBases.cliente}}</a></li>
+            <li><a href="javascript:;">{{dataBases.servicio}}</a></li>
+            <li><a href="javascript:;">{{dataBases.canal}}</a></li>
+            <li><a href="javascript:;">{{dataBases.skill}}</a></li>
+            <li><a href="javascript:;"></a></li>
+        </ol>
+      </div>
+      <!-- end Breadcrumbs -->
 
       <div id="signup-form" ng-submit="processForm()">
         <div id="form-views" ui-view></div>

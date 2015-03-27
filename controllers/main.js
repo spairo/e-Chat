@@ -728,10 +728,11 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
 
 //Channels Controller
 
-app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
 
    //Get Channels list
   $scope.$on('LoadList', function(event){
+
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -827,6 +828,17 @@ app.controller('ChannelsCtrl', function($scope, $http, $modal, $modalStack, ngTo
       }
     });
 
+  };
+
+  //Selected channel
+  $scope.selected = function(canalesId, canal){
+    $scope.dataBases.canalesId = canalesId;
+    $scope.dataBases.canal = canal;
+
+    if($state.current.name == "bases.channels")
+      $state.go('bases.skills');
+    else if($state.current.name == "typing.channels")
+      $state.go('typing.skills');
   };
 
 });
@@ -1092,9 +1104,9 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
     //get lista de clientes
     var linea = "";
-    if($state.current.name == "bases.lines")
+    if($state.current.name == "bases.clients")
       linea = $scope.dataBases.linea;
-    else if($state.current.name == "typing.lines")
+    else if($state.current.name == "typing.clients")
       linea = $scope.getLN.linea;
 
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
@@ -1222,9 +1234,18 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
   //Selected cliente
   $scope.selected = function(clienteAtentoId, cliente){
+<<<<<<< HEAD
+=======
+    //TypingService.addItem(lineaNegocioId, linea);
+
+    //add LN factory
+    $scope.TypingLN = TypingLNFactory;
+    $scope.TypingLN.clienteAtentoId = clienteAtentoId;
+    $scope.TypingLN.cliente = cliente;
+
+>>>>>>> origin/master
     $scope.dataBases.clienteAtentoId = clienteAtentoId;
     $scope.dataBases.cliente = cliente;
-
 
     if($state.current.name == "bases.clients")
       $state.go('bases.services');
@@ -2147,18 +2168,38 @@ app.controller("ModalEdit_CampoBaseController", function($scope, $http, $modalIn
 
 
 // Skills Controller
-app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
+
+  //get values LN factory
+  $scope.getLN = TypingLNFactory;
+  $scope.dataBases = BasesFactory;
 
   //modelos
   $scope.addSkill = { op: "mantSkills", Id: "0", CanalesId: "", ServiciosId: "", Skill: "", Activo: "",  UserId: myid };
 
   $scope.$on('cargaListas', function(event){
 
+    var servicio = "";
+    var canal = "";
+    var cliente = "";
+    if($state.current.name == "bases.skills")
+    {
+      servicio = $scope.dataBases.servicio;
+      canal = $scope.dataBases.canal;
+      cliente = $scope.dataBases.cliente;
+    }
+    else if($state.current.name == "typing.skills")
+    {
+      servicio = $scope.getLN.servicio;
+      canal = $scope.getLN.canal;
+      cliente = $scope.getLN.cliente;
+    }
+
     //get lista de skills
-    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
+    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: servicio, Canal: canal, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -2174,7 +2215,7 @@ app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToas
     })
 
     //get lista de canales
-    $scope.getListaCanales = { op: "listaCanales", Canal: "", Activo:""};
+    $scope.getListaCanales = { op: "listaCanales", Canal: canal, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -2190,7 +2231,7 @@ app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToas
     })
 
     //get lista de servicios
-    $scope.getListaServicios = { op: "listaServicios", Servicio: "", ClienteAtento: "", Activo:""};
+    $scope.getListaServicios = { op: "listaServicios", Servicio: servicio, ClienteAtento: cliente, Activo:""};
     $http({
       method : 'POST',
       url : 'api/rest.php',
@@ -2290,6 +2331,18 @@ app.controller("SkillsCtrl", function($scope, $http, $modal, $modalStack, ngToas
   $scope.CloseLines = function()
   {
     $modalStack.dismissAll();
+  };
+
+  //Selected servicio
+  $scope.selected = function(skillsId, skill){
+    $scope.dataBases.skillsId = skillsId;
+    $scope.dataBases.skill = skill;
+
+
+    if($state.current.name == "bases.skills")
+      $state.go('bases.bases');
+    else if($state.current.name == "typing.skills")
+      $state.go('typing.channels');
   };
 
 });
