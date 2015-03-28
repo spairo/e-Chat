@@ -16,14 +16,14 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <!--<div class="col-md-4">
             <div class="widget-container">
               <div class="form-group">
                 <label for="SCliente">Cliente</label>
                 <input type="text" class="form-control" ng-model="search.cliente" placeholder="Cliente">
               </div>
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-4">
             <div class="widget-container">
@@ -102,9 +102,10 @@
         <form>
           <div class="form-group">
             <label for="Cliente">* Cliente</label>
-            <select class="form-control" ng-model="addServicio.cliAteId" required>
+            <label> {{listaClienteAtentoResult[0].cliente}}</label>
+            <!--<select class="form-control" ng-model="addServicio.cliAteId" required>
               <option ng-repeat="cliente in listaClienteAtentoResult" value="{{cliente.clienteAtentoId}}"> {{cliente.cliente}} </option>
-            </select>
+            </select>-->
           </div>
 
           <div class="form-group">
@@ -136,7 +137,8 @@
         <form>
           <div class="form-group">
             <label for="Cliente">* Cliente</label>
-            <select class="form-control" data-ng-options="o.cliente for o in listaClienteAtentoResult" data-ng-model="selectedOption" ng-change="changedValueCliente(selectedOption)" required></select>
+            <label> {{service[0].cliente}}</label>            
+            <!--<select class="form-control" data-ng-options="o.cliente for o in listaClienteAtentoResult" data-ng-model="selectedOption" ng-change="changedValueCliente(selectedOption)" required></select>-->
           </div>
 
           <div class="form-group">

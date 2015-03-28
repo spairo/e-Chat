@@ -10,9 +10,6 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
   $scope.getLN = TypingLNFactory;
   $scope.dataBases = BasesFactory;
 
-  //modelos
-  $scope.addSkill = { op: "mantSkills", Id: "0", CanalesId: "", ServiciosId: "", Skill: "", Activo: "",  UserId: myid };
-
   $scope.$on('cargaListas', function(event){
 
     var servicio = "";
@@ -86,45 +83,16 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
   $scope.CreateSkill = function(){
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate_Skill.html',
-      controller: 'SkillsCtrl'
+      controller: 'ModalCreate_SkillController',
+      resolve: {
+        listaCanalesResult: function () {
+          return $scope.listaCanalesResult;
+        },
+        listaServiciosResult: function () {
+          return $scope.listaServiciosResult;
+        }
+      }
     });
-  };
-
-  //funcion que agrega un skill nuevo a la base
-  $scope.AddSkill = function(){
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.addSkill),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      if(data == 'Error'){
-        ngToast.create('EL skill no ha sido creado, revisa tus datos requeridos');
-        console.warn("SkillsCtrl > AddSkill > mantSkills >>> ERROR WS");
-      }
-      else{
-        var skill_checked = angular.isNumber(data[0].Column1);
-        if(skill_checked == true){
-          ngToast.create('El skill fue creado con exito');
-          console.info("SkillsCtrl > AddSkill > mantSkills >>> Ok");
-          $scope.$emit('cargaListas');
-          $modalStack.dismissAll();
-        }
-        else{
-          ngToast.create('EL skill no ha sido creado');
-          $scope.result = data;
-          console.warn("SkillsCtrl > AddSkill > mantSkills >>> SKILL NO CREADO");
-        }
-      }
-
-      return;
-    })
-    .error(function(data){
-      console.error("SkillsCtrl > AddSkill > mantSkills >>> ERROR HTTP");
-      return;
-    })
   };
 
   //se muestra modal para editar skill
@@ -180,66 +148,68 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
 
 });
 
-//controlador para la tabla de lista de skills
+//controlador para el modal agregar skill
+app.controller("ModalCreate_SkillController", function($scope, $http, $modalInstance, ngToast, auth, listaCanalesResult, listaServiciosResult){
+
+  //get id de autenticado
+  var myid = $scope.status = auth.profileID;
+  $scope.listaCanalesResult = listaCanalesResult;
+  $scope.listaServiciosResult = listaServiciosResult;  
+
+  $scope.addSkill = { op: "mantSkills", Id: "0", CanalesId: listaCanalesResult[0].canalesId, ServiciosId: listaServiciosResult[0].serviciosId, Skill: "", Activo: "",  UserId: myid };
+
+  //funcion que agrega un skill nuevo a la base
+  $scope.AddSkill = function(){
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addSkill),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('EL skill no ha sido creado, revisa tus datos requeridos');
+        console.warn("SkillsCtrl > AddSkill > mantSkills >>> ERROR WS");
+      }
+      else{
+        var skill_checked = angular.isNumber(data[0].Column1);
+        if(skill_checked == true){
+          ngToast.create('El skill fue creado con exito');
+          console.info("SkillsCtrl > AddSkill > mantSkills >>> Ok");
+          $scope.$emit('cargaListas');
+          $modalInstance.close();
+        }
+        else{
+          ngToast.create('EL skill no ha sido creado');
+          $scope.result = data;
+          console.warn("SkillsCtrl > AddSkill > mantSkills >>> SKILL NO CREADO");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("SkillsCtrl > AddSkill > mantSkills >>> ERROR HTTP");
+      return;
+    })
+  };
+
+  $scope.CloseLines = function()
+  {
+    $modalInstance.close();
+  };
+
+});
+
+//controlador para el modal editar skill
 app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstance, ngToast, auth, skill, scopee){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
   $scope.editSkill = { op: "mantSkills", Id: skill[0].skillsId, CanalesId: skill[0].canalesId, ServiciosId: skill[0].serviciosId, Skill: skill[0].skill, Activo: skill[0].activo,  UserId: myid };
-
-  //get lista de canales
-  $scope.getListaCanales = { op: "listaCanales", Canal: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaCanales),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaCanalesResult = data;
-
-    angular.forEach($scope.listaCanalesResult, function(item) {
-      if(skill[0].canalesId == item.canalesId)
-        $scope.selectedCanal = item;
-    });
-
-    console.info("ModalEdit_SkillController > getListaCanales >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_SkillController > getListaCanales >>> ERROR HTTP");
-  })
-
-  //get lista de servicios
-  $scope.getListaServicios = { op: "listaServicios", Servicio: "", ClienteAtento: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaServicios),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaServiciosResult = data;
-
-    angular.forEach($scope.listaServiciosResult, function(item) {
-      if(skill[0].serviciosId == item.serviciosId)
-        $scope.selectedServicio = item;
-    });
-
-    console.info("ModalEdit_SkillController > getListaServicios >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_SkillController > getListaServicios >>> ERROR HTTP");
-  })
-
+ 
   $scope.skill = skill;
-
-  $scope.changedValueCanal=function(item){
-    $scope.editSkill.CanalesId = item.canalesId;
-  }
-
-   $scope.changedValueServicio=function(item){
-    $scope.editSkill.ServiciosId = item.serviciosId;
-  }
 
   $scope.EditSkill = function () {
      $http({
@@ -280,7 +250,6 @@ app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstan
 
   $scope.CloseLines = function()
   {
-    //$modalInstance.dismissAll();
     $modalInstance.close();
   };
 

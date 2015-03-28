@@ -55,9 +55,6 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
   $scope.$emit('cargaListas');
 
-  //$scope.search = {Linea:"", Cliente:"", Activo:""};
-
-
   //se muestra modal para crear cliente
   $scope.CreateClient = function(){
     var modalInstance = $modal.open({
@@ -70,45 +67,6 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
       }
     });
   };
-/*
-  $scope.addClient = { op: "mantClienteAtento", Id: "0", LineaId: "", Cliente: "", Activo: "",  UserId: myid };
-
-  //funcion que agrega un cliente nuevo a la base
-  $scope.AddClient = function(){
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.addClient),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      if(data == 'Error'){
-        ngToast.create('EL cliente no ha sido creado, revisa tus datos requeridos');
-        console.warn("ClientesCtrl > AddClient > mantClienteAtento >>> ERROR WS");
-      }
-      else{
-        var cliente_checked = angular.isNumber(data[0].Column1);
-        if(cliente_checked == true){
-          ngToast.create('El cliente fue creado con exito');
-          console.info("ClientesCtrl > AddClient > mantClienteAtento >>> Ok");
-          $scope.$emit('cargaListas');
-          $modalStack.dismissAll();
-        }
-        else{
-          ngToast.create('EL cliente no ha sido creado');
-          $scope.result = data;
-          console.warn("ClientesCtrl > AddClient > mantClienteAtento >>> CLIENTE NO CREADO");
-        }
-      }
-
-      return;
-    })
-    .error(function(data){
-      console.error("ClientesCtrl > AddClient > mantClienteAtento >>> ERROR HTTP");
-      return;
-    })
-  };*/
 
   //se muestra modal para editar cliente
   $scope.openEdit = function(linea, cliente, activo){
@@ -199,7 +157,7 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
           ngToast.create('El cliente fue creado con exito');
           console.info("ClientesCtrl > AddClient > mantClienteAtento >>> Ok");
           $scope.$emit('cargaListas');
-          $modalStack.dismissAll();
+          $modalInstance.close();
         }
         else{
           ngToast.create('EL cliente no ha sido creado');
@@ -216,6 +174,11 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
     })
   };
 
+  $scope.CloseLines = function()
+  {
+    $modalInstance.close();
+  };
+
 });
 
 //controlador para la tabla de lista de clientes
@@ -225,33 +188,7 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
 
   $scope.editClient = { op: "mantClienteAtento", Id: client[0].clienteAtentoId, LineaId: client[0].lineaNegocioId, Cliente: client[0].cliente, Activo: client[0].activo,  UserId: myid };
 
-  //get lista de lineas de negocio
-  $scope.getListaLineas = { op: "listaLineaNegocio", Linea: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaLineas),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaLineaNegocioResult = data;
-
-    angular.forEach($scope.listaLineaNegocioResult, function(item) {
-      if(client[0].lineaNegocioId == item.lineaNegocioId)
-        $scope.selectedOption = item;
-    });
-
-    console.info("ModalEdit_ClientController > getListaLineas >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_ClientController > getListaLineas >>> ERROR HTTP");
-  })
-
   $scope.client = client;
-
-  $scope.changedValueLine=function(item){
-    $scope.editClient.LineaId = item.lineaNegocioId;
-  }
 
   $scope.EditClient = function () {
      $http({
@@ -292,7 +229,6 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
 
   $scope.CloseLines = function()
   {
-    //$modalInstance.dismissAll();
     $modalInstance.close();
   };
 

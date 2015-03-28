@@ -4,27 +4,7 @@
 
 app.controller("BasesFormCtrl", function($scope, $http, BasesService, BasesFactory){
 
-    //$scope.items = TypingService.getItem();
-
     $scope.dataBases = BasesFactory;
-
-    //get lista de bases
-   /*$scope.getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaBases),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.listaBasesResult = data;
-      console.info("BasesFormCtrl > getListaBases >>> OK");
-    })
-    .error(function(data){
-      console.error("BasesFormCtrl > getListaBases >>> ERROR HTTP");
-    })
-*/
-
 });
 
 // BasesCtrl Controller
@@ -32,7 +12,6 @@ app.controller("BasesCtrl", function($scope, $state, $http, $modal, $modalStack,
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
-  //$scope.datoss = [{nombre:"uno"},{nombre:"dos"}];
 
   //get values LN factory
   $scope.dataBases = BasesFactory;
@@ -503,88 +482,9 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
 
 //controlador para model de edicion de campos de bases
 app.controller("ModalEdit_CampoBaseController", function($scope, $http, $modalInstance, ngToast, auth, baseCampo){
+  
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
-
- /* $scope.editBase = { op: "mantBases", Id: base[0].skillsBasesId, SkillId: base[0].skillsId, NombreBase: base[0].nombre, Descripcion: base[0].descripcion, FechaIni: base[0].fechaInicio, FechaFin: base[0].fechaFin, Activo: base[0].activo,  UserIdModif: myid };
-  var yi = $scope.editBase.FechaIni.slice(0,4);
-  var mi = parseInt($scope.editBase.FechaIni.slice(5,7))-1;
-  var di = $scope.editBase.FechaIni.slice(8,10);
-  var yf = $scope.editBase.FechaFin.slice(0,4);
-  var mf = parseInt($scope.editBase.FechaFin.slice(5,7))-1;
-  var df = $scope.editBase.FechaFin.slice(8,10);
-  $scope.fechas = {FechaIni: new Date(yi, mi, di), FechaFin: new Date(yf, mf, df)};
-  //get lista de skills
-  $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaSkills),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaSkillsResult = data;
-    angular.forEach($scope.listaSkillsResult, function(item) {
-      if(base[0].skillsId == item.skillsId)
-        $scope.selectedOption = item;
-    });
-    console.info("ModalEdit_BaseController > getListaSkills >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
-  })
-  $scope.base = base;
-  $scope.changedValueSkill=function(item){
-    $scope.editBase.SkillId = item.skillsId;
-  }
-  $scope.EditBase = function () {
-    var dd = $scope.fechas.FechaIni.getDate();
-    var mm = $scope.fechas.FechaIni.getMonth()+1;
-    var yyyy = $scope.fechas.FechaIni.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
-    $scope.editBase.FechaIni = yyyy+"-"+mm+"-"+dd;
-    dd = $scope.fechas.FechaFin.getDate();
-    mm = $scope.fechas.FechaFin.getMonth()+1;
-    yyyy = $scope.fechas.FechaFin.getFullYear();
-    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
-    $scope.editBase.FechaFin = yyyy+"-"+mm+"-"+dd;
-     $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.editBase),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      if(data == 'Error'){
-        ngToast.create('La base no ha sido editada, revisa tus datos requeridos');
-        console.warn("ModalEdit_BaseController > EditBase > mantBases >>> ERROR WS");
-      }
-      else{
-        var checked = angular.isNumber(data[0].Column1);
-        if(checked == true){
-          ngToast.create('La base fue editada con exito');
-          console.info("ModalEdit_BaseController > EditBase > mantBases >>> Ok");
-          //scopee.$emit('cargaListas');
-          $modalInstance.close();
-        }
-        else{
-          ngToast.create('La base no ha sido editada');
-          $scope.result = data;
-          console.warn("ModalEdit_BaseController > EditBase > mantBases >>> BASE NO EDITADA");
-        }
-      }
-      return;
-    })
-    .error(function(data){
-      console.error("ModalEdit_BaseController > EditBase > mantBases >>> ERROR HTTP");
-      $modalInstance.close();
-      return;
-    })
-  };
-   $scope.CloseLines = function()
-  {
-    $modalInstance.close();
-  };*/
 
 });
 

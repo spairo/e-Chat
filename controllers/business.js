@@ -110,7 +110,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
   $scope.selected = function(lineaNegocioId, linea){
 
-    TypingService.addItem(lineaNegocioId, linea);
+    //TypingService.addItem(lineaNegocioId, linea);
 
     //add LN factory
     $scope.TypingLN = TypingLNFactory;

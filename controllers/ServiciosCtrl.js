@@ -10,9 +10,6 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
   $scope.getLN = TypingLNFactory;
   $scope.dataBases = BasesFactory;
 
-  //modelos
-  $scope.addServicio = { op: "mantServicio", id: "0", cliAteId: "", Servicio: "", Activo: "",  UserId: myid };
-
   $scope.$on('cargaListas', function(event){
 
     var cliente = "";
@@ -69,45 +66,13 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
   $scope.CreateServicio = function(){
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate_Servicio.html',
-      controller: 'ServiciosCtrl'
+      controller: 'ModalCreate_ServicioController',
+      resolve: {
+        listaClienteAtentoResult: function () {
+          return $scope.listaClienteAtentoResult;
+        }
+      }
     });
-  };
-
-  //funcion que agrega un servicio nuevo a la base
-  $scope.AddServicio = function(){
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.addServicio),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      if(data == 'Error'){
-        ngToast.create('EL servicio no ha sido creado, revisa tus datos requeridos');
-        console.warn("ServiciosCtrl > AddServicio > mantServicio >>> ERROR WS");
-      }
-      else{
-        var servicio_checked = angular.isNumber(data[0].Column1);
-        if(servicio_checked == true){
-          ngToast.create('El servicio fue creado con exito');
-          console.info("ServiciosCtrl > AddServicio > mantServicio >>> Ok");
-          $scope.$emit('cargaListas');
-          $modalStack.dismissAll();
-        }
-        else{
-          ngToast.create('EL servicio no ha sido creado');
-          $scope.result = data;
-          console.warn("ServiciosCtrl > AddServicio > mantServicio >>> SERVICIO NO CREADO");
-        }
-      }
-
-      return;
-    })
-    .error(function(data){
-      console.error("ServiciosCtrl > AddServicio > mantServicio >>> ERROR HTTP");
-      return;
-    })
   };
 
   //se muestra modal para editar servicio
@@ -163,6 +128,59 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
 
 });
 
+//controlador para model de creacion de servicios
+app.controller("ModalCreate_ServicioController", function($scope, $http, $modalInstance, ngToast, auth, listaClienteAtentoResult){
+
+  //get id de autenticado
+  var myid = $scope.status = auth.profileID;
+  $scope.listaClienteAtentoResult = listaClienteAtentoResult;
+
+    $scope.addServicio = { op: "mantServicio", id: "0", cliAteId: listaClienteAtentoResult[0].clienteAtentoId, Servicio: "", Activo: "",  UserId: myid };
+
+  //funcion que agrega un servicio nuevo a la base
+  $scope.AddServicio = function(){
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param($scope.addServicio),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+
+      if(data == 'Error'){
+        ngToast.create('EL servicio no ha sido creado, revisa tus datos requeridos');
+        console.warn("ServiciosCtrl > AddServicio > mantServicio >>> ERROR WS");
+      }
+      else{
+        var servicio_checked = angular.isNumber(data[0].Column1);
+        if(servicio_checked == true){
+          ngToast.create('El servicio fue creado con exito');
+          console.info("ServiciosCtrl > AddServicio > mantServicio >>> Ok");
+          $scope.$emit('cargaListas');
+          $modalInstance.close();
+        }
+        else{
+          ngToast.create('EL servicio no ha sido creado');
+          $scope.result = data;
+          console.warn("ServiciosCtrl > AddServicio > mantServicio >>> SERVICIO NO CREADO");
+        }
+      }
+
+      return;
+    })
+    .error(function(data){
+      console.error("ServiciosCtrl > AddServicio > mantServicio >>> ERROR HTTP");
+      return;
+    })
+  };
+
+  $scope.CloseLines = function()
+  {
+    $modalInstance.close();
+  };
+
+});
+
 //controlador para model de edicion de servicios
 app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalInstance, ngToast, auth, service, scopee){
   //get id de autenticado
@@ -170,33 +188,7 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
 
   $scope.editServicio = { op: "mantServicio", id: service[0].serviciosId, cliAteId: service[0].clienteAtentoId, Servicio: service[0].servicio, Activo: service[0].activo,  UserId: myid };
 
-  //get lista de lineas de negocio
-  $scope.getListaClientes = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaClientes),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaClienteAtentoResult = data;
-
-    angular.forEach($scope.listaClienteAtentoResult, function(item) {
-      if(service[0].clienteAtentoId == item.clienteAtentoId)
-        $scope.selectedOption = item;
-    });
-
-    console.info("ModalEdit_ServiciosController > getListaClientes >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_ServiciosController > getListaClientes >>> ERROR HTTP");
-  })
-
   $scope.service = service;
-
-  $scope.changedValueCliente=function(item){
-    $scope.editServicio.cliAteId = item.clienteAtentoId;
-  }
 
   $scope.EditServicio = function () {
      $http({
