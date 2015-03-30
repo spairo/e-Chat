@@ -1,7 +1,7 @@
 'use strict';
 
 // Skills Controller
-app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
+app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -93,6 +93,10 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
         }
       }
     });
+
+    modalInstance.result.then(function(){
+      $scope.$emit('cargaListas');
+    });
   };
 
   //se muestra modal para editar skill
@@ -116,11 +120,12 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
         resolve: {
           skill: function () {
           return $scope.skillResult;
-          },
-          scopee: function () {
-          return $scope;
           }
         }
+      });
+
+      modalInstance.result.then(function(){
+        $scope.$emit('cargaListas');
       });
 
     })
@@ -129,16 +134,10 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack
     })
   };
 
-  $scope.CloseLines = function()
-  {
-    $modalStack.dismissAll();
-  };
-
   //Selected servicio
   $scope.selected = function(skillsId, skill){
     $scope.dataBases.skillsId = skillsId;
     $scope.dataBases.skill = skill;
-
 
     if($state.current.name == "bases.skills")
       $state.go('bases.bases');
@@ -177,7 +176,6 @@ app.controller("ModalCreate_SkillController", function($scope, $http, $modalInst
         if(skill_checked == true){
           ngToast.create('El skill fue creado con exito');
           console.info("SkillsCtrl > AddSkill > mantSkills >>> Ok");
-          $scope.$emit('cargaListas');
           $modalInstance.close();
         }
         else{
@@ -203,7 +201,7 @@ app.controller("ModalCreate_SkillController", function($scope, $http, $modalInst
 });
 
 //controlador para el modal editar skill
-app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstance, ngToast, auth, skill, scopee){
+app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstance, ngToast, auth, skill){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -229,7 +227,6 @@ app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstan
         if(skill_checked == true){
           ngToast.create('El skill fue editado con exito');
           console.info("ModalEdit_SkillController > EditSkill > mantSkills >>> Ok");
-          scopee.$emit('cargaListas');
           $modalInstance.close();
         }
         else{

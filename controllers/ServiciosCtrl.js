@@ -1,7 +1,7 @@
 'use strict';
 
 // Servicios Controller
-app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
+app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -73,6 +73,10 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
         }
       }
     });
+
+    modalInstance.result.then(function(){
+      $scope.$emit('cargaListas');
+    });
   };
 
   //se muestra modal para editar servicio
@@ -96,22 +100,18 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
         resolve: {
           service: function () {
           return $scope.servicioResult;
-          },
-          scopee: function () {
-          return $scope;
           }
         }
+      });
+
+      modalInstance.result.then(function(){
+        $scope.$emit('cargaListas');
       });
 
     })
     .error(function(data){
       console.error("ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP");
     })
-  };
-
-  $scope.CloseLines = function()
-  {
-    $modalStack.dismissAll();
   };
 
   //Selected servicio
@@ -156,7 +156,6 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
         if(servicio_checked == true){
           ngToast.create('El servicio fue creado con exito');
           console.info("ServiciosCtrl > AddServicio > mantServicio >>> Ok");
-          $scope.$emit('cargaListas');
           $modalInstance.close();
         }
         else{
@@ -182,7 +181,7 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
 });
 
 //controlador para model de edicion de servicios
-app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalInstance, ngToast, auth, service, scopee){
+app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalInstance, ngToast, auth, service){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -208,7 +207,6 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
         if(servicio_checked == true){
           ngToast.create('El servicio fue editado con exito');
           console.info("ModalEdit_ServiciosController > EditServicio > mantServicios >>> Ok");
-          scopee.$emit('cargaListas');
           $modalInstance.close();
         }
         else{

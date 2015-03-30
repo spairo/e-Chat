@@ -1,7 +1,7 @@
 'use strict';
 
 // Clientes Controller
-app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
+app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -66,6 +66,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
         }
       }
     });
+
+     modalInstance.result.then(function(){
+      $scope.$emit('cargaListas');
+    });
   };
 
   //se muestra modal para editar cliente
@@ -89,22 +93,18 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
         resolve: {
           client: function () {
           return $scope.clienteAtentoResult;
-          },
-          scopee: function () {
-          return $scope;
           }
         }
+      });
+
+      modalInstance.result.then(function(){
+        $scope.$emit('cargaListas');
       });
 
     })
     .error(function(data){
       console.error("ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP");
     })
-  };
-
-  $scope.CloseLines = function()
-  {
-    $modalStack.dismissAll();
   };
 
   //Selected cliente
@@ -156,7 +156,6 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
         if(cliente_checked == true){
           ngToast.create('El cliente fue creado con exito');
           console.info("ClientesCtrl > AddClient > mantClienteAtento >>> Ok");
-          $scope.$emit('cargaListas');
           $modalInstance.close();
         }
         else{
@@ -182,7 +181,7 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
 });
 
 //controlador para la tabla de lista de clientes
-app.controller("ModalEdit_ClientController", function($scope, $http, $modalInstance, ngToast, auth, client, scopee){
+app.controller("ModalEdit_ClientController", function($scope, $http, $modalInstance, ngToast, auth, client){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -208,7 +207,6 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
         if(cliente_checked == true){
           ngToast.create('El cliente fue editado con exito');
           console.info("ModalEdit_ClientController > EditClient > mantClienteAtento >>> Ok");
-          scopee.$emit('cargaListas');
           $modalInstance.close();
         }
         else{

@@ -8,7 +8,7 @@ app.controller("BasesFormCtrl", function($scope, $http, BasesService, BasesFacto
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, dialogs, myFactory, BasesFactory){
+app.controller("BasesCtrl", function($scope, $state, $http, $modal, ngToast, auth, dialogs, myFactory, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -207,11 +207,6 @@ app.controller("BasesCtrl", function($scope, $state, $http, $modal, $modalStack,
     }
   };
 
-  $scope.CloseLines = function()
-  {
-    $modalStack.dismissAll();
-  };
-
 });
 
 //controlador para model de creacion de bases y campos
@@ -239,7 +234,7 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
 
   });
 
-  $scope.$on('getListaSkills', function(event){
+  /*$scope.$on('getListaSkills', function(event){
 
     //get lista de skills
     $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
@@ -259,7 +254,7 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
 
   });
 
-  $scope.$emit('getListaSkills');
+  $scope.$emit('getListaSkills');*/
 
   $scope.listaSkillsResult = listaSkillsResult;
   $scope.showCampos = false;
