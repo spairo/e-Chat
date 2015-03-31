@@ -1,3 +1,4 @@
+'use strict';
 // Profiles Controller
 
 app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){

@@ -1,5 +1,4 @@
 'use strict';
-
 // Clientes Controller
 app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
 

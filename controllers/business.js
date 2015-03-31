@@ -1,9 +1,10 @@
+'use strict';
 //Business Lines Controller
 
-app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesService, BasesFactory){
-
+app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesService, BasesFactory){
   //Get Centers list
   //$scope.getBusiness = listline.data;
+  $scope.Paso1_Linea = "";
 
   $scope.$on('LoadList', function(event){
 
@@ -21,7 +22,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
       .error(function(data){
         var msg = ngToast.create({
           content: 'Opps!, Algo salio mal intenta otra vez',
-          className:	'danger'
+          className:  'danger'
         });
       })
 
@@ -66,7 +67,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
       }else{
         var msg = ngToast.create({
           content: 'Error, La Línea de Negocio no fue creada',
-          className:	'danger'
+          className:  'danger'
         });
       }
 
@@ -74,7 +75,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
     .error(function(data){
       var msg = ngToast.create({
         content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
+        className:  'danger'
       });
     })
   };
@@ -131,6 +132,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
   };
 
 });
+
 
 app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, linesdata, grid){
 

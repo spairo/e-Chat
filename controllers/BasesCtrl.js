@@ -1,14 +1,22 @@
 'use strict';
-
 //Bases Form Controller
 
-app.controller("BasesFormCtrl", function($scope, $http, BasesService, BasesFactory){
+app.controller("BasesFormCtrl", function($scope, $state, $http, BasesService, BasesFactory){
 
     $scope.dataBases = BasesFactory;
+
+    $scope.resetWizard = function ()
+    {
+      $scope.dataBases = { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
+      BasesFactory = $scope.dataBases;
+      $scope.dataBases = BasesFactory;
+
+      $state.go('bases.lines');
+    };
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $state, $http, $modal, ngToast, auth, dialogs, myFactory, BasesFactory){
+app.controller("BasesCtrl", function($scope, $state, $http, $modal, ngToast, auth, dialogs, BasesFactory){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;

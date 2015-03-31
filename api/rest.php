@@ -88,51 +88,51 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
     break;
 
     case 'listaUsuario':
-    $a = array(
-      'Usuario' => $_POST['Usuario'],
-      'Servicio' => $_POST['Servicio'],
-      'Skill' => $_POST['Skill'],
-      'Perfil' => $_POST['Perfil'],
-      'activo' => $_POST['activo']
-    );
-    $res = $ws->listaUsuario($a);
-    echo $res->listaUsuarioResult;
+      $a = array(
+        'Usuario' => $_POST['Usuario'],
+        'Servicio' => $_POST['Servicio'],
+        'Skill' => $_POST['Skill'],
+        'Perfil' => $_POST['Perfil'],
+        'activo' => $_POST['activo']
+      );
+      $res = $ws->listaUsuario($a);
+      echo $res->listaUsuarioResult;
     break;
 
     case 'mantUsuarios':
-    $a = array(
-      'Id' => $_POST['Id'],
-      'PerfilId' => $_POST['PerfilId'],
-      'Nombre' => $_POST['Nombre'],
-      'Apellidos' => $_POST['Apellidos'],
-      'Sexo' => $_POST['Sexo'],
-      'Usuario' => $_POST['Usuario'],
-      'Password' => $_POST['Password'],
-      'Activo' => $_POST['Activo'],
-      'UserIdModif' => $_POST['UserIdModif']
-    );
-    $res = $ws->mantUsuarios($a);
-    echo $res->mantUsuariosResult;
+      $a = array(
+        'Id' => $_POST['Id'],
+        'PerfilId' => $_POST['PerfilId'],
+        'Nombre' => $_POST['Nombre'],
+        'Apellidos' => $_POST['Apellidos'],
+        'Sexo' => $_POST['Sexo'],
+        'Usuario' => $_POST['Usuario'],
+        'Password' => $_POST['Password'],
+        'Activo' => $_POST['Activo'],
+        'UserIdModif' => $_POST['UserIdModif']
+      );
+      $res = $ws->mantUsuarios($a);
+      echo $res->mantUsuariosResult;
     break;
 
     case 'listaCentros':
-    $a = array(
-      'Centro' => $_POST['Centro'],
-      'Activo' => $_POST['Activo']
-    );
-    $res = $ws->listaCentros($a);
-    echo $res->listaCentrosResult;
+      $a = array(
+        'Centro' => $_POST['Centro'],
+        'Activo' => $_POST['Activo']
+      );
+      $res = $ws->listaCentros($a);
+      echo $res->listaCentrosResult;
     break;
 
     case 'mantCentros':
-    $a = array(
-      'Id' => $_POST['Id'],
-      'Centro' => $_POST['Centro'],
-      'Activo' => $_POST['Activo'],
-      'UserId' => $_POST['UserId']
-    );
-    $res = $ws->mantCentros($a);
-    echo $res->mantCentrosResult;
+      $a = array(
+        'Id' => $_POST['Id'],
+        'Centro' => $_POST['Centro'],
+        'Activo' => $_POST['Activo'],
+        'UserId' => $_POST['UserId']
+      );
+      $res = $ws->mantCentros($a);
+      echo $res->mantCentrosResult;
     break;
 
     case 'listaLineaNegocio':

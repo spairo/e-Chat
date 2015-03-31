@@ -1,3 +1,4 @@
+'use strict';
 //Typing Controller
 
 app.controller("TypingCtrl", function($scope, $http, TypingLNFactory){

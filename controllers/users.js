@@ -1,3 +1,4 @@
+'use strict';
 // Users Controller
 
 app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){

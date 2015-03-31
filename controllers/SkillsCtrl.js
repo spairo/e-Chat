@@ -1,5 +1,4 @@
 'use strict';
-
 // Skills Controller
 app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
 

@@ -1,4 +1,4 @@
-
+'use strict';
 // Centers Controller
 
 app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){

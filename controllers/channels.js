@@ -1,3 +1,4 @@
+'use strict';
 // Channels Controller
 
 app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
