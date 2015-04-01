@@ -39,6 +39,11 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, ngToast,
     })
     .error(function(data){
       console.error("ServiciosCtrl > getListaServicios >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de servicios; Detalles: ServiciosCtrl > getListaServicios >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
 
     //get lista de clientes
@@ -55,6 +60,11 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, ngToast,
     })
     .error(function(data){
       console.error("ServiciosCtrl > getListaClientes >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de clientes; Detalles: ServiciosCtrl > getListaClientes >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
 
   });
@@ -110,6 +120,11 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, ngToast,
     })
     .error(function(data){
       console.error("ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar el servicio; Detalles: ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 
@@ -148,27 +163,31 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
 
       if(data == 'Error'){
         ngToast.create('EL servicio no ha sido creado, revisa tus datos requeridos');
-        console.warn("ServiciosCtrl > AddServicio > mantServicio >>> ERROR WS");
+        console.warn("ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR WS");
       }
       else{
         var servicio_checked = angular.isNumber(data[0].Column1);
         if(servicio_checked == true){
           ngToast.create('El servicio fue creado con exito');
-          console.info("ServiciosCtrl > AddServicio > mantServicio >>> Ok");
+          console.info("ModalCreate_ServicioController > AddServicio > mantServicio >>> Ok");
           $modalInstance.close();
         }
         else{
           ngToast.create('EL servicio no ha sido creado');
           $scope.result = data;
-          console.warn("ServiciosCtrl > AddServicio > mantServicio >>> SERVICIO NO CREADO");
+          console.warn("ModalCreate_ServicioController > AddServicio > mantServicio >>> SERVICIO NO CREADO");
         }
       }
 
       return;
     })
     .error(function(data){
-      console.error("ServiciosCtrl > AddServicio > mantServicio >>> ERROR HTTP");
-      return;
+      console.error("ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al Crear el Servicio; Detalles: ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 
@@ -220,7 +239,11 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
     .error(function(data){
       console.error("ModalEdit_ServiciosController > EditServicio > mantServicios >>> ERROR HTTP");
       $modalInstance.close();
-      return;
+      var msg = ngToast.create({
+        content: 'Error al Editar el Servicio; Detalles: ModalEdit_ServiciosController > EditServicio > mantServicios >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 

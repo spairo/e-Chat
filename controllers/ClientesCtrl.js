@@ -32,6 +32,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, 
     })
     .error(function(data){
       console.error("ClientesCtrl > getListaClientes >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de clientes; Detalles: ClientesCtrl > getListaClientes >>> ERROR HTTP',
+        className:  'danger'
+      });
     })
 
     //get lista de lineas de negocio
@@ -49,6 +53,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, 
     })
     .error(function(data){
       console.error("ClientesCtrl > getListaLineas >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de Lineas de Negocio; Detalles: ClientesCtrl > getListaLineas >>> ERROR HTTP',
+        className:  'danger'
+      });
     })
   });
 
@@ -103,6 +111,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, 
     })
     .error(function(data){
       console.error("ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar los datos del cliente; Detalles: ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP',
+        className:  'danger'
+      });
     })
   };
 
@@ -124,6 +136,11 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, 
       $state.go('bases.services');
     else if($state.current.name == "typing.clients")
       $state.go('typing.services');
+  };
+
+  $scope.StateReload = function(){
+    $state.reload();
+
   };
 
 });
@@ -168,7 +185,11 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
     })
     .error(function(data){
       console.error("ClientesCtrl > AddClient > mantClienteAtento >>> ERROR HTTP");
-      return;
+      var msg = ngToast.create({
+        content: 'Error al Crear el Cliente; Detalles: ClientesCtrl > AddClient > mantClienteAtento >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 
@@ -219,8 +240,11 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
     })
     .error(function(data){
       console.error("ModalEdit_ClientController > EditClient > mantClienteAtento >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al Editar el Cliente; Detalles: ModalEdit_ClientController > EditClient > mantClienteAtento >>> ERROR HTTP',
+        className:  'danger'
+      });
       $modalInstance.close();
-      return;
     })
   };
 

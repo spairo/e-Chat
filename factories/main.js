@@ -17,7 +17,7 @@ app.factory('TypingLNFactory',function(){
   return { id:"", linea:"", clienteAtentoId:"", cliente:"" };
 });
 
-app.factory('BasesFactory',function(){
+app.factory("BasesFactory",function(){
   return { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
 });
 

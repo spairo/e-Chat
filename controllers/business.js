@@ -1,7 +1,7 @@
 'use strict';
 //Business Lines Controller
 
-app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesService, BasesFactory){
+app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
   //Get Centers list
   //$scope.getBusiness = listline.data;
   $scope.Paso1_Linea = "";
@@ -117,8 +117,6 @@ app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalSta
     $scope.TypingLN = TypingLNFactory;
     $scope.TypingLN.id = lineaNegocioId;
     $scope.TypingLN.linea = linea;
-
-    BasesService.addItem(lineaNegocioId, linea);
 
     //add LN factory
     $scope.dataBases = BasesFactory;

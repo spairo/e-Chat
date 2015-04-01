@@ -1,15 +1,22 @@
 'use strict';
 //Bases Form Controller
 
-app.controller("BasesFormCtrl", function($scope, $state, $http, BasesService, BasesFactory){
+app.controller("BasesFormCtrl", function($scope, $state, $http, BasesFactory){
 
     $scope.dataBases = BasesFactory;
 
     $scope.resetWizard = function ()
     {
-      $scope.dataBases = { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
-      BasesFactory = $scope.dataBases;
-      $scope.dataBases = BasesFactory;
+      BasesFactory.lineaNegocioId = "";
+      BasesFactory.linea = "";
+      BasesFactory.clienteAtentoId = "";
+      BasesFactory.cliente = "";
+      BasesFactory.serviciosId = "";
+      BasesFactory.servicio = "";
+      BasesFactory.canalesId = "";
+      BasesFactory.canal = "";
+      BasesFactory.skillsId = "";
+      BasesFactory.skill = "";
 
       $state.go('bases.lines');
     };
@@ -142,7 +149,7 @@ app.controller("BasesCtrl", function($scope, $state, $http, $modal, ngToast, aut
     })
   };
 
-  //se muestra modal para editar una base
+  //se muestra modal para editar una compo de base selccionada.
   $scope.openCampoEdit = function(baseCampo){
     var modalInstance = $modal.open({
       templateUrl: 'ModalEdit_CampoBase.html',
@@ -222,6 +229,10 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
+  $scope.listaSkillsResult = listaSkillsResult;
+  $scope.showCampos = false;
+  $scope.addBase = { op: "mantBases", Id: "0", SkillId: listaSkillsResult[0].skillsId, NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
+
   $scope.$on('getListaBasesCampos', function(event){
 
     //get lista de campos de base
@@ -264,10 +275,6 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
 
   $scope.$emit('getListaSkills');*/
 
-  $scope.listaSkillsResult = listaSkillsResult;
-  $scope.showCampos = false;
-  $scope.addBase = { op: "mantBases", Id: "0", SkillId: "", NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
-
   //funcion que agrega una base nueva a la base de datos
   $scope.AddBase = function(){
     var dd = $scope.Fecha_Ini.getDate();
@@ -293,14 +300,14 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
 
       if(data == 'Error'){
         ngToast.create('La base no ha sido creada, revisa tus datos requeridos');
-        console.warn("BasesCtrl > AddServicio > mantServicio >>> ERROR WS");
+        console.warn("BasesCtrl > AddBase > mantServicio >>> ERROR WS");
       }
       else{
         var base_checked = angular.isNumber(data[0].Column1);
         if(base_checked == true){
           $scope.BaseId = data[0].Column1;
           ngToast.create('La base fue creada con exito');
-          console.info("BasesCtrl > AddServicio > mantServicio >>> Ok");
+          console.info("BasesCtrl > AddBase > mantServicio >>> Ok");
           $scope.$emit('cargaListas');
 
           var dlg = dialogs.confirm('Selecciona una respuesta','¿Deseas dar de alta los campos para esta base?');
@@ -323,14 +330,14 @@ app.controller("ModalCreate_BaseController", function($scope, $http, $modalInsta
         else{
           ngToast.create('La base no ha sido creada');
           $scope.result = data;
-          console.warn("BasesCtrl > AddServicio > mantServicio >>> BASE NO CREADA");
+          console.warn("BasesCtrl > AddBase > mantServicio >>> BASE NO CREADA");
         }
       }
 
       return;
     })
     .error(function(data){
-      console.error("BasesCtrl > AddServicio > mantServicio >>> ERROR HTTP");
+      console.error("BasesCtrl > AddBase > mantServicio >>> ERROR HTTP");
       return;
     })
   };
@@ -400,7 +407,7 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
   $scope.fechas = {FechaIni: new Date(yi, mi, di), FechaFin: new Date(yf, mf, df)};
 
   //get lista de skills
-  $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
+  /*$scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
   $http({
     method : 'POST',
     url : 'api/rest.php',
@@ -419,13 +426,13 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
   })
   .error(function(data){
     console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
-  })
+  })*/
 
   $scope.base = base;
 
-  $scope.changedValueSkill=function(item){
+ /* $scope.changedValueSkill=function(item){
     $scope.editBase.SkillId = item.skillsId;
-  }
+  }*/
 
   $scope.EditBase = function () {
     var dd = $scope.fechas.FechaIni.getDate();

@@ -7,14 +7,14 @@
       <div class="grid-structure">
         <div class="row">
 
-          <div class="col-md-4">
+          <!--<div class="col-md-4">
             <div class="widget-container">
               <div class="form-group">
                 <label for="SSkill">Skill</label>
                 <input type="text" class="form-control" ng-model="search.skill" placeholder="Linea de Negocio">
               </div>
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-4">
             <div class="widget-container">
@@ -143,9 +143,10 @@
         <form name="ModalCreate_Base_Form">
           <div class="form-group">
             <label for="Skill">* Skill</label>
-            <select class="form-control" ng-model="addBase.SkillId" required>
+            <label> {{listaSkillsResult[0].skill}}</label>
+            <!--<select class="form-control" ng-model="addBase.SkillId" required>
               <option ng-repeat="skill in listaSkillsResult" value="{{skill.skillsId}}"> {{skill.skill}} </option>
-            </select>
+            </select>-->
           </div>
 
           <div class="form-group">
@@ -312,7 +313,8 @@
 
           <div class="form-group">
             <label for="Skill">* Skill</label>
-              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
+            <label> {{base[0].skill}}</label>
+              <!--<select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>-->
           </div>
 
 

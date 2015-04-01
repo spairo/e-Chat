@@ -41,6 +41,11 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
     })
     .error(function(data){
       console.error("SkillsCtrl > getListaSkills >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de skills; Detalles: SkillsCtrl > getListaSkills >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
 
     //get lista de canales
@@ -57,6 +62,11 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
     })
     .error(function(data){
       console.error("SkillsCtrl > getListaCanales >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de canales; Detalles: SkillsCtrl > getListaCanales >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
 
     //get lista de servicios
@@ -73,6 +83,11 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
     })
     .error(function(data){
       console.error("SkillsCtrl > getListaServicios >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar la lista de servicios; Detalles: SkillsCtrl > getListaServicios >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   });
 
@@ -130,6 +145,11 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
     })
     .error(function(data){
       console.error("SkillsCtrl > openEdit > listaSkills >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al cargar el skill seleccionado; Detalles: SkillsCtrl > openEdit > listaSkills >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 
@@ -168,27 +188,31 @@ app.controller("ModalCreate_SkillController", function($scope, $http, $modalInst
 
       if(data == 'Error'){
         ngToast.create('EL skill no ha sido creado, revisa tus datos requeridos');
-        console.warn("SkillsCtrl > AddSkill > mantSkills >>> ERROR WS");
+        console.warn("ModalCreate_SkillController > AddSkill > mantSkills >>> ERROR WS");
       }
       else{
         var skill_checked = angular.isNumber(data[0].Column1);
         if(skill_checked == true){
           ngToast.create('El skill fue creado con exito');
-          console.info("SkillsCtrl > AddSkill > mantSkills >>> Ok");
+          console.info("ModalCreate_SkillController > AddSkill > mantSkills >>> Ok");
           $modalInstance.close();
         }
         else{
           ngToast.create('EL skill no ha sido creado');
           $scope.result = data;
-          console.warn("SkillsCtrl > AddSkill > mantSkills >>> SKILL NO CREADO");
+          console.warn("ModalCreate_SkillController > AddSkill > mantSkills >>> SKILL NO CREADO");
         }
       }
 
       return;
     })
     .error(function(data){
-      console.error("SkillsCtrl > AddSkill > mantSkills >>> ERROR HTTP");
-      return;
+      console.error("ModalCreate_SkillController > AddSkill > mantSkills >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al Crear el Skill; Detalles: ModalCreate_SkillController > AddSkill > mantSkills >>> ERROR HTTP',
+        className:  'danger'
+      });
+      $modalInstance.close();
     })
   };
 
@@ -239,8 +263,11 @@ app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstan
     })
     .error(function(data){
       console.error("ModalEdit_SkillController > EditSkill > mantSkills >>> ERROR HTTP");
+      var msg = ngToast.create({
+        content: 'Error al Editar el Skill; Detalles: ModalEdit_SkillController > EditSkill > mantSkills >>> ERROR HTTP',
+        className:  'danger'
+      });
       $modalInstance.close();
-      return;
     })
   };
 
