@@ -1,4 +1,8 @@
 'use strict';
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 // Centers Controller
 
 app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){

@@ -38,7 +38,12 @@ app.controller("HeaderCtrl", function($scope, $location, $cookies){
     //$cookies.remove("usuariocookie");
     //$cookies.remove("perfilcookie");
     //$cookies.remove("perfilesIdcookie");
+    $cookies.usuariocookie = undefined;
+    $cookies.perfilcookie = undefined;
+    $cookies.perfilesIdcookie = undefined;
+
     $location.path('signin');
+    console.log($cookies);
 
   };
 
@@ -88,6 +93,7 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
 
         $location.path('dashboard');
         console.log(data);
+
       }
 
     })

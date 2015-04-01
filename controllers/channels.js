@@ -1,7 +1,12 @@
 'use strict';
+
 // Channels Controller
 
-app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
+app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+
+  //get values LN factory
+  $scope.getLN = TypingFactory;
+  $scope.dataBases = BasesFactory;
 
    //Get Channels list
   $scope.$on('LoadList', function(event){
@@ -58,7 +63,6 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
         $scope.$emit('LoadList');
         $modalStack.dismissAll();
 
-
       }else{
         var msg = ngToast.create({
           content: 'Error, EL Canal no fue creado',
@@ -105,6 +109,12 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
 
   //Selected channel
   $scope.selected = function(canalesId, canal){
+
+    //add factory
+    $scope.Typing = TypingFactory;
+    $scope.Typing.canalesId = canalesId;
+    $scope.Typing.canal = canal;
+
     $scope.dataBases.canalesId = canalesId;
     $scope.dataBases.canal = canal;
 

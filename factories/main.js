@@ -12,9 +12,8 @@ app.factory('auth',function(){
   return { user:"", profile:"", profileID:"" };
 });
 
-
-app.factory('TypingLNFactory',function(){
-  return { id:"", linea:"", clienteAtentoId:"", cliente:"" };
+app.factory('TypingFactory',function(){
+  return { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
 });
 
 app.factory("BasesFactory",function(){
@@ -53,7 +52,7 @@ app.factory('listline', function($http) {
 */
 
 
-app.factory('listline', function($http) {
+app.factory('listline', function($http){
 
   var getListBusiness = {
     op: "listaLineaNegocio",
@@ -61,7 +60,7 @@ app.factory('listline', function($http) {
     Activo: ""
   }
 
-  function internalFunctionHandle() {
+  function internalFunctionHandle(){
     var getDataPromise = $http({
       method: 'POST',
       url: 'api/rest.php',

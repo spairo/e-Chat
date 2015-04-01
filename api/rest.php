@@ -343,6 +343,32 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
         }
       break;
 
+      case 'listaTipologias':
+        $a = array(
+          'Tipologia' => $_POST['Tipologia'],
+          'Skill' => $_POST['Skill'],
+          'Nivel' => $_POST['Nivel'],
+          'Activo' => $_POST['Activo']
+        );
+          $res = $ws->listaTipologias($a);
+          echo $res->listaTipologiasResult;
+      break;
+      /*
+      case 'mantTipologias':
+        $a = array(
+          'Id' => $_POST['Id'],
+          'IdSup' => $_POST['IdSup'],
+          'SkillId' => $_POST['SkillId']
+          'Tipologia' => $_POST['Tipologia'],
+          'Nivel' => $_POST['Nivel'],
+          'Activo' => $_POST['Activo'],
+          'UserId' => $_POST['UserId']
+        );
+          $res = $ws->mantTipologias($a);
+          echo $res->mantTipologiasResult;
+      break;
+      */
+      
       default: echo 'Opps!';
 
       break;

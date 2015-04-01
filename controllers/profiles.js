@@ -1,4 +1,8 @@
 'use strict';
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 // Profiles Controller
 
 app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){

@@ -1,7 +1,15 @@
 'use strict';
+<<<<<<< Updated upstream
 //Business Lines Controller
 
 app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
+=======
+
+//Business Lines Controller
+
+app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
+
+>>>>>>> Stashed changes
   //Get Centers list
   //$scope.getBusiness = listline.data;
   $scope.Paso1_Linea = "";
@@ -111,14 +119,24 @@ app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalSta
 
   $scope.selected = function(lineaNegocioId, linea){
 
+<<<<<<< Updated upstream
     //TypingService.addItem(lineaNegocioId, linea);
+=======
+    console.log("router > ", $state.current.name);
 
-    //add LN factory
-    $scope.TypingLN = TypingLNFactory;
-    $scope.TypingLN.id = lineaNegocioId;
-    $scope.TypingLN.linea = linea;
+    //add factory
+>>>>>>> Stashed changes
 
+    $scope.Typing = TypingFactory;
+    $scope.Typing.lineaNegocioId = lineaNegocioId;
+    $scope.Typing.linea = linea;
+
+<<<<<<< Updated upstream
     //add LN factory
+=======
+    //add factory
+
+>>>>>>> Stashed changes
     $scope.dataBases = BasesFactory;
     $scope.dataBases.lineaNegocioId = lineaNegocioId;
     $scope.dataBases.linea = linea;
@@ -127,6 +145,7 @@ app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalSta
       $state.go('bases.clients');
     else if($state.current.name == "typing.lines")
       $state.go('typing.clients');
+
   };
 
 });

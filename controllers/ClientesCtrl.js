@@ -1,12 +1,16 @@
 'use strict';
 // Clientes Controller
+<<<<<<< Updated upstream
 app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
+=======
+app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+>>>>>>> Stashed changes
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
-  $scope.getLN = TypingLNFactory;
+  $scope.getLN = TypingFactory;
   $scope.dataBases = BasesFactory;
 
   $scope.$on('cargaListas', function(event){
@@ -121,12 +125,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, 
   //Selected cliente
   $scope.selected = function(clienteAtentoId, cliente){
 
-    //TypingService.addItem(lineaNegocioId, linea);
-
     //add LN factory
-    $scope.TypingLN = TypingLNFactory;
-    $scope.TypingLN.clienteAtentoId = clienteAtentoId;
-    $scope.TypingLN.cliente = cliente;
+    $scope.Typing = TypingFactory;
+    $scope.Typing.clienteAtentoId = clienteAtentoId;
+    $scope.Typing.cliente = cliente;
 
 
     $scope.dataBases.clienteAtentoId = clienteAtentoId;

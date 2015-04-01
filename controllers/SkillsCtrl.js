@@ -1,12 +1,16 @@
 'use strict';
 // Skills Controller
+<<<<<<< Updated upstream
 app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
+=======
+app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+>>>>>>> Stashed changes
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
-  $scope.getLN = TypingLNFactory;
+  $scope.getLN = TypingFactory;
   $scope.dataBases = BasesFactory;
 
   $scope.$on('cargaListas', function(event){
@@ -155,6 +159,12 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
 
   //Selected servicio
   $scope.selected = function(skillsId, skill){
+
+    //add LN factory
+    $scope.Typing = TypingFactory;
+    $scope.Typing.skillsId = skillsId;
+    $scope.Typing.skill = skill;
+
     $scope.dataBases.skillsId = skillsId;
     $scope.dataBases.skill = skill;
 
@@ -162,6 +172,7 @@ app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, au
       $state.go('bases.bases');
     else if($state.current.name == "typing.skills")
       $state.go('typing.trees');
+
   };
 
 });
