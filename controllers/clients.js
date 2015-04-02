@@ -1,10 +1,7 @@
 'use strict';
 // Clientes Controller
-<<<<<<< Updated upstream
-app.controller("ClientesCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
-=======
+
 app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
->>>>>>> Stashed changes
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;

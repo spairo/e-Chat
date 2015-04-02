@@ -1,8 +1,5 @@
 'use strict';
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 //Typing Controller
 
 app.controller("TypingCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory){

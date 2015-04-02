@@ -1,8 +1,5 @@
 'use strict';
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 // Users Controller
 
 app.controller("UsersCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){

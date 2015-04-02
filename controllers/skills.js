@@ -1,10 +1,7 @@
 'use strict';
 // Skills Controller
-<<<<<<< Updated upstream
-app.controller("SkillsCtrl", function($scope, $state, $http, $modal, ngToast, auth, TypingLNFactory, BasesFactory){
-=======
+
 app.controller("SkillsCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
->>>>>>> Stashed changes
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -183,7 +180,7 @@ app.controller("ModalCreate_SkillController", function($scope, $http, $modalInst
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
   $scope.listaCanalesResult = listaCanalesResult;
-  $scope.listaServiciosResult = listaServiciosResult;  
+  $scope.listaServiciosResult = listaServiciosResult;
 
   $scope.addSkill = { op: "mantSkills", Id: "0", CanalesId: listaCanalesResult[0].canalesId, ServiciosId: listaServiciosResult[0].serviciosId, Skill: "", Activo: "",  UserId: myid };
 
@@ -240,7 +237,7 @@ app.controller("ModalEdit_SkillController", function($scope, $http, $modalInstan
   var myid = $scope.status = auth.profileID;
 
   $scope.editSkill = { op: "mantSkills", Id: skill[0].skillsId, CanalesId: skill[0].canalesId, ServiciosId: skill[0].serviciosId, Skill: skill[0].skill, Activo: skill[0].activo,  UserId: myid };
- 
+
   $scope.skill = skill;
 
   $scope.EditSkill = function () {

@@ -1,18 +1,12 @@
 'use strict';
-<<<<<<< Updated upstream
-//Business Lines Controller
-
-app.controller("BusinessCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingLNFactory, BasesFactory){
-=======
 
 //Business Lines Controller
 
 app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
 
->>>>>>> Stashed changes
-  //Get Centers list
-  //$scope.getBusiness = listline.data;
+
   $scope.Paso1_Linea = "";
+  $scope.typing = TypingFactory;
 
   $scope.$on('LoadList', function(event){
 
@@ -119,24 +113,15 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
   $scope.selected = function(lineaNegocioId, linea){
 
-<<<<<<< Updated upstream
-    //TypingService.addItem(lineaNegocioId, linea);
-=======
-    console.log("router > ", $state.current.name);
-
     //add factory
->>>>>>> Stashed changes
+
 
     $scope.Typing = TypingFactory;
     $scope.Typing.lineaNegocioId = lineaNegocioId;
     $scope.Typing.linea = linea;
 
-<<<<<<< Updated upstream
-    //add LN factory
-=======
     //add factory
 
->>>>>>> Stashed changes
     $scope.dataBases = BasesFactory;
     $scope.dataBases.lineaNegocioId = lineaNegocioId;
     $scope.dataBases.linea = linea;
