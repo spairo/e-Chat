@@ -492,7 +492,7 @@ app.controller("ModalEdit_BaseController", function($scope, $http, $modalInstanc
 
 //controlador para model de edicion de campos de bases
 app.controller("ModalEdit_CampoBaseController", function($scope, $http, $modalInstance, ngToast, auth, baseCampo){
-  
+
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
