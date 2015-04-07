@@ -17,9 +17,10 @@ var app = angular.module("app",
     "ui.bootstrap",
     "ngCookies",
     "ngToast",
-    "treeControl",
+    //"treeControl",
     "angular-loading-bar",
-    "dialogs.main"
+    "dialogs.main",
+    "ui.tree"
   ]
 )
 

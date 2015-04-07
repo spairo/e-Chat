@@ -2,7 +2,7 @@
 
 //Typing Controller
 
-app.controller("TypingCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory){
+app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack, ngToast, auth, TypingFactory){
 
     var myid = $scope.status = auth.profileID;
     $scope.typing = TypingFactory;
@@ -32,15 +32,25 @@ app.controller("TypingCtrl", function($scope, $http, $modal, $modalStack, ngToas
 
     //create
 
-    $scope.CreateTyping = function(){
+    $scope.CreateTyping = function(skillsId, skillTipologiasIdSup){
 
       var modalInstance = $modal.open({
         templateUrl: 'ModalCreate.html',
         controller: 'TypingAddCtrl',
         resolve: {
+          data: function () {
+            return $scope.data = [
+              {
+                skillid: skillsId,
+                IdSup: skillTipologiasIdSup,
+                myid: myid,
+              }
+            ]
+          },
           grid: function(){
             return $scope;
           }
+
         }
       });
 
@@ -53,28 +63,34 @@ app.controller("TypingCtrl", function($scope, $http, $modal, $modalStack, ngToas
     };
 
     $scope.clear = function(){
-      data.length = 0;
+      //data.length = 0;
+      $state.go('typing.lines');
     };
 
 });
 
-app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory, grid){
+app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory, data , grid){
 
     var myid = $scope.status = auth.profileID;
     $scope.typing = TypingFactory;
 
-    $scope.AddTyping = function(){
-        alert("ading element");
+    $scope.addTy = {
+      op: "mantTipologias",
+      Id: "0",
+      IdSup: data[0].IdSup,
+      SkillId: data[0].skillid,
+      Tipologia: "",
+      Nivel: "",
+      Activo: "",
+      UserId: myid
     };
 
-    //$scope.addCha = { op: "mantCanales", Id: "0", Canal: "", Activo: "", UserId: myid };
-
-    $scope.AddTyping2 = function(){
+    $scope.AddTyping = function(){
 
       $http({
         method: 'POST',
         url: 'api/rest.php',
-        data: $.param($scope.addCha),
+        data: $.param($scope.addTy),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .success(function(data){
@@ -83,13 +99,13 @@ app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngT
 
         if(channel_checked == true){
 
-          ngToast.create('El Canal fue creado con exito');
+          ngToast.create('El Tipologia fue creada con exito');
           $scope.$emit('LoadList');
           $modalStack.dismissAll();
 
         }else{
           var msg = ngToast.create({
-            content: 'Error, EL Canal no fue creado',
+            content: 'Error, La Tipologia no fue creada',
             className:	'danger'
           });
         }

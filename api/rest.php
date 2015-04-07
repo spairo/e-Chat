@@ -353,22 +353,25 @@ $opcion = (isset($_POST['op'])) ? $_POST['op'] : $_GET['op'];
           $res = $ws->listaTipologias($a);
           echo $res->listaTipologiasResult;
       break;
-      /*
+
       case 'mantTipologias':
         $a = array(
           'Id' => $_POST['Id'],
           'IdSup' => $_POST['IdSup'],
-          'SkillId' => $_POST['SkillId']
+          'SkillId' => $_POST['SkillId'],
           'Tipologia' => $_POST['Tipologia'],
           'Nivel' => $_POST['Nivel'],
           'Activo' => $_POST['Activo'],
           'UserId' => $_POST['UserId']
         );
+        try {
           $res = $ws->mantTipologias($a);
           echo $res->mantTipologiasResult;
+        } catch (SoapFault $exception) {
+          ChromePhp::log("ERROR EN LLAMADA AL WS <<mantTipologias>> DESDE PHP: ".$exception->$detail );
+        }
       break;
-      */
-      
+
       default: echo 'Opps!';
 
       break;

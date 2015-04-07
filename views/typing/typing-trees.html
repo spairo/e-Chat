@@ -3,48 +3,74 @@
     <strong>
       <span class="glyphicon glyphicon-th"></span> Tipificaciónes</strong>
       <div class="btn-group btn-group-lg pull-right" role="group" ng-repeat="type in getTypes | filter:{'skillsId': typing.skillsId }:true">
-        <button type="button" class="btn btn-default" ng-if="$index == 0" ng-click="CreateTyping()"><span class="glyphicon glyphicon-plus"></span></button>
+        <button type="button" class="btn btn-default" ng-if="$index == 0" ng-click="CreateTyping(type.skillTipologiasId)"><span class="glyphicon glyphicon-plus"></span> Tipologia</button>
       </div>
   </div>
   <hr>
   <div class="row">
+    <!--
     <div class="col-md-2">
-      <!--<ul ng-repeat="type in getTypes | filter:{'skillsId': typing.skillsId }:true" class="list-group">-->
       <ul ng-repeat="type in getTypes | filter:{'skillsId': typing.skillsId }:true" class="list-group">
-        <li class="list-group-item">
-          <span class="badge">{{type.skillTipologiasId}}</span> {{type.tipologia}}</li>
+        <a href="#" ng-click="CreateTyping(type.skillsId, type.skillTipologiasIdSup)">
+          <li class="list-group-item">{{type.tipologia}}</li>
+        </a>
       </ul>
     </div>
-    <div class="col-md-10">
+    -->
+    <div class="col-md-2">
+
+        <!-- Nested list template -->
+        <script type="text/ng-template" id="items_renderer.html">
+          <div ui-tree-handle>
+            <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+            {{item.tipologia}}
+            <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
+          </div>
+          <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}">
+            <li ng-repeat="item in item.items" ui-tree-node ng-include="'items_renderer.html'">
+            </li>
+          </ol>
+        </script>
+        <div ui-tree="options">
+          <ol ui-tree-nodes ng-model="getTypes">
+            <li class="list-group-item" ng-repeat="item in getTypes | filter:{'skillsId': typing.skillsId }:true" ui-tree-node ng-include="'items_renderer.html'"></li>
+          </ol>
+        </div>
+        <!-- Nested list template End -->
 
     </div>
+    <div class="col-md-8"></div>
   </div>
-<script type="text/ng-template" id="ModalCreate.html">
-  <div class="modal-header">
-    <h3 class="modal-title">Agregar Típologia</h3>
-  </div>
-  <div class="modal-body">
-
-    <form name="businessForm" novalidate>
-      <div class="form-group">
-        <label for="user">Tipologia</label>
-        <input type="text" class="form-control" ng-model="addLine.Linea" required>
-      </div>
-      <div class="form-group">
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="addLine.Activo" value="1" checked> Activo
-          </label>
+  <script type="text/ng-template" ng-controller="TypingAddCtrl" id="ModalCreate.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Agregar Típologia</h3>
+    </div>
+    <div class="modal-body">
+      <form name="businessForm" novalidate>
+        <div class="form-group">
+          <label for="user">Tipologia</label>
+          <input type="text" class="form-control" ng-model="addTy.Tipologia" required>
         </div>
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="addLine.Activo" value="0" checked> Inactivo
-          </label>
+        <div class="form-group">
+          <label>Padre</label>
+          <input type="checkbox" ng-model="addTy.Nivel" ng-true-value="1" ng-false-value="0" checked>
         </div>
-      </div>
-      <button class="btn btn-primary btn-lg btn-block" ng-disabled="businessForm.$invalid" ng-click="AddBusiness()">Agregar</button>
-    </form>
-
-  </div>
-</script>
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input type="radio" ng-model="addTy.Activo" value="1" checked> Activo
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" ng-model="addTy.Activo" value="0" checked> Inactivo
+            </label>
+          </div>
+          <pre>{{addTy}}</pre>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" ng-disabled="businessForm.$invalid" ng-click="AddTyping()">Agregar</button>
+      </form>
+    </div>
+  </script>
 </div>

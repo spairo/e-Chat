@@ -9750,7 +9750,7 @@ button.toast-close-button {
   position:relative;
   min-height:300px;
   overflow:hidden;
-  padding:30px;
+  padding: 0px;
 }
 #form-views{
   width:auto;
