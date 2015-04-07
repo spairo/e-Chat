@@ -72,7 +72,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="servicio in listaServiciosResult | filter:search" class="repeat-animation">
+            <tr ng-repeat="servicio in listaServiciosResult | filter:search" class="animate-repeat">
               <!--<td>{{servicio.cliente}}  {{servicio.apellidos}}</td>-->
               <!--<td>{{servicio.serviciosId}}</td>-->
               <!--<td>{{servicio.clienteAtentoId}}</td>-->
@@ -145,7 +145,7 @@
         <form>
           <div class="form-group">
             <label for="Cliente">* Cliente</label>
-            <label> {{service[0].cliente}}</label>            
+            <label> {{service[0].cliente}}</label>
             <!--<select class="form-control" data-ng-options="o.cliente for o in listaClienteAtentoResult" data-ng-model="selectedOption" ng-change="changedValueCliente(selectedOption)" required></select>-->
           </div>
 

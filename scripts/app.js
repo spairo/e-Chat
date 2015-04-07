@@ -66,7 +66,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('catalogs/business', {
       url: '/catalogs/business',
-      templateUrl: 'views/channels.html',
+      templateUrl: 'views/businessflow.html',
     })
     .state('catalogs/clients', {
       url: '/catalogs/clients',
