@@ -66,7 +66,19 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
 
     $scope.clear = function(){
       //data.length = 0;
+      TypingFactory.lineaNegocioId = "";
+      TypingFactory.linea = "";
+      TypingFactory.clienteAtentoId = "";
+      TypingFactory.cliente = "";
+      TypingFactory.serviciosId = "";
+      TypingFactory.servicio = ""; 
+      TypingFactory.canalesId = "";
+      TypingFactory.canal = "";
+      TypingFactory.skillsId = "";
+      TypingFactory.skill = "";
+      
       $state.go('typing.lines');
+
     };
 
 });

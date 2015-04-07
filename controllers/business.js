@@ -4,8 +4,6 @@
 
 app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
 
-  $scope.typing = TypingFactory;
-
   $scope.$on('LoadList', function(event){
 
       //$scope.getBusiness = listline.data;
@@ -80,14 +78,11 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
   $scope.selected = function(lineaNegocioId, linea){
 
     //add factory
-
-
     $scope.Typing = TypingFactory;
     $scope.Typing.lineaNegocioId = lineaNegocioId;
     $scope.Typing.linea = linea;
 
     //add factory
-
     $scope.dataBases = BasesFactory;
     $scope.dataBases.lineaNegocioId = lineaNegocioId;
     $scope.dataBases.linea = linea;

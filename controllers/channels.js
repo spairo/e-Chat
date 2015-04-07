@@ -5,7 +5,7 @@
 app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
 
   //get values LN factory
-  $scope.getLN = TypingFactory;
+  $scope.Typing = TypingFactory;
   $scope.dataBases = BasesFactory;
 
    //Get Channels list
@@ -111,7 +111,6 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
   $scope.selected = function(canalesId, canal){
 
     //add factory
-    $scope.Typing = TypingFactory;
     $scope.Typing.canalesId = canalesId;
     $scope.Typing.canal = canal;
 

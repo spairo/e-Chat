@@ -7,7 +7,7 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
-  $scope.getLN = TypingFactory;
+  $scope.Typing = TypingFactory;
   $scope.dataBases = BasesFactory;
 
   $scope.$on('cargaListas', function(event){
@@ -17,7 +17,7 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
     if($state.current.name == "bases.clients")
       linea = $scope.dataBases.linea;
     else if($state.current.name == "typing.clients")
-      linea = $scope.getLN.linea;
+      linea = $scope.Typing.linea;
 
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
 
@@ -113,7 +113,6 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
   $scope.selected = function(clienteAtentoId, cliente){
 
     //add LN factory
-    $scope.Typing = TypingFactory;
     $scope.Typing.clienteAtentoId = clienteAtentoId;
     $scope.Typing.cliente = cliente;
 

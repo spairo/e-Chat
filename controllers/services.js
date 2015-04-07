@@ -7,7 +7,7 @@ app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ng
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
-  $scope.getLN = TypingFactory;
+  $scope.Typing = TypingFactory;
   $scope.dataBases = BasesFactory;
 
   $scope.$on('cargaListas', function(event){
@@ -21,8 +21,8 @@ app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ng
     }
     else if($state.current.name == "typing.services")
     {
-      cliente = $scope.getLN.cliente;
-      linea = $scope.dataBases.linea;
+      cliente = $scope.Typing.cliente;
+      linea = $scope.Typing.linea;
     }
 
     //get lista de servicios
@@ -121,13 +121,11 @@ app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ng
   $scope.selected = function(serviciosId, servicio){
 
     //add LN factory
-    $scope.Typing = TypingFactory;
     $scope.Typing.serviciosId = serviciosId;
     $scope.Typing.servicio = servicio;
 
     $scope.dataBases.serviciosId = serviciosId;
     $scope.dataBases.servicio = servicio;
-
 
     if($state.current.name == "bases.services")
       $state.go('bases.channels');

@@ -7,7 +7,7 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
   var myid = $scope.status = auth.profileID;
 
   //get values LN factory
-  $scope.getLN = TypingFactory;
+  $scope.Typing = TypingFactory;
   $scope.dataBases = BasesFactory;
 
   $scope.$on('cargaListas', function(event){
@@ -23,9 +23,9 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
     }
     else if($state.current.name == "typing.skills")
     {
-      servicio = $scope.getLN.servicio;
-      canal = $scope.getLN.canal;
-      cliente = $scope.getLN.cliente;
+      servicio = $scope.Typing.servicio;
+      canal = $scope.Typing.canal;
+      cliente = $scope.Typing.cliente;
     }
 
     //get lista de skills
@@ -146,7 +146,6 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
   $scope.selected = function(skillsId, skill){
 
     //add LN factory
-    $scope.Typing = TypingFactory;
     $scope.Typing.skillsId = skillsId;
     $scope.Typing.skill = skill;
 
