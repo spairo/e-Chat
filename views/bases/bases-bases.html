@@ -370,42 +370,63 @@
         <form>
 
           <div class="form-group">
-            <label for="Skill">* Skill</label>
-              <select class="form-control" data-ng-options="item.skill for item in listaSkillsResult" data-ng-model="selectedOption" ng-change="changedValueSkill(selectedOption)" required></select>
+            <label for="Titulo">* Titulo</label>
+            <input type="text" class="form-control" ng-model="editCampoBase.Titulo" placeholder="Titulo" required>
           </div>
-
-
           <div class="form-group">
-            <label for="NombreBase">* Nombre de Base</label>
-            <input type="text" class="form-control" ng-model="editBase.NombreBase" placeholder="Nombre de Base" required>
+            <label for="NombreCampo">* Nombre del Campo</label>
+            <input type="text" class="form-control" ng-model="editCampoBase.NombreCampo" placeholder="Nombre del Campo" required>
           </div>
-
           <div class="form-group">
-            <label for="Descripcion">* Descripcion</label>
-            <input type="text" class="form-control" ng-model="editBase.Descripcion" placeholder="Descripcion" required>
+            <label for="TipoDato">* Tipo de Dato</label>
+            <select class="form-control" data-ng-options="o.tipo for o in listaTiposDeDato" data-ng-model="selectedTipoDato" ng-change="changedValueTipoDato(selectedTipoDato)" required></select>
+            <!--<p ng-show="ModalCreate_CamposBase_Form.TipoDato.$invalid && !ModalCreate_CamposBase_Form.TipoDato.$pristine" class="help-block">Se requiere Tipo.</p>-->
           </div>
-
           <div class="form-group">
-            <label for="FechaIni">  Fecha Inicial</label>
-            <input type="date" name="FechaIni" class="form-control" ng-model="fechas.FechaIni" placeholder="yyyy-MM-dd">
+            <label for="TipoCampo">* Tipo de Campo</label>
+            <select class="form-control" data-ng-options="o.campo for o in listaTiposDeCampo" data-ng-model="selectedTipoCampo" ng-change="changedValueTipoCampo(selectedTipoCampo)" required></select>
+            <!--<select name="TipoCampo" class="form-control" ng-model="editCampoBase.TipoCampo" required>
+              <option ng-repeat="campo in listaTiposDeCampo" value="{{campo.campo}}"> {{campo.campo}} </option>
+            </select>-->
+            <!--<span class="error" ng-show="ModalCreate_CamposBase_Form.TipoCampo.$dirty && ModalCreate_CamposBase_Form.TipoCampo.$invalid">Select service</span>-->
           </div>
-
           <div class="form-group">
-            <label for="FechaFin">  Fecha Final</label>
-            <input type="date" name="FechaFin" class="form-control" ng-model="fechas.FechaFin" placeholder="yyyy-MM-dd">
+            <label for="Longitud">* Longitud</label>
+            <input type="text" class="form-control" ng-model="editCampoBase.Longitud" placeholder="Longitud" required>
           </div>
-
+          <div class="form-group">
+            <label for="ValorDefault">* Valor Default</label>
+            <input type="text" class="form-control" ng-model="editCampoBase.ValorDefault" placeholder="Valor Default" required>
+          </div>
+          <!--<div class="form-group">
+            <label for="Requerido">* Requerido</label>
+            <input type="checkbox" ng-model="editCampoBase.Requerido" ng-true-value="'1'" ng-false-value="'0'">
+          </div>-->
+          <div class="form-group">
+            <label for="Requerido">* Requerido</label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editCampoBase.Requerido" value="1">Si Requerido
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="editCampoBase.Requerido" value="0">No Requerido
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="Orden">* Orden</label>
+            <input type="number" name="orden" ng-model="editCampoBase.Orden"
+              min="1" max="99" required>
+          </div>
           <div class="form-group">
             <label for="Estatus">* Estatus</label>
             <label class="radio-inline">
-              <input type="radio" ng-model="editBase.Activo" value="1">Activo
+              <input type="radio" ng-model="editCampoBase.Activo" value="1">Activo
             </label>
             <label class="radio-inline">
-              <input type="radio" ng-model="editBase.Activo" value="0">Inactivo
+              <input type="radio" ng-model="editCampoBase.Activo" value="0">Inactivo
             </label>
           </div>
 
-          <button class="btn btn-primary" ng-click="EditBase()">Editar</button>
+          <button class="btn btn-primary" ng-click="EditBaseCampo()">Editar</button>
           <button class="btn btn-danger" ng-click="CloseLines()">Cancelar</button>
         </form>
       </div>

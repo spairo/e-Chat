@@ -28,6 +28,9 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
+  $scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
+  $scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
+
   //get values LN factory
   $scope.dataBases = BasesFactory;
 
@@ -108,6 +111,12 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
       resolve: {
         listaSkillsResult: function () {
           return $scope.listaSkillsResult;
+        },
+        listaTiposDeDato: function(){
+          return $scope.listaTiposDeDato;
+        },
+        listaTiposDeCampo: function(){
+          return $scope.listaTiposDeCampo;
         }
       }
     });
@@ -162,6 +171,12 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
       resolve: {
         baseCampo: function () {
         return baseCampo;
+        },
+        listaTiposDeDato: function(){
+          return $scope.listaTiposDeDato;
+        },
+        listaTiposDeCampo: function(){
+          return $scope.listaTiposDeCampo;
         }
       }
     });
@@ -237,7 +252,7 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
 });
 
 //controlador para model de creacion de bases y campos
-app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ngToast, auth, dialogs, listaSkillsResult, httpp){
+app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ngToast, auth, dialogs, listaSkillsResult, listaTiposDeDato, listaTiposDeCampo, httpp){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -325,8 +340,8 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
             UserId: myid };
 
             $scope.listaBasesCamposResult = {};
-            $scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
-            $scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
+            //$scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
+            //$scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
             $scope.showCampos = true;
           },function(btn){
             $scope.showCampos = false;
@@ -526,7 +541,7 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
 
   };
 
-   $scope.CloseLines = function()
+  $scope.CloseLines = function()
   {
     $modalInstance.close();
   };
@@ -534,23 +549,79 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
 });
 
 //controlador para model de edicion de campos de bases
-app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance, ngToast, auth, baseCampo, httpp){
+app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance, ngToast, auth, baseCampo, listaTiposDeDato, listaTiposDeCampo, httpp){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
+  $scope.baseCampo = baseCampo;
+  $scope.listaTiposDeDato = listaTiposDeDato;
+  $scope.listaTiposDeCampo = listaTiposDeCampo;
+
+  $scope.editCampoBase = { op: "mantBasesCampos", Id: baseCampo.skillsBasesCamposId, BaseId: baseCampo.skillsBasesId, Titulo: baseCampo.titulo,
+            NombreCampo: baseCampo.nombre1, TipoDato: baseCampo.tipoDato, TipoCampo: baseCampo.tipoCampo, Longitud: baseCampo.longitud,
+            ValorDefault: baseCampo.valorDefault, Requerido: baseCampo.requerido, Orden: baseCampo.orden, Activo: baseCampo.activo,
+            UserId: myid };
+
+  angular.forEach($scope.listaTiposDeDato, function(item) {
+      if(baseCampo.tipoDato == item.tipo)
+        $scope.selectedTipoDato = item;
+    });
+
+   angular.forEach($scope.listaTiposDeCampo, function(item) {
+      if(baseCampo.tipoCampo == item.campo)
+        $scope.selectedTipoCampo = item;
+    });
+  
+  $scope.changedValueTipoDato=function(item){
+    $scope.editCampoBase.TipoDato = item.tipo;
+  }; 
+
+  $scope.changedValueTipoCampo=function(item){
+    $scope.editCampoBase.TipoCampo = item.campo;
+  };
+
+  $scope.EditBaseCampo = function () {
+
+    httpp.post($scope.editCampoBase)
+    .then(function(data){
+      if(data == 'Error'){
+        ngToast.create('El campo de la base no ha sido editado, revisa tus datos requeridos');
+        console.warn("ModalEdit_CampoBaseController > EditBaseCampo > mantBases >>> ERROR WS");
+      }
+      else{
+        var checked = angular.isNumber(data[0].Column1);
+        if(checked == true){
+          ngToast.create('La base fue editada con exito');
+          console.info("ModalEdit_CampoBaseController > EditBaseCampo > mantBases >>> Ok");
+          //scopee.$emit('cargaListas');
+          $modalInstance.close();
+        }
+        else{
+          ngToast.create('El campo de la base no ha sido editado');
+          $scope.result = data;
+          console.warn("ModalEdit_CampoBaseController > EditBaseCampo > mantBases >>> BASE NO EDITADA");
+        }
+      }
+    })
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
+      var msg = ngToast.create({
+        content: "Error en httpp " + status + data,
+        className:  "danger"
+      });
+    })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+      $scope.$emit('cargaListas');
+      $modalInstance.close();
+    });
+
+  };
+
+  $scope.CloseLines = function()
+  {
+    $modalInstance.close();
+  };
+
 });
-
-
-//$scope.submitTest = function(){
-
-//      myFactory.callTest()
-//      .then(function(data){
-//        $scope.$apply(function () {
-//          $scope.datoss = data;
-//        });
-//      }, function(data){
-//        alert(data);
-//      })
-
-//  }
