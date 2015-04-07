@@ -3,9 +3,7 @@
 //Business Lines Controller
 
 app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
-
-
-  $scope.Paso1_Linea = "";
+  
   $scope.typing = TypingFactory;
 
   $scope.$on('LoadList', function(event){

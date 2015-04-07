@@ -1,7 +1,7 @@
 'use strict';
 // Clientes Controller
 
-app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -21,44 +21,38 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
 
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaClientes),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    httpp.post($scope.getListaClientes)
+    .then(function(data){
       $scope.listaClienteAtentoResult = data;
-      console.info("ClientesCtrl > getListaClientes >>> OK");
     })
-    .error(function(data){
-      console.error("ClientesCtrl > getListaClientes >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar la lista de clientes; Detalles: ClientesCtrl > getListaClientes >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
 
     //get lista de lineas de negocio
     $scope.getListaLineas = { op: "listaLineaNegocio", Linea: linea, Activo:""};
 
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaLineas),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    httpp.post($scope.getListaLineas)
+    .then(function(data){
       $scope.listaLineaNegocioResult = data;
-      console.info("ClientesCtrl > getListaLineas >>> OK");
     })
-    .error(function(data){
-      console.error("ClientesCtrl > getListaLineas >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar la lista de Lineas de Negocio; Detalles: ClientesCtrl > getListaLineas >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
   });
 
   $scope.$emit('cargaListas');
@@ -84,16 +78,10 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
   $scope.openEdit = function(linea, cliente, activo){
     //consultamos los datos del clienteId al que se le dio click para editar
     $scope.getClientData = { op: "listaClienteAtento", Linea: linea, Cliente: cliente, Activo:activo};
-    //$scope.getListaClientes = { op: "listaClienteAtento", Linea: "", Cliente: "", Activo:""};
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getClientData),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    
+    httpp.post($scope.getClientData)
+    .then(function(data){
       $scope.clienteAtentoResult = data;
-      console.info("ClientesCtrl > openEdit > listaClienteAtento >>> OK");
 
       var modalInstance = $modal.open({
         templateUrl: 'ModalEdit_Client.html',
@@ -108,15 +96,17 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
       modalInstance.result.then(function(){
         $scope.$emit('cargaListas');
       });
-
     })
-    .error(function(data){
-      console.error("ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar los datos del cliente; Detalles: ClientesCtrl > openEdit > listaClienteAtento >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
   };
 
   //Selected cliente
@@ -144,7 +134,7 @@ app.controller("ClientesCtrl", function($scope, $state, $http, $modal, $modalSta
 
 });
 
-app.controller("ModalCreate_ClientController", function($scope, $http, $modalInstance, ngToast, auth, listaLineaNegocioResult){
+app.controller("ModalCreate_ClientController", function($scope, $modalInstance, ngToast, auth, listaLineaNegocioResult, httpp){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -154,14 +144,9 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
 
   //funcion que agrega un cliente nuevo a la base
   $scope.AddClient = function(){
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.addClient),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
+    
+    httpp.post($scope.addClient)
+    .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL cliente no ha sido creado, revisa tus datos requeridos');
         console.warn("ClientesCtrl > AddClient > mantClienteAtento >>> ERROR WS");
@@ -179,17 +164,18 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
           console.warn("ClientesCtrl > AddClient > mantClienteAtento >>> CLIENTE NO CREADO");
         }
       }
-
-      return;
     })
-    .error(function(data){
-      console.error("ClientesCtrl > AddClient > mantClienteAtento >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al Crear el Cliente; Detalles: ClientesCtrl > AddClient > mantClienteAtento >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+      $modalInstance.close();
+    });
   };
 
   $scope.CloseLines = function()
@@ -200,7 +186,7 @@ app.controller("ModalCreate_ClientController", function($scope, $http, $modalIns
 });
 
 //controlador para la tabla de lista de clientes
-app.controller("ModalEdit_ClientController", function($scope, $http, $modalInstance, ngToast, auth, client){
+app.controller("ModalEdit_ClientController", function($scope, $modalInstance, ngToast, auth, client, httpp){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -209,14 +195,9 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
   $scope.client = client;
 
   $scope.EditClient = function () {
-     $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.editClient),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
+     
+    httpp.post($scope.editClient)
+    .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL cliente no ha sido editado, revisa tus datos requeridos');
         console.warn("ModalEdit_ClientController > EditClient > mantClienteAtento >>> ERROR WS");
@@ -234,17 +215,17 @@ app.controller("ModalEdit_ClientController", function($scope, $http, $modalInsta
           console.warn("ModalEdit_ClientController > EditClient > mantClienteAtento >>> CLIENTE NO EDITADO");
         }
       }
-
-      return;
     })
-    .error(function(data){
-      console.error("ModalEdit_ClientController > EditClient > mantClienteAtento >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al Editar el Cliente; Detalles: ModalEdit_ClientController > EditClient > mantClienteAtento >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
   };
 
   $scope.CloseLines = function()

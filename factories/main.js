@@ -125,8 +125,47 @@ app.factory("localize", function($http, $rootScope, $window){
 
 });
 
-app.factory('myFactory', function($http, $q) {
-  var service = {};
+app.factory('httpp', function($http, $q) {
+  return{
+
+    post: function(parameters){
+      //var getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+
+      var deferred = $q.defer();
+
+      $http({
+        method : 'POST',
+        url : 'api/rest.php',
+        data : $.param(parameters),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(deferred.resolve)
+      .error(function(data, status, headers, config){
+        deferred.reject("Error el el HTTP en la llamada: " + config.data)
+      });
+      //.success(function(data){
+         //deferred.resolve(data);
+      //})
+      //.error(function(data){
+//        deferred.resolve('There was an error')
+      //})
+
+      return deferred.promise;
+    }
+  }
+
+
+  /*return{
+    post: function(){
+      var deferred = $q.defer();
+      $http.get.apply(null, arguments)
+      .success(deferred.resolve)
+      .error(deferred.resolve);
+      return deferred.promise;
+    }
+  }*/
+
+  /*var service = {};
 
   var getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
 
@@ -149,5 +188,36 @@ app.factory('myFactory', function($http, $q) {
     return deferred.promise;
   }
 
-  return service;
+  return service;*/
+
+
+
+  /*var service = {};
+
+  var getListaBases = { op: "listaBases", Skill: "", Base: "", Activo:""};
+
+  service.callTest = function(){
+    var deferred = $q.defer();
+
+    $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      response : $.param(getListaBases),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(function(response){
+       deferred.resolve(response.data);
+    })
+    .catch(function(response){
+      deferred.reject('There was an error')
+    })
+    .finally(function() {
+      console.log("finally finished gists");
+    });
+
+    return deferred.promise;
+  }
+
+  return service;*/
+
 });

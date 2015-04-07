@@ -1,7 +1,7 @@
 'use strict';
 // Servicios Controller
 
-app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -25,48 +25,41 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
       linea = $scope.dataBases.linea;
     }
 
-
     //get lista de servicios
     $scope.getListaServicios = { op: "listaServicios", Servicio: "", ClienteAtento: cliente, Activo:""};
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaServicios),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    
+    httpp.post($scope.getListaServicios)
+    .then(function(data){
       $scope.listaServiciosResult = data;
-      console.info("ServiciosCtrl > getListaServicios >>> OK");
     })
-    .error(function(data){
-      console.error("ServiciosCtrl > getListaServicios >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar la lista de servicios; Detalles: ServiciosCtrl > getListaServicios >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
 
     //get lista de clientes
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: cliente, Activo:""};
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaClientes),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    
+    httpp.post($scope.getListaClientes)
+    .then(function(data){
       $scope.listaClienteAtentoResult = data;
-      console.info("ServiciosCtrl > getListaClientes >>> OK");
     })
-    .error(function(data){
-      console.error("ServiciosCtrl > getListaClientes >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar la lista de clientes; Detalles: ServiciosCtrl > getListaClientes >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
 
   });
 
@@ -94,15 +87,9 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
     //consultamos los datos del servicio al que se le dio click para editar
     $scope.getServiceData = { op: "listaServicios", Servicio: servicio, ClienteAtento: cliente, Activo:activo};
 
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getServiceData),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    httpp.post($scope.getServiceData)
+    .then(function(data){
       $scope.servicioResult = data;
-      console.info("ServiciosCtrl > openEdit > listaServicios >>> OK");
 
       var modalInstance = $modal.open({
         templateUrl: 'ModalEdit_Servicio.html',
@@ -117,16 +104,17 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
       modalInstance.result.then(function(){
         $scope.$emit('cargaListas');
       });
-
     })
-    .error(function(data){
-      console.error("ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al cargar el servicio; Detalles: ServiciosCtrl > openEdit > listaServicios >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+    });
   };
 
   //Selected servicio
@@ -147,10 +135,15 @@ app.controller("ServiciosCtrl", function($scope, $state, $http, $modal, $modalSt
       $state.go('typing.channels');
   };
 
+  $scope.StateReload = function(){
+    $state.reload();
+
+  };
+
 });
 
 //controlador para model de creacion de servicios
-app.controller("ModalCreate_ServicioController", function($scope, $http, $modalInstance, ngToast, auth, listaClienteAtentoResult){
+app.controller("ModalCreate_ServicioController", function($scope, $modalInstance, ngToast, auth, listaClienteAtentoResult, httpp){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -160,14 +153,9 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
 
   //funcion que agrega un servicio nuevo a la base
   $scope.AddServicio = function(){
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.addServicio),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
+    
+    httpp.post($scope.addServicio)
+    .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL servicio no ha sido creado, revisa tus datos requeridos');
         console.warn("ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR WS");
@@ -185,17 +173,19 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
           console.warn("ModalCreate_ServicioController > AddServicio > mantServicio >>> SERVICIO NO CREADO");
         }
       }
-
-      return;
     })
-    .error(function(data){
-      console.error("ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR HTTP");
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al Crear el Servicio; Detalles: ModalCreate_ServicioController > AddServicio > mantServicio >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+      $modalInstance.close();
+    });
+
   };
 
   $scope.CloseLines = function()
@@ -206,7 +196,7 @@ app.controller("ModalCreate_ServicioController", function($scope, $http, $modalI
 });
 
 //controlador para model de edicion de servicios
-app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalInstance, ngToast, auth, service){
+app.controller("ModalEdit_ServiciosController", function($scope, $modalInstance, ngToast, auth, service, httpp){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
@@ -215,14 +205,9 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
   $scope.service = service;
 
   $scope.EditServicio = function () {
-     $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.editServicio),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
+     
+    httpp.post($scope.editServicio)
+    .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL servicio no ha sido editado, revisa tus datos requeridos');
         console.warn("ModalEdit_ServiciosController > EditServicio > mantServicios >>> ERROR WS");
@@ -240,18 +225,19 @@ app.controller("ModalEdit_ServiciosController", function($scope, $http, $modalIn
           console.warn("ModalEdit_ServiciosController > EditServicio > mantServicios >>> SERVICIO NO EDITADO");
         }
       }
-
-      return;
     })
-    .error(function(data){
-      console.error("ModalEdit_ServiciosController > EditServicio > mantServicios >>> ERROR HTTP");
-      $modalInstance.close();
+    .catch(function(data, status){
+      console.error("Error en httpp ", status, data);
       var msg = ngToast.create({
-        content: 'Error al Editar el Servicio; Detalles: ModalEdit_ServiciosController > EditServicio > mantServicios >>> ERROR HTTP',
-        className:  'danger'
+        content: "Error en httpp " + status + data,
+        className:  "danger"
       });
-      $modalInstance.close();
     })
+    .finally(function(){
+      console.log("Finaliza llamada a httpp");
+      $modalInstance.close();
+    });
+
   };
 
   $scope.CloseLines = function()
