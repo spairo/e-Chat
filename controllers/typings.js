@@ -6,6 +6,7 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
 
     var myid = $scope.status = auth.profileID;
     $scope.typing = TypingFactory;
+    var skillsId = TypingFactory.skillsId;
 
     //list
     $scope.$on('LoadList', function(event){
@@ -32,21 +33,12 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
 
     //create
 
-    $scope.CreateTyping = function(skillsId, skillTipologiasIdSup){
+    $scope.CreateTyping = function(){
 
       var modalInstance = $modal.open({
         templateUrl: 'ModalCreate.html',
         controller: 'TypingAddCtrl',
         resolve: {
-          data: function () {
-            return $scope.data = [
-              {
-                skillid: skillsId,
-                IdSup: skillTipologiasIdSup,
-                myid: myid,
-              }
-            ]
-          },
           grid: function(){
             return $scope;
           }
@@ -54,6 +46,16 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
         }
       });
 
+    };
+
+    //NewSubTyping
+
+    $scope.newSubItem = function(){
+      alert("add child");
+    };
+
+    $scope.remove = function(){
+      alert("remove this");
     };
 
     //selected
@@ -69,18 +71,19 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
 
 });
 
-app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory, data , grid){
+app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory, grid){
 
     var myid = $scope.status = auth.profileID;
-    $scope.typing = TypingFactory;
+    var skillsId = TypingFactory.skillsId;
+
 
     $scope.addTy = {
       op: "mantTipologias",
       Id: "0",
-      IdSup: data[0].IdSup,
-      SkillId: data[0].skillid,
+      IdSup: "0",
+      SkillId: skillsId,
       Tipologia: "",
-      Nivel: "",
+      Nivel: "0",
       Activo: "",
       UserId: myid
     };
@@ -100,7 +103,7 @@ app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngT
         if(channel_checked == true){
 
           ngToast.create('El Tipologia fue creada con exito');
-          $scope.$emit('LoadList');
+          grid.$emit('LoadList');
           $modalStack.dismissAll();
 
         }else{

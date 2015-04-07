@@ -47,7 +47,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="business in getBusiness | filter:search" class="repeat-animation">
+          <tr ng-repeat="business in getBusiness | filter:search" class="animate-repeat">
             <td>{{business.lineaNegocioId}}</td>
             <td>{{business.linea}}</td>
             <td>{{business.descripcion}}</td>
@@ -63,7 +63,7 @@
       </table>
     </div>
   </section>
-  <script type="text/ng-template" id="ModalCreate.html">
+  <script type="text/ng-template" ng-controller="AddLineCtrl" id="ModalCreate.html">
       <div class="modal-header">
         <h3 class="modal-title">Agregar Línea de Negocio</h3>
       </div>

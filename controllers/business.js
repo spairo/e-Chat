@@ -3,7 +3,7 @@
 //Business Lines Controller
 
 app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
-  
+
   $scope.typing = TypingFactory;
 
   $scope.$on('LoadList', function(event){
@@ -30,7 +30,7 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
   $scope.$emit('LoadList');
 
-  //Modal, Create, Edit
+  // Create
 
   var myid = $scope.status = auth.profileID;
 
@@ -38,46 +38,14 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate.html',
-      controller: 'BusinessCtrl'
+      controller: 'AddLineCtrl',
+      resolve: {
+        gri: function(){
+          return $scope;
+        }
+      }
     });
 
-  };
-
-  $scope.addLine = { op: "mantLineaNegocio", Id: "0", Linea: "", Activo: "", Descripcion: "", UserId: myid };
-
-  $scope.AddBusiness = function(){
-
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.addLine),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      var line_checked = angular.isNumber(data[0].Column1);
-
-      if(line_checked == true){
-
-        ngToast.create('Línea de Negocio creada con exito');
-        $scope.$emit('LoadList');
-        $scope.$apply;
-        $modalStack.dismissAll();
-
-      }else{
-        var msg = ngToast.create({
-          content: 'Error, La Línea de Negocio no fue creada',
-          className:  'danger'
-        });
-      }
-
-    })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:  'danger'
-      });
-    })
   };
 
   // Edit Line
@@ -133,6 +101,48 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
 });
 
+app.controller('AddLineCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, gri){
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.addLine = { op: "mantLineaNegocio", Id: "0", Linea: "", Activo: "", Descripcion: "", UserId: myid };
+
+  $scope.AddBusiness = function(){
+
+      $http({
+        method: 'POST',
+        url: 'api/rest.php',
+        data: $.param($scope.addLine),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){
+
+        var line_checked = angular.isNumber(data[0].Column1);
+
+        if(line_checked == true){
+
+          ngToast.create('Línea de Negocio creada con exito');
+          gri.$emit('LoadList');
+          $scope.$apply;
+          $modalStack.dismissAll();
+
+        }else{
+          var msg = ngToast.create({
+            content: 'Error, La Línea de Negocio no fue creada',
+            className:  'danger'
+          });
+        }
+
+      })
+      .error(function(data){
+        var msg = ngToast.create({
+          content: 'Opps!, Algo salio mal intenta otra vez',
+          className:  'danger'
+        });
+      })
+  };
+
+});
 
 app.controller('InstanceLinesCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, linesdata, grid){
 

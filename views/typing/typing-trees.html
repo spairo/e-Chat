@@ -2,8 +2,8 @@
   <div class="panel-heading">
     <strong>
       <span class="glyphicon glyphicon-th"></span> Tipificaciónes</strong>
-      <div class="btn-group btn-group-lg pull-right" role="group" ng-repeat="type in getTypes | filter:{'skillsId': typing.skillsId }:true">
-        <button type="button" class="btn btn-default" ng-if="$index == 0" ng-click="CreateTyping(type.skillTipologiasId)"><span class="glyphicon glyphicon-plus"></span> Tipologia</button>
+      <div class="btn-group btn-group-lg pull-right" role="group">
+        <button type="button" class="btn btn-default" ng-click="CreateTyping()"><span class="glyphicon glyphicon-plus"></span> Tipologia</button>
       </div>
   </div>
   <hr>
@@ -11,30 +11,29 @@
     <!--
     <div class="col-md-2">
       <ul ng-repeat="type in getTypes | filter:{'skillsId': typing.skillsId }:true" class="list-group">
-        <a href="#" ng-click="CreateTyping(type.skillsId, type.skillTipologiasIdSup)">
+        <a href="#" ng-click="CreateTyping(type.skillsId, type.skillTipologiasIdSup); newSubItem()">
           <li class="list-group-item">{{type.tipologia}}</li>
         </a>
       </ul>
     </div>
     -->
+
     <div class="col-md-2">
 
         <!-- Nested list template -->
-        <script type="text/ng-template" id="items_renderer.html">
+        <script type="text/ng-template" id="renderer.html">
+          <a class="pull-left btn btn-success btn-xs" ng-click="CreateTyping(type.skillTipologiasId)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span> &nbsp;</a>
+          <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem()" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
           <div ui-tree-handle>
-            <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
             {{item.tipologia}}
-            <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)"><span class="glyphicon glyphicon-remove"></span></a>
-            <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
           </div>
           <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}">
-            <li ng-repeat="item in item.items" ui-tree-node ng-include="'items_renderer.html'">
-            </li>
+            <li ng-repeat="item in item.items" ui-tree-node ng-include="'renderer.html'"></li>
           </ol>
         </script>
         <div ui-tree="options">
           <ol ui-tree-nodes ng-model="getTypes">
-            <li class="list-group-item" ng-repeat="item in getTypes | filter:{'skillsId': typing.skillsId }:true" ui-tree-node ng-include="'items_renderer.html'"></li>
+            <li class="list-group-item" ng-repeat="item in getTypes | filter:{'skillsId': typing.skillsId }:true" ui-tree-node ng-include="'renderer.html'"></li>
           </ol>
         </div>
         <!-- Nested list template End -->
@@ -52,9 +51,10 @@
           <label for="user">Tipologia</label>
           <input type="text" class="form-control" ng-model="addTy.Tipologia" required>
         </div>
-        <div class="form-group">
-          <label>Padre</label>
-          <input type="checkbox" ng-model="addTy.Nivel" ng-true-value="1" ng-false-value="0" checked>
+        <div class="checkbox disabled">
+          <label>
+            <input type="checkbox" ng-model="addTy.Nivel" ng-true-value="1" ng-checked="true" disabled> Tipologia Padre
+          </label>
         </div>
         <div class="form-group">
           <div class="radio">
