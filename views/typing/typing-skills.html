@@ -16,7 +16,7 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <!--<div class="col-md-4">
             <div class="widget-container">
               <div class="form-group">
                 <label for="SServicio">Servicio</label>
@@ -32,7 +32,7 @@
                 <input type="text" class="form-control" ng-model="search.canal" placeholder="Canal">
               </div>
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-4">
             <div class="widget-container">
@@ -42,6 +42,14 @@
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
               </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="widget-container">
+              <div class="form-group">
+                <button type="button" class="btn btn-default" ng-click="StateReload()"><span class="glyphicon glyphicon-plus">Reload</span></button>
+              </div>
             </div>
           </div>
 
@@ -128,16 +136,18 @@
         <form>
           <div class="form-group">
             <label for="Canal">* Canal</label>
-            <select class="form-control" ng-model="addSkill.CanalesId" required>
+            <label> {{listaCanalesResult[0].canal}}</label>
+            <!--<select class="form-control" ng-model="addSkill.CanalesId" required>
               <option ng-repeat="canal in listaCanalesResult" value="{{canal.canalesId}}"> {{canal.canal}} </option>
-            </select>
+            </select>-->
           </div>
 
           <div class="form-group">
             <label for="Servicio">* Servicio</label>
-            <select class="form-control" ng-model="addSkill.ServiciosId" required>
+            <label> {{listaServiciosResult[0].servicio}}</label>
+            <!--<select class="form-control" ng-model="addSkill.ServiciosId" required>
               <option ng-repeat="servicio in listaServiciosResult" value="{{servicio.serviciosId}}"> {{servicio.servicio}} </option>
-            </select>
+            </select>-->
           </div>
 
           <div class="form-group">
@@ -169,12 +179,14 @@
         <form>
           <div class="form-group">
             <label for="Canal">* Canal</label>
-            <select class="form-control" data-ng-options="o.canal for o in listaCanalesResult" data-ng-model="selectedCanal" ng-change="changedValueCanal(selectedCanal)" required></select>
+            <label> {{skill[0].canal}}</label>
+            <!--<select class="form-control" data-ng-options="o.canal for o in listaCanalesResult" data-ng-model="selectedCanal" ng-change="changedValueCanal(selectedCanal)" required></select>-->
           </div>
 
           <div class="form-group">
             <label for="Servicio">* Servicio</label>
-            <select class="form-control" data-ng-options="o.servicio for o in listaServiciosResult" data-ng-model="selectedServicio" ng-change="changedValueServicio(selectedServicio)" required></select>
+            <label> {{skill[0].servicio}}</label>
+            <!--<select class="form-control" data-ng-options="o.servicio for o in listaServiciosResult" data-ng-model="selectedServicio" ng-change="changedValueServicio(selectedServicio)" required></select>-->
           </div>
 
           <div class="form-group">

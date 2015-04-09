@@ -51,3 +51,59 @@ app.service('BasesService', function(){
   };
 
 });
+
+
+app.service("httpTestService",function( $http, $q ) { 
+  
+  function httppost(parameters) {
+   
+    var deferredAbort = $q.defer();
+     
+    var request = $http({
+      method : 'POST',
+      url : 'api/rest.php',
+      data : $.param(parameters),
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+      timeout: deferredAbort.promise
+    });
+     
+    var promise = request.then(
+      function( response ) {
+       
+        return( response.data );
+       
+      },
+      function( response ) {
+       
+        return( $q.reject( "Something went wrong" ) );
+       
+      }
+    );
+     
+    promise.abort = function() {
+     
+      deferredAbort.resolve();
+     
+    };
+     
+    promise.finally(
+      function() {
+       
+        console.info( "Cleaning up object references." );
+         
+        promise.abort = angular.noop;
+         
+        deferredAbort = request = promise = null;
+       
+      }
+    );
+     
+    return( promise );
+   
+  }
+   
+  return({
+    httppost: httppost
+  });
+   
+});

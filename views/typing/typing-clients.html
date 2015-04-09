@@ -7,14 +7,14 @@
       <div class="grid-structure">
         <div class="row">
 
-          <div class="col-md-4">
+          <!--<div class="col-md-4">
             <div class="widget-container">
               <div class="form-group">
                 <label for="SLinea">Linea de Negocio</label>
                 <input type="text" class="form-control" ng-model="search.linea" placeholder="Linea de Negocio">
               </div>
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-4">
             <div class="widget-container">
@@ -33,6 +33,14 @@
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
               </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="widget-container">
+              <div class="form-group">
+                <button type="button" class="btn btn-default" ng-click="StateReload()"><span class="glyphicon glyphicon-plus">Reload</span></button>
+              </div>
             </div>
           </div>
 
@@ -90,9 +98,10 @@
         <form>
           <div class="form-group">
             <label for="Linea">* Linea de Negocio</label>
-            <select class="form-control" ng-model="addClient.LineaId" required>
+            <label> {{listaLineaNegocioResult[0].linea}}</label>
+            <!--<select class="form-control" ng-model="addClient.LineaId" required>
               <option ng-repeat="linea in listaLineaNegocioResult" value="{{linea.lineaNegocioId}}"> {{linea.linea}} </option>
-            </select>
+            </select>-->
           </div>
 
           <div class="form-group">
@@ -124,7 +133,8 @@
         <form>
           <div class="form-group">
             <label for="Linea">* Linea de Negocio</label>
-            <select class="form-control" data-ng-options="o.linea for o in listaLineaNegocioResult" data-ng-model="selectedOption" ng-change="changedValueLine(selectedOption)" required></select>
+            <label> {{client[0].linea}}</label> 
+            <!--<select class="form-control" data-ng-options="o.linea for o in listaLineaNegocioResult" data-ng-model="selectedOption" ng-change="changedValueLine(selectedOption)" required></select>-->
           </div>
 
           <div class="form-group">

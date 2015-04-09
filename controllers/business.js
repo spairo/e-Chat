@@ -2,7 +2,7 @@
 
 //Business Lines Controller
 
-app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
+app.controller('BusinessCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesService, BasesFactory){
 
   $scope.$on('LoadList', function(event){
 
@@ -96,7 +96,8 @@ app.controller('BusinessCtrl', function ($scope, $state, $http, $modal, $modalSt
 
 });
 
-app.controller('AddLineCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, gri){
+app.controller('AddLineCtrl', function($scope, $http, $modalInstance, ngToast, auth, gri){
+  //$modalInstance, $modalStack, ngToast, auth, gri
 
   var myid = $scope.status = auth.profileID;
 
@@ -119,7 +120,7 @@ app.controller('AddLineCtrl', function($scope, $http, $modalInstance, $modalStac
           ngToast.create('Línea de Negocio creada con exito');
           gri.$emit('LoadList');
           $scope.$apply;
-          $modalStack.dismissAll();
+          $modalInstance.close();
 
         }else{
           var msg = ngToast.create({

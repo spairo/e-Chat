@@ -1,7 +1,29 @@
 'use strict';
 
-//Typing Controller
+app.controller("TypingFormCtrl", function($scope, $state, TypingFactory){
 
+    $scope.typing = TypingFactory;
+
+    $scope.clear = function(){
+      //data.length = 0;
+      TypingFactory.lineaNegocioId = "";
+      TypingFactory.linea = "";
+      TypingFactory.clienteAtentoId = "";
+      TypingFactory.cliente = "";
+      TypingFactory.serviciosId = "";
+      TypingFactory.servicio = ""; 
+      TypingFactory.canalesId = "";
+      TypingFactory.canal = "";
+      TypingFactory.skillsId = "";
+      TypingFactory.skill = "";
+      
+      $state.go('typing.lines');
+
+    };
+
+});
+
+//Typing Controller
 app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack, ngToast, auth, TypingFactory){
 
     var myid = $scope.status = auth.profileID;
@@ -14,7 +36,7 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
       $http({
         method : 'POST',
         url : 'api/rest.php',
-        data : $.param($scope.getListChannels = { op: "listaTipologias", Tipologia: "", Skill: "", Nivel: "", Activo: "" }),
+        data : $.param($scope.getListChannels = { op: "listaTipologias", Tipologia: "", Skill: $scope.typing.skill, Nivel: "", Activo: "" }),
         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .success(function(data){

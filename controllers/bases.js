@@ -183,7 +183,8 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
 
     modalInstance.result.then(function(){
       var start ="";
-      $scope.$emit('cargaListas');
+      //$scope.$emit('cargaListas');
+       $scope.$emit('cargaListaBasesCampos');
     });
   };
 
@@ -227,20 +228,24 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
       //get lista de bases
       $scope.getListaBasesCampos = { op: "listaBasesCampos", Base: nombre};
 
-      httpp.post($scope.getListaBasesCampos)
-      .then(function(data){
-        $scope.listaBasesCamposResult = data;
-      })
-      .catch(function(data, status){
-        console.error("Error en httpp ", status, data);
-        var msg = ngToast.create({
-          content: "Error en httpp " + status + data,
-          className:  "danger"
+      $scope.$on('cargaListaBasesCampos', function(event){
+        httpp.post($scope.getListaBasesCampos)
+        .then(function(data){
+          $scope.listaBasesCamposResult = data;
+        })
+        .catch(function(data, status){
+          console.error("Error en httpp ", status, data);
+          var msg = ngToast.create({
+            content: "Error en httpp " + status + data,
+            className:  "danger"
+          });
+        })
+        .finally(function(){
+          console.log("Finaliza llamada a httpp");
         });
-      })
-      .finally(function(){
-        console.log("Finaliza llamada a httpp");
       });
+
+      $scope.$emit('cargaListaBasesCampos');
     }
   };
 
@@ -281,28 +286,6 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
       });
   });
 
-  /*$scope.$on('getListaSkills', function(event){
-
-    //get lista de skills
-    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListaSkills),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.listaSkillsResult = data;
-      console.info("ModalCreate_BaseController > getListaSkills >>> OK");
-    })
-    .error(function(data){
-      console.error("ModalCreate_BaseController > getListaSkills >>> ERROR HTTP");
-    })
-
-  });
-
-  $scope.$emit('getListaSkills');*/
-
   //funcion que agrega una base nueva a la base de datos
   $scope.AddBase = function(){
     var dd = $scope.Fecha_Ini.getDate();
@@ -340,8 +323,6 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
             UserId: myid };
 
             $scope.listaBasesCamposResult = {};
-            //$scope.listaTiposDeDato = [{tipo:""},{tipo:"int"},{tipo:"varchar"},{tipo:"datetime"},{tipo:"binary"}];
-            //$scope.listaTiposDeCampo = [{campo:""},{campo:"Text"},{campo:"Check"},{campo:"Combo"},{campo:"Radio"}];
             $scope.showCampos = true;
           },function(btn){
             $scope.showCampos = false;
@@ -430,33 +411,7 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
   var df = $scope.editBase.FechaFin.slice(8,10);
   $scope.fechas = {FechaIni: new Date(yi, mi, di), FechaFin: new Date(yf, mf, df)};
 
-  //get lista de skills
-  /*$scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: "", Canal: "", Activo:""};
-  $http({
-    method : 'POST',
-    url : 'api/rest.php',
-    data : $.param($scope.getListaSkills),
-    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-  .success(function(data){
-    $scope.listaSkillsResult = data;
-
-    angular.forEach($scope.listaSkillsResult, function(item) {
-      if(base[0].skillsId == item.skillsId)
-        $scope.selectedOption = item;
-    });
-
-    console.info("ModalEdit_BaseController > getListaSkills >>> OK");
-  })
-  .error(function(data){
-    console.error("ModalEdit_BaseController > getListaSkills >>> ERROR HTTP");
-  })*/
-
   $scope.base = base;
-
- /* $scope.changedValueSkill=function(item){
-    $scope.editBase.SkillId = item.skillsId;
-  }*/
 
   $scope.EditBase = function () {
     var dd = $scope.fechas.FechaIni.getDate();
@@ -471,40 +426,6 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
     if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.editBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
-     /*$http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.editBase),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      if(data == 'Error'){
-        ngToast.create('La base no ha sido editada, revisa tus datos requeridos');
-        console.warn("ModalEdit_BaseController > EditBase > mantBases >>> ERROR WS");
-      }
-      else{
-        var checked = angular.isNumber(data[0].Column1);
-        if(checked == true){
-          ngToast.create('La base fue editada con exito');
-          console.info("ModalEdit_BaseController > EditBase > mantBases >>> Ok");
-          //scopee.$emit('cargaListas');
-          $modalInstance.close();
-        }
-        else{
-          ngToast.create('La base no ha sido editada');
-          $scope.result = data;
-          console.warn("ModalEdit_BaseController > EditBase > mantBases >>> BASE NO EDITADA");
-        }
-      }
-
-      return;
-    })
-    .error(function(data){
-      console.error("ModalEdit_BaseController > EditBase > mantBases >>> ERROR HTTP");
-      $modalInstance.close();
-      return;
-    })*/
     httpp.post($scope.editBase)
     .then(function(data){
       if(data == 'Error'){

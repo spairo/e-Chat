@@ -1,7 +1,7 @@
 'use strict';
 // Clientes Controller
 
-app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp){
+app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp, httpTestService){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -20,6 +20,79 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
       linea = $scope.Typing.linea;
 
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
+/*----------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------
+    var requestForFriends = null;
+    // I abort the current request (if its running).
+    $scope.abortRequest = function() {
+
+      return( requestForFriends && requestForFriends.abort() );
+
+    };
+
+    $scope.isLoading = true;
+    $scope.friends = [];
+
+    ( requestForFriends = httpTestService.httppost($scope.getListaClientes) ).then(
+      function( data ) {
+       
+      // Flag the data as loaded.
+      $scope.isLoading = false;
+      $scope.friends = data;
+      $scope.listaClienteAtentoResult = data;
+       
+      },
+      function( errorMessage ) {
+       
+      // Flag the data as loaded (or rather, done trying to load). loading).
+      $scope.isLoading = false;
+      
+      var msg = ngToast.create({
+        content: "Error en servicio test " + errorMessage,
+        className:  "danger"
+      }); 
+      console.warn( "Request for friends was rejected." );
+      console.info( "Error:", errorMessage );
+
+       
+      }
+    );
+
+    //get lista de lineas de negocio
+    $scope.getListaLineas = { op: "listaLineaNegocio", Linea: linea, Activo:""};
+    
+    $scope.isLoading = true;
+    requestForFriends = null;
+
+    ( requestForFriends = httpTestService.httppost($scope.getListaLineas) ).then(
+      function( data ) {
+       
+      // Flag the data as loaded.
+      $scope.isLoading = false;
+      $scope.friends = data;
+      $scope.listaLineaNegocioResult = data;
+       
+      },
+      function( errorMessage ) {
+       
+      // Flag the data as loaded (or rather, done trying to load). loading).
+      $scope.isLoading = false;
+      
+      var msg = ngToast.create({
+        content: "Error en servicio test " + errorMessage,
+        className:  "danger"
+      }); 
+      console.warn( "Request for friends was rejected." );
+      console.info( "Error:", errorMessage );
+
+       
+      }
+    );
+
+    ----------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
 
     httpp.post($scope.getListaClientes)
     .then(function(data){
