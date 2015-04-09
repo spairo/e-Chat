@@ -1,4 +1,4 @@
-<div class="" ng-controller="TypingCtrl">
+<div ng-controller="TypingCtrl">
   <div class="panel-heading">
     <strong>
       <span class="glyphicon glyphicon-th"></span> Tipificaciónes</strong>
@@ -33,15 +33,16 @@
         </script>
         <div ui-tree="options">
           <ol ui-tree-nodes ng-model="getTypes">
-            <li class="list-group-item" ng-repeat="item in getTypes | filter:{'skillsId': typing.skillsId }:true" ui-tree-node ng-include="'renderer.html'"></li>
+            <li class="list-group-item" ng-repeat="item in getTypes" ui-tree-node ng-include="'renderer.html'"></li>
           </ol>
         </div>
         <!-- Nested list template End -->
 
     </div>
-    <div class="col-md-8"></div>
+    <div class="col-md-8">
+    </div>
   </div>
-  <script type="text/ng-template" ng-controller="TypingAddCtrl" id="ModalCreate.html">
+  <script type="text/ng-template" id="ModalCreate.html">
     <div class="modal-header">
       <h3 class="modal-title">Agregar Típologia</h3>
     </div>

@@ -54,7 +54,7 @@
             <td>{{business.activo}}</td>
             <td>
               <div class="btn-group" role="group" aria-label="Edit">
-                <button type="button" class="btn btn-default" ng-click="selected(business.lineaNegocioId, business.linea)"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="button" class="btn btn-default" ng-click="selected(business.lineaNegocioId, business.linea)"><span class="glyphicon glyphicon-resize-horizontal"></span></button>
                 <button type="button" class="btn btn-default" ng-click="openedit(business.lineaNegocioId, business.linea, business.descripcion, business.activo)"><span class="glyphicon glyphicon-edit"></span></button>
               </div>
             </td>
@@ -63,7 +63,7 @@
       </table>
     </div>
   </section>
-  <script type="text/ng-template" ng-controller="AddLineCtrl" id="ModalCreate.html">
+  <script type="text/ng-template" id="ModalCreate.html">
       <div class="modal-header">
         <h3 class="modal-title">Agregar Línea de Negocio</h3>
       </div>
