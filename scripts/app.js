@@ -17,14 +17,14 @@ var app = angular.module("app",
     "ui.bootstrap",
     "ngCookies",
     "ngToast",
-    //"treeControl",
+    "treeControl",
     "angular-loading-bar",
     "dialogs.main",
     "ui.tree"
   ]
 )
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider){
 
     $stateProvider
 

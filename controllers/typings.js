@@ -4,6 +4,7 @@ app.controller("TypingFormCtrl", function($scope, $state, TypingFactory){
 
     $scope.typing = TypingFactory;
 
+    //clear/back
     $scope.clear = function(){
       //data.length = 0;
       TypingFactory.lineaNegocioId = "";
@@ -11,12 +12,12 @@ app.controller("TypingFormCtrl", function($scope, $state, TypingFactory){
       TypingFactory.clienteAtentoId = "";
       TypingFactory.cliente = "";
       TypingFactory.serviciosId = "";
-      TypingFactory.servicio = ""; 
+      TypingFactory.servicio = "";
       TypingFactory.canalesId = "";
       TypingFactory.canal = "";
       TypingFactory.skillsId = "";
       TypingFactory.skill = "";
-      
+
       $state.go('typing.lines');
 
     };
@@ -31,6 +32,7 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
     var skillsId = TypingFactory.skillsId;
 
     //list
+
     $scope.$on('LoadList', function(event){
 
       $http({
@@ -70,46 +72,12 @@ app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack
 
     };
 
-    //NewSubTyping
-
-    $scope.newSubItem = function(){
-      alert("add child");
-    };
-
-    $scope.remove = function(){
-      alert("remove this");
-    };
-
-    //selected
-
-    $scope.selected = function(lineaNegocioId, linea){
-      alert("Creando");
-    };
-
-    $scope.clear = function(){
-      //data.length = 0;
-      TypingFactory.lineaNegocioId = "";
-      TypingFactory.linea = "";
-      TypingFactory.clienteAtentoId = "";
-      TypingFactory.cliente = "";
-      TypingFactory.serviciosId = "";
-      TypingFactory.servicio = ""; 
-      TypingFactory.canalesId = "";
-      TypingFactory.canal = "";
-      TypingFactory.skillsId = "";
-      TypingFactory.skill = "";
-      
-      $state.go('typing.lines');
-
-    };
-
 });
 
-app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, TypingFactory, grid){
+app.controller("TypingAddCtrl", function($scope, $http, $modalInstance, $modalStack, ngToast, auth, TypingFactory, grid){
 
     var myid = $scope.status = auth.profileID;
     var skillsId = TypingFactory.skillsId;
-
 
     $scope.addTy = {
       op: "mantTipologias",
@@ -132,12 +100,12 @@ app.controller("TypingAddCtrl", function($scope, $http, $modal, $modalStack, ngT
       })
       .success(function(data){
 
-        var channel_checked = angular.isNumber(data[0].Column1);
+        var ty_checked = angular.isNumber(data[0].Column1);
 
-        if(channel_checked == true){
+        if(ty_checked == true){
 
           ngToast.create('El Tipologia fue creada con exito');
-          grid.$emit('LoadList');
+          www.$emit('LoadList');
           $modalStack.dismissAll();
 
         }else{
