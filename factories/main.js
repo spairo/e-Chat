@@ -8,6 +8,10 @@
 * Factories Camuapp
 */
 
+app.factory('server', function(){
+  return { ip: "http://172.18.149.21/Servicios/REST.svc/"}
+});
+
 app.factory('auth',function(){
   return { user:"", profile:"", profileID:"" };
 });
@@ -18,6 +22,11 @@ app.factory('TypingFactory',function(){
 
 app.factory("BasesFactory",function(){
   return { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
+});
+
+app.factory('userRepository', function($http){
+  var url = "https://api.mongolab.com/api/1/databases/angularjs-intro/collections/users?apiKey=terrPcifZzn01_ImGsFOIZ96SwvSXgN9";
+  return $http.get(url);
 });
 
 /*
@@ -125,7 +134,8 @@ app.factory("localize", function($http, $rootScope, $window){
 
 });
 
-app.factory('httpp', function($http, $q) {
+app.factory('httpp', function($http, $q){
+
   return{
 
     post: function(parameters){

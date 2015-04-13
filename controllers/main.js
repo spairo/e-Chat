@@ -51,7 +51,7 @@ app.controller("HeaderCtrl", function($scope, $location, $cookies){
 
 // Nav Controller
 
-app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
+app.controller("NavCtrl", function($scope, taskStorage, filterFilter){
 
   var tasks;
   return tasks = $scope.tasks = taskStorage.get(), $scope.taskRemainingCount = filterFilter(tasks, {
@@ -64,16 +64,22 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter) {
 
 // Login Controller
 
-app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth){
+app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth, server){
 
-  $scope.access = { op: "seguridadLogin", User: "", Password: "" };
+  var signin = $scope.access = { User: "master", Password: "master" };
 
   $scope.login = function(){
 
-    $http({ method : 'POST', url : 'api/rest.php', data : $.param($scope.access), headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
+    $http({
+      method : 'POST',
+      url : server.ip + 'rp_seguridadLogin',
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify(signin)
+    })
     .success(function(data){
 
-      if(data == 'Error'){
+      if(data == ''){
 
         var msg = ngToast.create({
           content: 'Usuario o Password no valido',
