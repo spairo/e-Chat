@@ -1,7 +1,7 @@
 'use strict';
 // Skills Controller
 
-app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp){
+app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, resources_POST){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -29,57 +29,60 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
     }
 
     //get lista de skills
-    $scope.getListaSkills = { op: "listaSkills", Skill: "", Servicio: servicio, Canal: canal, Activo:""};
+    $scope.getListaSkills = { Skill: "", Servicio: servicio, Canal: canal, Activo:""};
+    $scope.option = "rp_listaSkills";
     
-    httpp.post($scope.getListaSkills)
+    resources_POST.post($scope.option, $scope.getListaSkills)
     .then(function(data){
       $scope.listaSkillsResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
     //get lista de canales
-    $scope.getListaCanales = { op: "listaCanales", Canal: canal, Activo:""};
+    $scope.getListaCanales = { Canal: canal, Activo:""};
+    $scope.option = "rp_listaCanales";
     
-    httpp.post($scope.getListaCanales)
+    resources_POST.post($scope.option, $scope.getListaCanales)
     .then(function(data){
       $scope.listaCanalesResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
     //get lista de servicios
-    $scope.getListaServicios = { op: "listaServicios", Servicio: servicio, ClienteAtento: cliente, Activo:""};
-    
-    httpp.post($scope.getListaServicios)
+    $scope.getListaServicios = { Servicio: servicio, ClienteAtento: cliente, Activo:""};
+    $scope.option = "rp_listaServicios";
+
+    resources_POST.post($scope.option, $scope.getListaServicios)
     .then(function(data){
       $scope.listaServiciosResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
   });
@@ -109,9 +112,10 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
   //se muestra modal para editar skill
   $scope.openEdit = function(skill, servicio, canal, activo){
     //consultamos los datos del skillId al que se le dio click para editar
-    $scope.getSkillData = { op: "listaSkills", Skill: skill, Servicio: servicio, Canal: canal, Activo:activo};
+    $scope.getSkillData = { Skill: skill, Servicio: servicio, Canal: canal, Activo:activo};
+    $scope.option = "rp_listaSkills";
 
-    httpp.post($scope.getSkillData)
+    resources_POST.post($scope.option, $scope.getSkillData)
     .then(function(data){
       $scope.skillResult = data;
       console.info("SkillsCtrl > openEdit > listaSkills >>> OK");
@@ -131,14 +135,14 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
       });
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
   };
 
@@ -167,19 +171,20 @@ app.controller("SkillsCtrl", function($scope, $state, $modal, $modalStack, ngToa
 });
 
 //controlador para el modal agregar skill
-app.controller("ModalCreate_SkillController", function($scope, $modalInstance, ngToast, auth, listaCanalesResult, listaServiciosResult, httpp){
+app.controller("ModalCreate_SkillController", function($scope, $modalInstance, ngToast, auth, listaCanalesResult, listaServiciosResult, resources_POST){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
   $scope.listaCanalesResult = listaCanalesResult;
   $scope.listaServiciosResult = listaServiciosResult;
 
-  $scope.addSkill = { op: "mantSkills", Id: "0", CanalesId: listaCanalesResult[0].canalesId, ServiciosId: listaServiciosResult[0].serviciosId, Skill: "", Activo: "",  UserId: myid };
+  $scope.addSkill = { Id: "0", CanalesId: listaCanalesResult[0].canalesId, ServiciosId: listaServiciosResult[0].serviciosId, Skill: "", Activo: "",  UserId: myid };
+  $scope.option = "rp_mantSkills";
 
   //funcion que agrega un skill nuevo a la base
   $scope.AddSkill = function(){
     
-    httpp.post($scope.addSkill)
+    resources_POST.post($scope.option, $scope.addSkill)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL skill no ha sido creado, revisa tus datos requeridos');
@@ -200,14 +205,14 @@ app.controller("ModalCreate_SkillController", function($scope, $modalInstance, n
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $modalInstance.close();
     });
 
@@ -221,17 +226,18 @@ app.controller("ModalCreate_SkillController", function($scope, $modalInstance, n
 });
 
 //controlador para el modal editar skill
-app.controller("ModalEdit_SkillController", function($scope, $modalInstance, ngToast, auth, skill, httpp){
+app.controller("ModalEdit_SkillController", function($scope, $modalInstance, ngToast, auth, skill, resources_POST){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
-  $scope.editSkill = { op: "mantSkills", Id: skill[0].skillsId, CanalesId: skill[0].canalesId, ServiciosId: skill[0].serviciosId, Skill: skill[0].skill, Activo: skill[0].activo,  UserId: myid };
+  $scope.editSkill = { Id: skill[0].skillsId, CanalesId: skill[0].canalesId, ServiciosId: skill[0].serviciosId, Skill: skill[0].skill, Activo: skill[0].activo,  UserId: myid };
+  $scope.option = "rp_mantSkills";
 
   $scope.skill = skill;
 
   $scope.EditSkill = function () {
      
-    httpp.post($scope.editSkill)
+    resources_POST.post($scope.option, $scope.editSkill)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL skill no ha sido editado, revisa tus datos requeridos');
@@ -252,14 +258,14 @@ app.controller("ModalEdit_SkillController", function($scope, $modalInstance, ngT
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $modalInstance.close();
     });
 

@@ -53,7 +53,7 @@ app.service('BasesService', function(){
 });
 
 
-app.service("consumeWS_POST",function($http, $q) {
+app.service("resources_POST",function($http, $q) {
   return{
 
     post: function(option, parameters){
@@ -78,7 +78,7 @@ app.service("consumeWS_POST",function($http, $q) {
 
 });
 
-app.service("consumeWS_GET",function($http, $q) {
+app.service("resources_GET",function($http, $q) {
  return{
     get: function(option, parameters){
 

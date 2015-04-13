@@ -1,7 +1,7 @@
 'use strict';
 // Clientes Controller
 
-app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp, consumeWS_POST, consumeWS_GET){
+app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, resources_POST, resources_GET){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -19,39 +19,41 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
     else if($state.current.name == "typing.clients")
       linea = $scope.Typing.linea;   
 
-    $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
+    $scope.getListaClientes = { Linea: linea, Cliente: "", Activo:""};
+    $scope.option = "rp_listaClienteAtento";
 
-    httpp.post($scope.getListaClientes)
+    resources_POST.post($scope.option, $scope.getListaClientes)
     .then(function(data){
       $scope.listaClienteAtentoResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
     //get lista de lineas de negocio
-    $scope.getListaLineas = { op: "listaLineaNegocio", Linea: linea, Activo:""};
+    $scope.getListaLineas = { Linea: linea, Activo:""};
+    $scope.option = "rp_listaLineaNegocio";
 
-    httpp.post($scope.getListaLineas)
+    resources_POST.post($scope.option, $scope.getListaLineas)
     .then(function(data){
       $scope.listaLineaNegocioResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
   });
 
@@ -77,9 +79,10 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
   //se muestra modal para editar cliente
   $scope.openEdit = function(linea, cliente, activo){
     //consultamos los datos del clienteId al que se le dio click para editar
-    $scope.getClientData = { op: "listaClienteAtento", Linea: linea, Cliente: cliente, Activo:activo};
+    $scope.getClientData = {Linea: linea, Cliente: cliente, Activo:activo};
+    $scope.option = "rp_listaClienteAtento";
     
-    httpp.post($scope.getClientData)
+    resources_POST.post($scope.option, $scope.getClientData)
     .then(function(data){
       $scope.clienteAtentoResult = data;
 
@@ -98,14 +101,14 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
       });
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
   };
 
@@ -133,18 +136,19 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
 
 });
 
-app.controller("ModalCreate_ClientController", function($scope, $modalInstance, ngToast, auth, listaLineaNegocioResult, httpp){
+app.controller("ModalCreate_ClientController", function($scope, $modalInstance, ngToast, auth, listaLineaNegocioResult, resources_POST, resources_GET){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
   $scope.listaLineaNegocioResult = listaLineaNegocioResult;
 
-  $scope.addClient = { op: "mantClienteAtento", Id: "0", LineaId: listaLineaNegocioResult[0].lineaNegocioId, Cliente: "", Activo: "",  UserId: myid };
+  $scope.addClient = { Id: "0", LineaId: listaLineaNegocioResult[0].lineaNegocioId, Cliente: "", Activo: "",  UserId: myid };
+  $scope.option = "rp_mantClienteAtento";
 
   //funcion que agrega un cliente nuevo a la base
   $scope.AddClient = function(){
     
-    httpp.post($scope.addClient)
+    resources_POST.post($scope.option, $scope.addClient)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL cliente no ha sido creado, revisa tus datos requeridos');
@@ -165,14 +169,14 @@ app.controller("ModalCreate_ClientController", function($scope, $modalInstance, 
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $modalInstance.close();
     });
   };
@@ -185,17 +189,18 @@ app.controller("ModalCreate_ClientController", function($scope, $modalInstance, 
 });
 
 //controlador para la tabla de lista de clientes
-app.controller("ModalEdit_ClientController", function($scope, $modalInstance, ngToast, auth, client, httpp){
+app.controller("ModalEdit_ClientController", function($scope, $modalInstance, ngToast, auth, client, resources_POST, resources_GET){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
-  $scope.editClient = { op: "mantClienteAtento", Id: client[0].clienteAtentoId, LineaId: client[0].lineaNegocioId, Cliente: client[0].cliente, Activo: client[0].activo,  UserId: myid };
+  $scope.editClient = { Id: client[0].clienteAtentoId, LineaId: client[0].lineaNegocioId, Cliente: client[0].cliente, Activo: client[0].activo,  UserId: myid };
+  $scope.option = "rp_mantClienteAtento";
 
   $scope.client = client;
 
   $scope.EditClient = function () {
      
-    httpp.post($scope.editClient)
+    resources_POST.post($scope.option, $scope.editClient)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('EL cliente no ha sido editado, revisa tus datos requeridos');
@@ -216,14 +221,14 @@ app.controller("ModalEdit_ClientController", function($scope, $modalInstance, ng
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
   };
 

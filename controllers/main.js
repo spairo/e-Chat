@@ -64,30 +64,24 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter){
 
 // Login Controller
 
-app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth, server){
+app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth, resources_POST){
 
-  var signin = $scope.access = { User: "master", Password: "master" };
+  $scope.access = { User: "master", Password: "master" };
+  $scope.option = "rp_seguridadLogin";
 
   $scope.login = function(){
-
-    $http({
-      method : 'POST',
-      url : server.ip + 'rp_seguridadLogin',
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      data: JSON.stringify(signin)
-    })
-    .success(function(data){
-
+    resources_POST.post($scope.option, $scope.access)
+    .then(function(data){
       if(data == ''){
 
         var msg = ngToast.create({
           content: 'Usuario o Password no valido',
-          className:	'danger'
+          className:  'danger'
         });
         console.warn("Login Failed");
 
-      }else{
+      }
+      else{
 
         console.info("Login Done");
 
@@ -101,15 +95,18 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
         console.log(data);
 
       }
-
     })
-    .error(function(data){
+    .catch(function(data, status){
+      console.error("Error en resources_GET ", status, data);
       var msg = ngToast.create({
         content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
+        className:  'danger'
       });
     })
-  };
+    .finally(function(){
+      console.log("Finaliza llamada a resources_GET");
+    });   
+  }; 
 
 });
 

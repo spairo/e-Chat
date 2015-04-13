@@ -23,7 +23,7 @@ app.controller("BasesFormCtrl", function($scope, $state, BasesFactory){
 });
 
 // BasesCtrl Controller
-app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dialogs, BasesFactory, httpp){
+app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dialogs, BasesFactory, resources_POST){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -63,39 +63,41 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
     }
 
     //get lista de bases
-    $scope.getListaBases = { op: "listaBases", Skill: skill, Base: "", Activo:""};
+    $scope.getListaBases = { Skill: skill, Base: "", Activo:""};
+    $scope.option = "rp_listaBases";
 
-    httpp.post($scope.getListaBases)
+    resources_POST.post($scope.option, $scope.getListaBases)
     .then(function(data){
       $scope.listaBasesResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
     //get lista de skills
-    $scope.getListaSkills = { op: "listaSkills", Skill: skill, Servicio: servicio, Canal: canal, Activo:""};
+    $scope.getListaSkills = { Skill: skill, Servicio: servicio, Canal: canal, Activo:""};
+    $scope.option = "rp_listaSkills";
 
-    httpp.post($scope.getListaSkills)
+    resources_POST.post($scope.option, $scope.getListaSkills)
     .then(function(data){
       $scope.listaSkillsResult = data;
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
   });
@@ -129,9 +131,10 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
   //se muestra modal para editar una base
   $scope.openEdit = function(skill, nombre, activo){
     //consultamos los datos de la base a la que se le dio click para editar
-    $scope.getBaseData = { op: "listaBases", Skill: skill, Base: nombre, Activo: activo};
+    $scope.getBaseData = { Skill: skill, Base: nombre, Activo: activo};
+    $scope.option = "rp_listaBases";
 
-    httpp.post($scope.getBaseData)
+    resources_POST.post($scope.option, $scope.getBaseData)
     .then(function(data){
       $scope.baseResult = data;
       console.info("BasesCtrl > openEdit > getBaseData >>> OK");
@@ -152,14 +155,14 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
       });
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
   };
 
@@ -226,22 +229,23 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
     if($scope.getBase2 = true)
     {
       //get lista de bases
-      $scope.getListaBasesCampos = { op: "listaBasesCampos", Base: nombre};
+      $scope.getListaBasesCampos = { Base: nombre};
+      $scope.option = "rp_listaBasesCampos";
 
       $scope.$on('cargaListaBasesCampos', function(event){
-        httpp.post($scope.getListaBasesCampos)
+        resources_POST.post($scope.option, $scope.getListaBasesCampos)
         .then(function(data){
           $scope.listaBasesCamposResult = data;
         })
         .catch(function(data, status){
-          console.error("Error en httpp ", status, data);
+          console.error("Error en resources_POST ", status, data);
           var msg = ngToast.create({
-            content: "Error en httpp " + status + data,
+            content: "Error en resources_POST " + status + data,
             className:  "danger"
           });
         })
         .finally(function(){
-          console.log("Finaliza llamada a httpp");
+          console.log("Finaliza llamada a resources_POST");
         });
       });
 
@@ -257,32 +261,33 @@ app.controller("BasesCtrl", function($scope, $state, $modal, ngToast, auth, dial
 });
 
 //controlador para model de creacion de bases y campos
-app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ngToast, auth, dialogs, listaSkillsResult, listaTiposDeDato, listaTiposDeCampo, httpp){
+app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ngToast, auth, dialogs, listaSkillsResult, listaTiposDeDato, listaTiposDeCampo, resources_POST){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
   $scope.listaSkillsResult = listaSkillsResult;
   $scope.showCampos = false;
-  $scope.addBase = { op: "mantBases", Id: "0", SkillId: listaSkillsResult[0].skillsId, NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
+  $scope.addBase = { Id: "0", SkillId: listaSkillsResult[0].skillsId, NombreBase: "", Descripcion: "", FechaIni: "", FechaFin: "", Activo: "",  UserIdModif: myid };
 
   $scope.$on('getListaBasesCampos', function(event){
 
     //get lista de campos de base
-    $scope.getListaBasesCampos = { op: "listaBasesCampos", Base: $scope.addBase.NombreBase};
+    $scope.getListaBasesCampos = { Base: $scope.addBase.NombreBase};
+    $scope.option = "rp_listaBasesCampos";
 
-      httpp.post($scope.getListaBasesCampos)
+      resources_POST.post($scope.option, $scope.getListaBasesCampos)
       .then(function(data){
         $scope.listaBasesCamposResult = data;
       })
       .catch(function(data, status){
-        console.error("Error en httpp ", status, data);
+        console.error("Error en resources_POST ", status, data);
         var msg = ngToast.create({
-          content: "Error en httpp " + status + data,
+          content: "Error en resources_POST " + status + data,
           className:  "danger"
         });
       })
       .finally(function(){
-        console.log("Finaliza llamada a httpp");
+        console.log("Finaliza llamada a resources_POST");
       });
   });
 
@@ -300,7 +305,8 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
     if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.addBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
-    httpp.post($scope.addBase)
+    $scope.option = "rp_mantBases";
+    resources_POST.post($scope.option, $scope.addBase)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('La base no ha sido creada, revisa tus datos requeridos');
@@ -317,7 +323,7 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
           var dlg = dialogs.confirm('Selecciona una respuesta','¿Deseas dar de alta los campos para esta base?');
           dlg.result.then(function(btn){
 
-            $scope.addCampoBase = { op: "mantBasesCampos", Id: "0", BaseId: $scope.BaseId, Titulo: "",
+            $scope.addCampoBase = { Id: "0", BaseId: $scope.BaseId, Titulo: "",
             NombreCampo: "", TipoDato: "", TipoCampo: "", Longitud: "",
             ValorDefault: "", Requerido: "", Orden: "", Activo: "",
             UserId: myid };
@@ -337,21 +343,21 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
     });
 
   };
 
   $scope.AddCampoBase = function(){
-   
-    httpp.post($scope.addCampoBase)
+    $scope.option = "rp_mantBasesCampos";
+    resources_POST.post($scope.option, $scope.addCampoBase)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('El campo base no ha sido creado, revisa tus datos requeridos');
@@ -376,14 +382,14 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $scope.$emit('getListaBasesCampos');
     });
     
@@ -397,11 +403,11 @@ app.controller("ModalCreate_BaseController", function($scope, $modalInstance, ng
 });
 
 //controlador para model de edicion de bases
-app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngToast, auth, base, httpp){
+app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngToast, auth, base, resources_POST){
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
 
-  $scope.editBase = { op: "mantBases", Id: base[0].skillsBasesId, SkillId: base[0].skillsId, NombreBase: base[0].nombre, Descripcion: base[0].descripcion, FechaIni: base[0].fechaInicio, FechaFin: base[0].fechaFin, Activo: base[0].activo,  UserIdModif: myid };
+  $scope.editBase = { Id: base[0].skillsBasesId, SkillId: base[0].skillsId, NombreBase: base[0].nombre, Descripcion: base[0].descripcion, FechaIni: base[0].fechaInicio, FechaFin: base[0].fechaFin, Activo: base[0].activo,  UserIdModif: myid };
 
   var yi = $scope.editBase.FechaIni.slice(0,4);
   var mi = parseInt($scope.editBase.FechaIni.slice(5,7))-1;
@@ -426,7 +432,8 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
     if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
     $scope.editBase.FechaFin = yyyy+"-"+mm+"-"+dd;
 
-    httpp.post($scope.editBase)
+    $scope.option = "rp_mantBases";
+    resources_POST.post($scope.option, $scope.editBase)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('La base no ha sido editada, revisa tus datos requeridos');
@@ -448,14 +455,14 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $scope.$emit('getListaBasesCampos');
       $modalInstance.close();
     });
@@ -470,7 +477,7 @@ app.controller("ModalEdit_BaseController", function($scope, $modalInstance, ngTo
 });
 
 //controlador para model de edicion de campos de bases
-app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance, ngToast, auth, baseCampo, listaTiposDeDato, listaTiposDeCampo, httpp){
+app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance, ngToast, auth, baseCampo, listaTiposDeDato, listaTiposDeCampo, resources_POST){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -479,7 +486,7 @@ app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance,
   $scope.listaTiposDeDato = listaTiposDeDato;
   $scope.listaTiposDeCampo = listaTiposDeCampo;
 
-  $scope.editCampoBase = { op: "mantBasesCampos", Id: baseCampo.skillsBasesCamposId, BaseId: baseCampo.skillsBasesId, Titulo: baseCampo.titulo,
+  $scope.editCampoBase = { Id: baseCampo.skillsBasesCamposId, BaseId: baseCampo.skillsBasesId, Titulo: baseCampo.titulo,
             NombreCampo: baseCampo.nombre1, TipoDato: baseCampo.tipoDato, TipoCampo: baseCampo.tipoCampo, Longitud: baseCampo.longitud,
             ValorDefault: baseCampo.valorDefault, Requerido: baseCampo.requerido, Orden: baseCampo.orden, Activo: baseCampo.activo,
             UserId: myid };
@@ -504,7 +511,8 @@ app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance,
 
   $scope.EditBaseCampo = function () {
 
-    httpp.post($scope.editCampoBase)
+    $scope.option = "rp_mantBasesCampos";
+    resources_POST.post($scope.option, $scope.editCampoBase)
     .then(function(data){
       if(data == 'Error'){
         ngToast.create('El campo de la base no ha sido editado, revisa tus datos requeridos');
@@ -526,14 +534,14 @@ app.controller("ModalEdit_CampoBaseController", function($scope, $modalInstance,
       }
     })
     .catch(function(data, status){
-      console.error("Error en httpp ", status, data);
+      console.error("Error en resources_POST ", status, data);
       var msg = ngToast.create({
-        content: "Error en httpp " + status + data,
+        content: "Error en resources_POST " + status + data,
         className:  "danger"
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a httpp");
+      console.log("Finaliza llamada a resources_POST");
       $scope.$emit('cargaListas');
       $modalInstance.close();
     });
