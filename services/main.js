@@ -52,25 +52,49 @@ app.service('BasesService', function(){
 
 });
 
-app.service("consumeWS_POST", function($http, $q){
 
-  return {
+app.service("consumeWS_POST",function($http, $q) {
+  return{
 
     post: function(option, parameters){
 
       var deferred = $q.defer();
 
-      var url = "http://172.18.149.21/REST/Service1.svc/" + option;
+      var url = "http://172.18.149.21/Servicios/REST.svc/"+option;
 
       $http({
-          method: "POST",
-          url: url,
-          data: JSON.stringify(parameters)
-        })
-        .success(deferred.resolve)
-        .error(function(data, status, headers, config){
-          deferred.reject("Error el el HTTP en la llamada: " + config.data)
-        });
+        method : "POST",
+        url : url,
+        data: JSON.stringify(parameters)
+      })
+      .success(deferred.resolve)
+      .error(function(data, status, headers, config){
+        deferred.reject("Error el el HTTP en la llamada: " + config.data)
+      });
+
+      return deferred.promise;
+    }
+  }
+
+});
+
+app.service("consumeWS_GET",function($http, $q) {
+ return{
+    get: function(option, parameters){
+
+      var deferred = $q.defer();
+
+      var url = "http://172.18.149.21/Servicios/REST.svc/"+option;
+
+      $http({
+        method : "GET",
+        url : url,
+        data: JSON.stringify(parameters)
+      })
+      .success(deferred.resolve)
+      .error(function(data, status, headers, config){
+        deferred.reject("Error el el HTTP en la llamada: " + config.data)
+      });
 
       return deferred.promise;
     }

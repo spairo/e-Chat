@@ -1,14 +1,10 @@
 'use strict';
 
-//Typing Controller
+app.controller("TypingFormCtrl", function($scope, $state, TypingFactory){
 
-app.controller("TypingFormCtrl", function($scope, $http, $state, auth, TypingFactory ){
-    var myid = $scope.status = auth.profileID;
     $scope.typing = TypingFactory;
-    var skillsId = TypingFactory.skillsId;
 
     //clear/back
-
     $scope.clear = function(){
       //data.length = 0;
       TypingFactory.lineaNegocioId = "";
@@ -28,6 +24,7 @@ app.controller("TypingFormCtrl", function($scope, $http, $state, auth, TypingFac
 
 });
 
+//Typing Controller
 app.controller("TypingCtrl", function($scope, $http, $state, $modal, $modalStack, ngToast, auth, TypingFactory){
 
     var myid = $scope.status = auth.profileID;

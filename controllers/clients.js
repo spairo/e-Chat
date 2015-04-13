@@ -1,7 +1,7 @@
 'use strict';
 // Clientes Controller
 
-app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp){
+app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, httpp, consumeWS_POST, consumeWS_GET){
 
   //get id de autenticado
   var myid = $scope.status = auth.profileID;
@@ -17,7 +17,7 @@ app.controller("ClientesCtrl", function($scope, $state, $modal, $modalStack, ngT
     if($state.current.name == "bases.clients")
       linea = $scope.dataBases.linea;
     else if($state.current.name == "typing.clients")
-      linea = $scope.Typing.linea;
+      linea = $scope.Typing.linea;   
 
     $scope.getListaClientes = { op: "listaClienteAtento", Linea: linea, Cliente: "", Activo:""};
 
