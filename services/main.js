@@ -52,58 +52,51 @@ app.service('BasesService', function(){
 
 });
 
+app.service("consumeWS_POST",function($http, $q) { 
+  return{
 
-app.service("httpTestService",function( $http, $q ) { 
-  
-  function httppost(parameters) {
-   
-    var deferredAbort = $q.defer();
-     
-    var request = $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param(parameters),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
-      timeout: deferredAbort.promise
-    });
-     
-    var promise = request.then(
-      function( response ) {
-       
-        return( response.data );
-       
-      },
-      function( response ) {
-       
-        return( $q.reject( "Something went wrong" ) );
-       
-      }
-    );
-     
-    promise.abort = function() {
-     
-      deferredAbort.resolve();
-     
-    };
-     
-    promise.finally(
-      function() {
-       
-        console.info( "Cleaning up object references." );
-         
-        promise.abort = angular.noop;
-         
-        deferredAbort = request = promise = null;
-       
-      }
-    );
-     
-    return( promise );
-   
+    post: function(option, parameters){
+
+      var deferred = $q.defer();
+
+      var url = "http://172.18.149.21/Servicios/REST.svc/"+option;   
+
+      $http({
+        method : "POST",
+        url : url,
+        data: JSON.stringify(parameters)        
+      })
+      .success(deferred.resolve)
+      .error(function(data, status, headers, config){
+        deferred.reject("Error el el HTTP en la llamada: " + config.data)
+      });
+
+      return deferred.promise;
+    }
   }
-   
-  return({
-    httppost: httppost
-  });
-   
+  
+});
+
+app.service("consumeWS_GET",function($http, $q) { 
+ return{
+    get: function(option, parameters){
+
+      var deferred = $q.defer();
+
+      var url = "http://172.18.149.21/Servicios/REST.svc/"+option;   
+
+      $http({
+        method : "GET",
+        url : url,
+        data: JSON.stringify(parameters)        
+      })
+      .success(deferred.resolve)
+      .error(function(data, status, headers, config){
+        deferred.reject("Error el el HTTP en la llamada: " + config.data)
+      });
+
+      return deferred.promise;
+    }
+  }
+  
 });
