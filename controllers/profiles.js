@@ -2,25 +2,23 @@
 
 // Profiles Controller
 
-app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngToast, auth, resources_POST){
 
   $scope.$on('LoadList', function(event){
 
-      $http({
-        method : 'POST',
-        url : 'api/rest.php',
-        data : $.param($scope.getProfileList = { op: "listaPerfiles", Perfil: "", Activo: "" }),
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-      })
-      .success(function(data){
-        $scope.getProfiles = data;
-      })
-      .error(function(data){
-        var msg = ngToast.create({
-          content: 'Opps! Algo salio mal Intenta Otra vez',
-          className:	'danger'
-        });
-      })
+    $scope.parameters = { Perfil: "", Activo: "" };
+    $scope.option = "rp_listaPerfiles";
+
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
+      $scope.getProfiles = data;
+    })
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Opps! Algo salio mal Intenta Otra vez" + status,
+         className: "danger"
+       });
+    });
 
   });
 
@@ -39,46 +37,42 @@ app.controller("ProfilesCtrl", function($scope, $http, $modal, $modalStack, ngTo
 
   };
 
-  $scope.addProfile = { op: "mantPerfiles", Id: "0", Perfil:"", Descripcion: "", Activo: "", UserId: myid };
+  $scope.parameters = { Id: "0", Perfil:"", Descripcion: "", Activo: "", UserId: myid };
+  $scope.option = "rp_mantPerfiles";
 
   $scope.AddProf = function(){
 
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.addProfile),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+      resources_POST.post($scope.option, $scope.parameters)
+      .then(function(data){
 
-      var profile_checked = angular.isNumber(data[0].Column1);
+        var profile_checked = angular.isNumber(data[0].Column1);
 
-      if(profile_checked == true){
+        if(profile_checked == true){
 
-        ngToast.create('El Perfil fue agregado con exito');
-        $scope.$emit('LoadList');
-        $modalStack.dismissAll();
+          ngToast.create('El Perfil fue Agregado con Exito');
+          $scope.$emit('LoadList');
+          $modalStack.dismissAll();
 
-      }else{
-        var msg = ngToast.create({
-          content: 'Error, EL Perfil no fue creado',
-          className:	'danger'
-        });
-      }
+        }else{
+          var msg = ngToast.create({
+            content: 'Error, EL Perfil no fue creado',
+            className:	'danger'
+          });
+        }
 
-    })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
+      })
+      .catch(function(data, status){
+         var msg = ngToast.create({
+           content: "Opps! Algo salio mal Intenta Otra vez" + status,
+           className: "danger"
+         });
       });
-    })
 
   };
 
   //Edit Profile
 
-  $scope.openedit = function (perfilesId, perfil, descripcion, activo) {
+  $scope.openedit = function (perfilesId, perfil, descripcion, activo){
 
     var modalInstance = $modal.open({
       templateUrl: 'ModalProfileEdit.html',
@@ -110,17 +104,13 @@ app.controller('InstanceProfileCtrl', function($scope, $http, $modalInstance, $m
 
   var editdata = profiledata;
 
-  $scope.EditPro = { op: "mantPerfiles", Id: editdata[0].id, Perfil: editdata[0].perfil, Descripcion: editdata[0].descripcion, Activo: editdata[0].activo, UserId: editdata[0].myid };
+  $scope.parameters = { Id: editdata[0].id, Perfil: editdata[0].perfil, Descripcion: editdata[0].descripcion, Activo: editdata[0].activo, UserId: editdata[0].myid };
+  $scope.option = "rp_mantPerfiles";
 
   $scope.EditProfile = function(){
 
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.EditPro),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
 
       var profile_checked = angular.isNumber(data[0].Column1);
 
@@ -138,12 +128,12 @@ app.controller('InstanceProfileCtrl', function($scope, $http, $modalInstance, $m
       }
 
     })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
-    })
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Opps! Algo salio mal Intenta Otra vez" + status,
+         className: "danger"
+       });
+    });
 
   };
 

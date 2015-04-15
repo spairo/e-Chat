@@ -81,13 +81,13 @@
 
           <div class="form-group">
             <label for="Nombre">Nombre</label>
-            <input type="text" class="form-control" ng-model="addU.Nombre" placeholder="Nombre" required>
+            <input type="text" class="form-control" ng-model="parameters.Nombre" placeholder="Nombre" required>
             <p ng-show="userForm.Nombre.$invalid && !userForm.Nombre.$pristine" class="help-block">Se requiere un Nombre</p>
           </div>
 
           <div class="form-group">
             <label for="Apellidos">Apellidos</label>
-            <input type="text" class="form-control" ng-model="addU.Apellidos" placeholder="Apellidos" required>
+            <input type="text" class="form-control" ng-model="parameters.Apellidos" placeholder="Apellidos" required>
             <p ng-show="userForm.Apellidos.$invalid && !userForm.Apellidos.$pristine" class="help-block">Se requiere los Apellidos</p>
           </div>
 
@@ -95,26 +95,35 @@
             <label for="Sexo">Sexo</label>
             <br />
             <label class="radio-inline">
-              <input type="radio" ng-model="addU.Sexo" value="M">Masculino
+              <input type="radio" ng-model="parameters.Sexo" value="M">Masculino
             </label>
             <label class="radio-inline">
-              <input type="radio" ng-model="addU.Sexo" value="F">Femenino
+              <input type="radio" ng-model="parameters.Sexo" value="F">Femenino
             </label>
           </div>
 
           <div class="form-group">
             <label for="user">Usuario</label>
-            <input type="text" class="form-control" ng-model="addU.Usuario" placeholder="Usuario" required>
+            <input type="text" class="form-control" ng-model="parameters.Usuario" placeholder="Usuario" required>
           </div>
 
+          <!--
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" ng-model="addU.Password" placeholder="Password" required>
+            <input type="password" class="form-control" ng-model="parameters.Password" placeholder="Password" required>
+          </div>
+          -->
+
+          <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
+            <input type="password" name="Password" class="form-control input-lg" ng-model="parameters.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
+            <span ng-show="userForm.Password.$error.required && userForm.Password.$dirty">Se requiere su password</span>
+            <span ng-show="!userForm.Password.$error.required && (userForm.Password.$error.minlength || userForm.Password.$error.maxlength) && userForm.Password.$dirty">Las contraseñas deben tener entre 8 y 20 caracteres.</span>
+            <span ng-show="!userForm.Password.$error.required && !userForm.Password.$error.minlength && !userForm.Password.$error.maxlength && userForm.Password.$error.pattern && userForm.Password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
           </div>
 
           <div class="form-group">
             <label for="Rol">Rol</label>
-            <select class="form-control" ng-model="addU.PerfilId" required>
+            <select class="form-control" ng-model="parameters.PerfilId" required>
               <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
             </select>
           </div>
@@ -123,12 +132,12 @@
             <label for="Activo">Status</label>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addU.Activo" value="1" checked> Activo
+                <input type="radio" ng-model="parameters.Activo" value="1" checked> Activo
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addU.Activo" value="0"> Inactivo
+                <input type="radio" ng-model="parameters.Activo" value="0"> Inactivo
               </label>
             </div>
           </div>
@@ -146,36 +155,36 @@
           <form>
             <div class="form-group">
               <label for="Nombre">Nombre</label>
-              <input type="text" class="form-control" ng-model="EditUs.Nombre">
+              <input type="text" class="form-control" ng-model="parameters.Nombre">
             </div>
 
             <div class="form-group">
               <label for="Apellidos">Apellidos</label>
-              <input type="text" class="form-control" ng-model="EditUs.Apellidos">
+              <input type="text" class="form-control" ng-model="parameters.Apellidos">
             </div>
 
             <div class="form-group">
               <label class="radio-inline">
-                <input type="radio" ng-model="EditUs.Sexo" value="M">Masculino
+                <input type="radio" ng-model="parameters.Sexo" value="M">Masculino
               </label>
               <label class="radio-inline">
-                <input type="radio" ng-model="EditUs.Sexo" value="F">Femenino
+                <input type="radio" ng-model="parameters.Sexo" value="F">Femenino
               </label>
             </div>
 
             <div class="form-group">
               <label for="user">Usuario</label>
-              <input type="text" class="form-control" ng-model="EditUs.Usuario" placeholder="Usuario">
+              <input type="text" class="form-control" ng-model="parameters.Usuario" placeholder="Usuario">
             </div>
 
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" ng-model="EditUs.Password" placeholder="Password">
+              <input type="password" class="form-control" ng-model="parameters.Password" placeholder="Password">
             </div>
 
             <div class="form-group">
               <label for="Rol">Rol</label>
-              <select class="form-control" ng-model="EditUs.PerfilId">
+              <select class="form-control" ng-model="parameters.PerfilId">
                 <option ng-repeat="rol in roloptions" value="{{rol.value}}"> {{rol.name}} </option>
               </select>
             </div>
@@ -183,19 +192,18 @@
             <div class="form-group">
               <div class="radio">
                 <label>
-                  <input type="radio" ng-model="EditUs.Activo" value="1"> Activo
+                  <input type="radio" ng-model="parameters.Activo" value="1"> Activo
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input type="radio" ng-model="EditUs.Activo" value="0"> Inactivo
+                  <input type="radio" ng-model="parameters.Activo" value="0"> Inactivo
                 </label>
               </div>
             </div>
 
             <button class="btn btn-primary btn-lg btn-block" ng-click="EditUser()">Editar</button>
             <button class="btn btn-danger btn-lg btn-block" ng-click="CloseUser()">Cancelar</button>
-            <pre>{{EditUs}}</pre>
           </form>
       </div>
   </script>

@@ -5,14 +5,26 @@
       <div class="form-container">
 
           <form name="userForm" class="form-signin form-horizontal" novalidate>
+
             <div class="form-group" ng-class="{ 'has-error' : userForm.User.$invalid && userForm.User.$dirty && !userForm.User.$pristine, 'has-summer': userForm.User.$valid }">
-              <input type="text" name="User" class="form-control input-lg" ng-model="access.User" placeholder="Usuario" required>
+              <input type="text" name="User" class="form-control input-lg" ng-model="parameters.User" placeholder="Usuario" required>
               <p ng-show="userForm.User.$invalid && !userForm.User.$pristine" class="help-block">Se requiere su Usuario.</p>
             </div>
+
             <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
-              <input type="password" name="Password" class="form-control input-lg" ng-model="access.Password" placeholder="Contraseña" required>
+              <input type="password" name="Password" class="form-control input-lg" ng-model="parameters.Password" placeholder="Contraseña" required>
               <p ng-show="userForm.Password.$invalid && !userForm.Password.$pristine" class="help-block">Se requiere su Password.</p>
             </div>
+
+          <!--
+            <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
+              <input type="password" name="Password" class="form-control input-lg" ng-model="parameters.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
+              <span ng-show="userForm.Password.$error.required && userForm.Password.$dirty">Se requiere su password</span>
+              <span ng-show="!userForm.Password.$error.required && (userForm.Password.$error.minlength || userForm.Password.$error.maxlength) && userForm.Password.$dirty">Las contraseñas deben tener entre 8 y 20 caracteres.</span>
+              <span ng-show="!userForm.Password.$error.required && !userForm.Password.$error.minlength && !userForm.Password.$error.maxlength && userForm.Password.$error.pattern && userForm.Password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+            </div>
+          -->
+
             <div class="form-group">
               <button class="btn btn-primary btn-lg btn-block" ng-disabled="userForm.$invalid" ng-click="login()"><span class="glyphicon glyphicon-log-in"></span> Ingresar</button>
             </div>

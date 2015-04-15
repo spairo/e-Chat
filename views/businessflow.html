@@ -68,22 +68,22 @@
         <form name="businessForm" novalidate>
           <div class="form-group">
             <label for="user">Linea</label>
-            <input type="text" class="form-control" ng-model="addLine.Linea" required>
+            <input type="text" class="form-control" ng-model="parameters.Linea" required>
           </div>
           <div class="form-group">
             <label for="user">Descripcion</label>
-            <textarea class="form-control" ng-model="addLine.Descripcion" required></textarea>
+            <textarea class="form-control" ng-model="parameters.Descripcion" required></textarea>
           </div>
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addLine.Activo" value="1" checked>
+                <input type="radio" ng-model="parameters.Activo" value="1" checked>
                 Activo
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addLine.Activo" value="0" checked>
+                <input type="radio" ng-model="parameters.Activo" value="0" checked>
                 Inactivo
               </label>
             </div>
@@ -100,22 +100,22 @@
         <form name="businessEditForm" novalidate>
           <div class="form-group">
             <label for="user">Linea</label>
-            <input type="text" class="form-control" ng-model="EditLine.Linea" placeholder="{{linesdata[0].linea}}">
+            <input type="text" class="form-control" ng-model="parameters.Linea" placeholder="{{linesdata[0].linea}}">
           </div>
           <div class="form-group">
             <label for="user">Descripcion</label>
-            <textarea class="form-control" ng-model="EditLine.Descripcion" placeholder="{{linesdata[0].descripcion}}"></textarea>
+            <textarea class="form-control" ng-model="parameters.Descripcion" placeholder="{{linesdata[0].descripcion}}"></textarea>
           </div>
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" ng-model="EditLine.Activo" value="1" checked>
+                <input type="radio" ng-model="parameters.Activo" value="1" checked>
                 Activo
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="EditLine.Activo" value="0" checked>
+                <input type="radio" ng-model="parameters.Activo" value="0" checked>
                 Inactivo
               </label>
             </div>

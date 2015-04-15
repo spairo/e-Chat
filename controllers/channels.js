@@ -2,7 +2,7 @@
 
 // Channels Controller
 
-app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory){
+app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalStack, ngToast, auth, TypingFactory, BasesFactory, resources_POST){
 
   //get values LN factory
   $scope.Typing = TypingFactory;
@@ -11,24 +11,24 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
    //Get Channels list
   $scope.$on('LoadList', function(event){
 
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListChannels = { op: "listaCanales", Canal: "", Activo: "" }),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.getChannels = data;
-    })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
-    })
-   });
+      $scope.parameters = { Canal: "", Activo: "" };
+      $scope.option = "rp_listaCanales";
 
-   $scope.$emit('LoadList');
+      resources_POST.post($scope.option, $scope.parameters)
+      .then(function(data){
+          $scope.getChannels = data;
+      })
+      .catch(function(data, status){
+         var msg = ngToast.create({
+           content: "Opps!, Algo salio mal intenta otra vez",
+           className: "danger"
+         });
+      })
+      .finally(function(){});
+
+  });
+
+  $scope.$emit('LoadList');
 
   //Modal, Create, Edit
 
@@ -38,45 +38,13 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
 
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate.html',
-      controller: 'ChannelsCtrl'
-    });
-
-  };
-
-  $scope.addCha = { op: "mantCanales", Id: "0", Canal: "", Activo: "", UserId: myid };
-
-  $scope.AddChannel = function(){
-
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.addCha),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      var channel_checked = angular.isNumber(data[0].Column1);
-
-      if(channel_checked == true){
-
-        ngToast.create('El Canal fue creado con exito');
-        $scope.$emit('LoadList');
-        $modalStack.dismissAll();
-
-      }else{
-        var msg = ngToast.create({
-          content: 'Error, EL Canal no fue creado',
-          className:	'danger'
-        });
+      controller: 'AddChannelCtrl',
+      resolve: {
+        grid: function(){
+          return $scope;
+        }
       }
-
-    })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
-    })
+    });
 
   };
 
@@ -125,45 +93,81 @@ app.controller('ChannelsCtrl', function($scope, $state, $http, $modal, $modalSta
 
 });
 
-app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, canaldata, grid){
+app.controller('AddChannelCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, grid, resources_POST){
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.parameters = { Id: "0", Canal: "", Activo: "", UserId: myid };
+  $scope.option = "rp_mantCanales";
+
+  $scope.AddChannel = function(){
+
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
+
+        var channel_checked = angular.isNumber(data[0].Column1);
+
+        if(channel_checked == true){
+
+          ngToast.create('El Canal fue Creado con Exito');
+          grid.$emit('LoadList');
+          $modalStack.dismissAll();
+
+        }else{
+          var msg = ngToast.create({
+            content: 'Error, EL Canal no fue creado',
+            className:	'danger'
+          });
+        }
+
+    })
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Opps!, Algo salio mal intenta otra vez",
+         className: "danger"
+       });
+    })
+    .finally(function(){});
+
+  };
+
+});
+
+app.controller('InstanceChannelCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, canaldata, grid, resources_POST){
 
   var editdata = canaldata;
 
-  $scope.EditCha = { op: "mantCanales", Id: editdata[0].id, Canal: editdata[0].canal, Activo: editdata[0].activo, UserId: editdata[0].myid };
+  $scope.option = "rp_mantCanales";
+  $scope.parameters = { Id: editdata[0].id, Canal: editdata[0].canal, Activo: editdata[0].activo, UserId: editdata[0].myid };
 
   $scope.EditChannel = function(){
 
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.EditCha),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
 
-      var channel_checked = angular.isNumber(data[0].Column1);
+        var channel_checked = angular.isNumber(data[0].Column1);
 
-      if(channel_checked == true){
+        if(channel_checked == true){
 
-        ngToast.create('El Canal fue Editado con Exito');
-        grid.$emit('LoadList');
-        $modalStack.dismissAll();
+          ngToast.create('El Canal fue Editado con Exito');
+          grid.$emit('LoadList');
+          $modalStack.dismissAll();
 
-      }else{
-        var msg = ngToast.create({
-          content: 'Error, EL Canal no fue Editado',
-          className:	'danger'
-        });
-      }
+        }else{
+          var msg = ngToast.create({
+            content: 'Error, EL Canal no fue Editado',
+            className:	'danger'
+          });
+        }
 
     })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Opps!, Algo salio mal intenta otra vez",
+         className: "danger"
+       });
     })
-
+    .finally(function(){});
 
   };
 

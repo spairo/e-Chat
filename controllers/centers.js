@@ -2,28 +2,26 @@
 
 // Centers Controller
 
-app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth){
+app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth, resources_POST){
 
-  //Get Center List
+  //Get List
 
   $scope.$on('LoadCenterList', function(event){
 
-    $http({
-      method : 'POST',
-      url : 'api/rest.php',
-      data : $.param($scope.getListChannels = { op: "listaCentros", Centro: "", Activo: "" }),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    $scope.parameters = { Centro: "", Activo: "" };
+    $scope.option = "rp_listaCentros";
+
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
       $scope.getCenters = data;
     })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Opps!, Algo salio mal intenta otra vez",
+         className: "danger"
+       });
     })
-
+    .finally(function(){});
 
   });
 
@@ -37,45 +35,13 @@ app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToa
 
     var modalInstance = $modal.open({
       templateUrl: 'ModalCreate.html',
-      controller: 'CentersCtrl'
-    });
-
-  };
-
-  $scope.addCen = { op: "mantCentros", Id: "0", Centro: "", Activo: "", UserId: myid };
-
-  $scope.AddCenter = function(){
-
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.addCen),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-
-      var center_checked = angular.isNumber(data[0].Column1);
-
-      if(center_checked == true){
-
-        ngToast.create('El Centro fue agregado con exito');
-        $scope.$emit('LoadCenterList');
-        $modalStack.dismissAll();
-
-      }else{
-        var msg = ngToast.create({
-          content: 'Error, EL Centro no fue creado',
-          className:	'danger'
-        });
+      controller: 'AddCenterCtrl',
+      resolve: {
+        grid: function(){
+          return $scope;
+        }
       }
-
-    })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
-    })
+    });
 
   };
 
@@ -126,27 +92,63 @@ app.controller('CentersCtrl', function($scope, $http, $modal, $modalStack, ngToa
 
 });
 
-app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, centerdata, idcenter, grid){
+app.controller('AddCenterCtrl', function($scope, $http, $modal, $modalStack, ngToast, auth, grid, resources_POST){
+
+  var myid = $scope.status = auth.profileID;
+
+  $scope.parameters = { Id: "0", Centro: "", Activo: "", UserId: myid };
+  $scope.option = "rp_mantCentros";
+
+  $scope.AddCenter = function(){
+
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
+
+      var center_checked = angular.isNumber(data[0].Column1);
+
+      if(center_checked == true){
+
+        ngToast.create('El Centro fue agregado con exito');
+        grid.$emit('LoadCenterList');
+        $modalStack.dismissAll();
+
+      }else{
+        var msg = ngToast.create({
+          content: 'Error, EL Centro no fue creado',
+          className:	'danger'
+        });
+      }
+
+    })
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Error httpp " + status + data,
+         className: "danger"
+       });
+    })
+    .finally(function(){});
+
+  };
+
+});
+
+app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $modalStack, ngToast, auth, centerdata, idcenter, grid, resources_POST){
 
   var myid = $scope.status = auth.profileID;
   var idcenter = idcenter;
   var editdata = centerdata;
 
-  $scope.EditCe = { op: "mantCentros", Id: idcenter, Centro: editdata[0].centro, Activo: editdata[0].activo, UserId: myid };
+  $scope.parameters = { Id: idcenter, Centro: editdata[0].centro, Activo: editdata[0].activo, UserId: myid };
+  $scope.option = "rp_mantCentros";
 
   $scope.EditCenter = function(){
 
-    $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data: $.param($scope.EditCe),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
+    resources_POST.post($scope.option, $scope.parameters)
+    .then(function(data){
 
-      var channel_checked = angular.isNumber(data[0].Column1);
+      var center_checked = angular.isNumber(data[0].Column1);
 
-      if(channel_checked == true){
+      if(center_checked == true){
 
         ngToast.create('El Centro fue Editado con Exito');
         grid.$emit('LoadCenterList');
@@ -160,12 +162,13 @@ app.controller('InstanceCenterCtrl', function($scope, $http, $modalInstance, $mo
       }
 
     })
-    .error(function(data){
-      var msg = ngToast.create({
-        content: 'Opps!, Algo salio mal intenta otra vez',
-        className:	'danger'
-      });
+    .catch(function(data, status){
+       var msg = ngToast.create({
+         content: "Error httpp " + status + data,
+         className: "danger"
+       });
     })
+    .finally(function(){});
 
   };
 

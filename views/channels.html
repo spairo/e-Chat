@@ -70,17 +70,17 @@
         <form name="channelForm" novalidate>
           <div class="form-group">
             <label for="user">Nombre</label>
-            <input type="text" class="form-control" ng-model="addCha.Canal" placeholder="Canal" required>
+            <input type="text" class="form-control" ng-model="parameters.Canal" placeholder="Canal" required>
           </div>
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addCha.Activo" value="1" checked> Activo
+                <input type="radio" ng-model="parameters.Activo" value="1" checked> Activo
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="addCha.Activo" value="0"> Inactivo
+                <input type="radio" ng-model="parameters.Activo" value="0"> Inactivo
               </label>
             </div>
           </div>
@@ -97,18 +97,18 @@
         <form name="channelEditForm" novalidate>
           <div class="form-group">
             <label for="user">Nombre</label>
-            <input type="text" class="form-control" ng-model="EditCha.Canal" placeholder="{{canaldata[0].canal}}">
+            <input type="text" class="form-control" ng-model="parameters.Canal">
           </div>
 
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" ng-model="EditCha.Activo" value="1"> Activo
+                <input type="radio" ng-model="parameters.Activo" value="1"> Activo
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" ng-model="EditCha.Activo" value="0"> Inactivo
+                <input type="radio" ng-model="parameters.Activo" value="0"> Inactivo
               </label>
             </div>
           </div>

@@ -21,11 +21,6 @@ app.controller("AppCtrl", function($scope, $location, auth){
     brand: "Camu Dash"
   }
 
-  $scope.bye = function(){
-
-    alert("bye");
-
-  };
 
 });
 
@@ -35,15 +30,11 @@ app.controller("HeaderCtrl", function($scope, $location, $cookies){
 
   $scope.logout = function(){
 
-    //$cookies.remove("usuariocookie");
-    //$cookies.remove("perfilcookie");
-    //$cookies.remove("perfilesIdcookie");
-    $cookies.usuariocookie = undefined;
-    $cookies.perfilcookie = undefined;
-    $cookies.perfilesIdcookie = undefined;
+    delete $cookies["usuariocookie"];
+    delete $cookies["perfilcookie"];
+    delete $cookies["perfilesIdcookie"];
 
     $location.path('signin');
-    console.log($cookies);
 
   };
 
@@ -66,24 +57,24 @@ app.controller("NavCtrl", function($scope, taskStorage, filterFilter){
 
 app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast, auth, resources_POST){
 
-  $scope.access = { User: "master", Password: "master" };
+
+  $scope.parameters = { User: "master", Password: "master" };
   $scope.option = "rp_seguridadLogin";
 
   $scope.login = function(){
-    resources_POST.post($scope.option, $scope.access)
+
+    resources_POST.post($scope.option, $scope.parameters)
     .then(function(data){
+
       if(data == ''){
 
         var msg = ngToast.create({
           content: 'Usuario o Password no valido',
           className:  'danger'
         });
-        console.warn("Login Failed");
 
       }
       else{
-
-        console.info("Login Done");
 
         //cookies everywhere
         $scope.LoginFactory = auth;
@@ -97,16 +88,15 @@ app.controller('LoginCtrl', function($scope, $http, $location, $cookies, ngToast
       }
     })
     .catch(function(data, status){
-      console.error("Error en resources_GET ", status, data);
       var msg = ngToast.create({
         content: 'Opps!, Algo salio mal intenta otra vez',
         className:  'danger'
       });
     })
     .finally(function(){
-      console.log("Finaliza llamada a resources_GET");
-    });   
-  }; 
+      //console.log("Finaliza llamada a resources_GET");
+    });
+  };
 
 });
 
