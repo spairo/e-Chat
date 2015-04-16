@@ -114,11 +114,12 @@
           </div>
           -->
 
+
           <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
             <input type="password" name="Password" class="form-control input-lg" ng-model="parameters.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
             <span ng-show="userForm.Password.$error.required && userForm.Password.$dirty">Se requiere su password</span>
             <span ng-show="!userForm.Password.$error.required && (userForm.Password.$error.minlength || userForm.Password.$error.maxlength) && userForm.Password.$dirty">Las contraseñas deben tener entre 8 y 20 caracteres.</span>
-            <span ng-show="!userForm.Password.$error.required && !userForm.Password.$error.minlength && !userForm.Password.$error.maxlength && userForm.Password.$error.pattern && userForm.Password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+            <span ng-show="!userForm.Password.$error.required && !userForm.Password.$error.minlength && !userForm.Password.$error.maxlength && userForm.Password.$error.pattern && userForm.Password.$dirty">Debe contener una minuscula y mayuscula Must contain one lower &amp; uppercase letter, y un caracter alpha numerico (un numero o simbolo)</span>
           </div>
 
           <div class="form-group">
@@ -177,10 +178,20 @@
               <input type="text" class="form-control" ng-model="parameters.Usuario" placeholder="Usuario">
             </div>
 
+            <!--
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" class="form-control" ng-model="parameters.Password" placeholder="Password">
             </div>
+            -->
+
+            <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && userForm.Password.$dirty &&!userForm.Password.$pristine, 'has-summer': userForm.Password.$valid }">
+              <input type="password" name="Password" class="form-control input-lg" ng-model="parameters.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
+              <span ng-show="userForm.Password.$error.required && userForm.Password.$dirty">Se requiere su password</span>
+              <span ng-show="!userForm.Password.$error.required && (userForm.Password.$error.minlength || userForm.Password.$error.maxlength) && userForm.Password.$dirty">Las contraseñas deben tener entre 8 y 20 caracteres.</span>
+              <span ng-show="!userForm.Password.$error.required && !userForm.Password.$error.minlength && !userForm.Password.$error.maxlength && userForm.Password.$error.pattern && userForm.Password.$dirty">Debe contener una minuscula y mayuscula Must contain one lower &amp; uppercase letter, y un caracter alpha numerico (un numero o simbolo)</span>
+            </div>
+
 
             <div class="form-group">
               <label for="Rol">Rol</label>

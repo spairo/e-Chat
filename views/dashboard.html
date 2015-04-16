@@ -1,7 +1,9 @@
 <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
 
   <!-- stats -->
-
+  <ul ng-repeat="menu in Menus">
+    <li><a href="#/catalogs/{{menu.menu}}"><i class="fa fa-caret-right"></i>{{menu.menu}}</a></li>
+  </ul>
   <div class="row">
     <div class="col-lg-3 col-xsm-6">
       <div class="panel mini-box">

@@ -44,32 +44,32 @@ app.config(function($stateProvider, $urlRouterProvider){
       url: '/dashboard',
       templateUrl: 'views/dashboard.html',
     })
-    .state('catalogs/services', {
-      url: '/catalogs/services',
+    .state('catalogs/servicios', {
+      url: '/catalogs/servicios',
       templateUrl: 'views/services.html',
     })
-    .state('catalogs/profiles', {
-      url: '/catalogs/profiles',
+    .state('catalogs/perfiles', {
+      url: '/catalogs/perfiles',
       templateUrl: 'views/profiles.html',
     })
-    .state('catalogs/users', {
-      url: '/catalogs/users',
+    .state('catalogs/usuarios', {
+      url: '/catalogs/usuarios',
       templateUrl: 'views/users.html',
     })
     .state('catalogs/centers', {
       url: '/catalogs/centers',
       templateUrl: 'views/centers.html',
     })
-    .state('catalogs/channels', {
-      url: '/catalogs/channels',
+    .state('catalogs/canales', {
+      url: '/catalogs/canales',
       templateUrl: 'views/channels.html',
     })
     .state('catalogs/business', {
       url: '/catalogs/business',
       templateUrl: 'views/businessflow.html',
     })
-    .state('catalogs/clients', {
-      url: '/catalogs/clients',
+    .state('catalogs/clientes', {
+      url: '/catalogs/clientes',
       templateUrl: 'views/clients.html',
     })
     .state('catalogs/bases', {

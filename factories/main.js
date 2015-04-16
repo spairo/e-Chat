@@ -9,7 +9,7 @@
 */
 
 app.factory('auth',function(){
-  return { user:"", profile:"", profileID:"" };
+  return { user:"", profile:"", profileID:"", passw:"" };
 });
 
 app.factory('TypingFactory',function(){
@@ -20,69 +20,6 @@ app.factory("BasesFactory",function(){
   return { lineaNegocioId:"", linea:"", clienteAtentoId: "", cliente: "", serviciosId: "", servicio: "", canalesId: "", canal: "", skillsId: "", skill: "" };
 });
 
-
-/*
-app.factory('listline', function($http) {
-
-  var getListBusiness = {
-    op: "listaLineaNegocio",
-    Linea: "",
-    Activo: ""
-  }
-
-  function internalFunctionHandle() {
-    return $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data : $.param(getListBusiness),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).then(function(resp){
-      retObj.data = resp.data
-      return resp.data;
-      console.log("fffff");
-    });
-  }
-
-  var retObj = {
-    externalFunctionHandle: internalFunctionHandle
-  }
-
-  return retObj;
-
-});
-*/
-
-
-app.factory('listline', function($http){
-
-  var getListBusiness = {
-    op: "listaLineaNegocio",
-    Linea: "",
-    Activo: ""
-  }
-
-  function internalFunctionHandle(){
-    var getDataPromise = $http({
-      method: 'POST',
-      url: 'api/rest.php',
-      data : $.param(getListBusiness),
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
-
-    getDataPromise.then(function(resp){
-      retObj.data = resp.data
-    })
-    return getDataPromise;
-  }
-
-  var retObj = {
-    externalFunctionHandle: internalFunctionHandle
-  }
-
-  internalFunctionHandle()
-  return retObj;
-
-});
 
 app.factory("taskStorage", function() {
   var DEMO_TASKS, STORAGE_ID;

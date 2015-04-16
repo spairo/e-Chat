@@ -52,10 +52,6 @@ app.service('BasesService', function(){
 
 });
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 app.service("resources_POST",function($http, $q) {
   return{
 

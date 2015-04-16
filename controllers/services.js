@@ -28,7 +28,7 @@ app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ng
     //get lista de servicios
     $scope.getListaServicios = { Servicio: "", ClienteAtento: cliente, Activo:""};
     $scope.option = "rp_listaServicios";
-    
+
     resources_POST.post($scope.option, $scope.getListaServicios)
     .then(function(data){
       $scope.listaServiciosResult = data;
@@ -47,7 +47,7 @@ app.controller("ServiciosCtrl", function($scope, $state, $modal, $modalStack, ng
     //get lista de clientes
     $scope.getListaClientes = { Linea: linea, Cliente: cliente, Activo:""};
     $scope.option = "rp_listaClienteAtento";
-    
+
     resources_POST.post($scope.option, $scope.getListaClientes)
     .then(function(data){
       $scope.listaClienteAtentoResult = data;
@@ -155,7 +155,7 @@ app.controller("ModalCreate_ServicioController", function($scope, $modalInstance
 
   //funcion que agrega un servicio nuevo a la base
   $scope.AddServicio = function(){
-    
+
     resources_POST.post($scope.option, $scope.addServicio)
     .then(function(data){
       if(data == 'Error'){
@@ -208,7 +208,7 @@ app.controller("ModalEdit_ServiciosController", function($scope, $modalInstance,
   $scope.service = service;
 
   $scope.EditServicio = function () {
-     
+
     resources_POST.post($scope.option, $scope.editServicio)
     .then(function(data){
       if(data == 'Error'){

@@ -1,5 +1,11 @@
 <div id="nav-wrapper">
-  <ul id="nav" data-ng-controller="NavCtrl" data-slim-scroll data-collapse-nav data-highlight-active>
+  <div data-ng-controller="Nav2Ctrl" data-ng-init="init()" >
+    <ul id="nav" ng-repeat="menu in Menus">
+      <li><a href="#/catalogs/{{menu.menu}}"><i class="fa fa-caret-right"></i>{{menu.menu}}</a></li>
+    </ul>
+  </div>
+
+  <ul id="nav" data-ng-controller="NavCtrl" data-ng-init="init()" data-slim-scroll data-collapse-nav data-highlight-active>
     <li>
       <a href="#/dashboard">
         <i class="fa fa-dashboard"></i>
@@ -12,6 +18,7 @@
         <span data-i18n="Catalogos"></span>
       </a>
       <ul>
+        <li><a href="#/catalogs/{{menu.menu}}"><i class="fa fa-caret-right"></i>{{menu.menu}}</a></li>
         <li><a href="#/catalogs/profiles"><i class="fa fa-caret-right"></i><span data-i18n="Perfiles"></span></a></li>
         <li><a href="#/catalogs/users"><i class="fa fa-caret-right"></i><span data-i18n="Usuarios"></span></a></li>
         <li><a href="#/catalogs/centers"><i class="fa fa-caret-right"></i><span data-i18n="Centros"></span></a></li>
